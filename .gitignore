@@ -1,0 +1,5 @@
+# les sauvegardes de travail restent en local, jamais en ligne
+*.bak
+.DS_Store
+# captures de dev — 11 Mo qui n'ont rien à faire dans l'app de Rayan
+screenshots/
