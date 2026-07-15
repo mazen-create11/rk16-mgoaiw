@@ -1920,6 +1920,14 @@ function updateLastSet(dk,sk,i,reps,rpe){
   if(rpe!==undefined)s.e=rpe;
   saveJSON(logKey(dk),l);logsDirty();
 }
+/* retire la dernière série loguée d'un exo — pour défaire un tap accidentel */
+function popSet(dk,sk,i){
+  var l=loadLog(dk),k=chargeKey(sk,i);
+  if(!l[k]||!l[k].length)return;
+  l[k].pop();
+  if(!l[k].length)delete l[k];
+  saveJSON(logKey(dk),l);logsDirty();
+}
 /* la partie "principale" d'un exo : lui-même, ou la 1re moitié d'un superset */
 function mainPart(e){return (e.parts&&e.parts[0])||e;}
 /* borne haute de la fourchette : [5,6] → 6 · [8,10] → 10 · [30,45] s → 45 */
@@ -2748,6 +2756,17 @@ function runSkip(){
   if(RUN.i<RUN.sess.exos.length-1){RUN.i++;saveRun();runRender();}
   else{RUN.phase='end';runRender();}
 }
+/* Annule la série qu'on vient de valider. Un double-tap sur "Série faite"
+   enregistrait une série fantôme sans moyen de la retirer. */
+function runUndoSet(fromExo){
+  if(fromExo==null)return;
+  popSet(RUN.dk,RUN.sk,fromExo);
+  if(RUN.sets[fromExo]>0)RUN.sets[fromExo]--;
+  RUN.i=fromExo;                 /* on revient sur l'exo concerné */
+  runSyncDone();saveRun();
+  if(navigator.vibrate)navigator.vibrate(12);
+  RUN.phase='exo';runRender();
+}
 /* ===== LE BLOC DE CORRECTION D'UNE SÉRIE =====
    Reps réelles + ressenti. Partagé par l'écran de repos et l'écran de fin :
    toute série loguée doit pouvoir être corrigée, y compris la dernière. */
@@ -2809,8 +2828,13 @@ function runRest(sec,switched,fromExo){
     '<div class="run-next">'+(switched?'Exo suivant · <b>'+esc(e.name)+'</b> · série 1/'+tot:'<b>'+esc(e.name)+'</b> · série '+cur+'/'+tot)+'</div>';
   bindLogBlock(li,last);
   rCta.className='run-cta ghost';rCta.textContent='Passer le repos';rCta.onclick=function(){runRestEnd(true);};
-  rSub.innerHTML='<button id="run-plus">+ 30 s</button><span class="dot"></span><button id="run-quit-r">Quitter</button>';
+  /* "Annuler la série" seulement s'il y a bien une série à défaire pour cet exo */
+  var canUndo=(li!=null&&last);
+  rSub.innerHTML='<button id="run-plus">+ 30 s</button><span class="dot"></span>'+
+    (canUndo?'<button id="run-undo">Annuler la série</button><span class="dot"></span>':'')+
+    '<button id="run-quit-r">Quitter</button>';
   document.getElementById('run-plus').onclick=function(){RUN.restEnd+=30000;runTotal+=30;runLeft+=30;runTick(true);if(navigator.vibrate)navigator.vibrate(6);};
+  if(canUndo){var u=document.getElementById('run-undo');if(u)u.onclick=function(){clearInterval(runInt);runInt=null;runUndoSet(li);};}
   document.getElementById('run-quit-r').onclick=closeRun;
   runChrome();
   if(navigator.vibrate)navigator.vibrate(8);
