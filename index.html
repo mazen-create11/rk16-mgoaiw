@@ -938,6 +938,7 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 
 /* la démo vidéo : une vraie vidéo, pas une recherche. On dit quoi et chez qui. */
 .vid{display:flex; align-items:center; gap:11px; margin-top:9px; padding:11px 12px; min-height:44px;
+  min-width:0; /* le titre est en nowrap : sans ça il impose sa largeur au parent */
   background:var(--surface-2); border:1px solid var(--line); border-radius:12px;
   text-decoration:none; color:var(--text); transition:border-color .2s, background .2s}
 .vid:active{background:#12151C}
@@ -946,16 +947,24 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
   border:1px solid rgba(200,240,49,.32); display:flex; align-items:center; justify-content:center}
 .vid-ic svg{width:12px; height:12px; fill:var(--volt); stroke:none; margin-left:1px}
 .vid-t{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
-.vid-t b{font-size:13px; font-weight:500; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+/* le titre passe à la ligne plutôt que d'être tronqué : Rayan doit lire ce sur
+   quoi il tape. 2 lignes suffisent pour tous les titres du catalogue. */
+.vid-t b{font-size:13px; font-weight:500; line-height:1.3; overflow-wrap:anywhere;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
 .vid-t span{font-family:var(--mono); font-size:9.5px; letter-spacing:.06em; color:var(--muted);
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  line-height:1.35; overflow-wrap:anywhere;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
 .vid-go{flex:0 0 auto; width:14px; height:14px; color:var(--muted)}
 .vid-go svg{width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:2}
 .vid-wrap .k{margin-bottom:2px}
 
 /* l'échauffement : expliqué, pas jargonné */
 .wu-list{list-style:none; display:grid; gap:12px; margin:0; padding:0}
-.wu{border-left:2px solid var(--line-2); padding:0 0 0 12px}
+/* min-width:0 — SANS ça, un enfant de grid refuse de rétrécir sous la largeur
+   de son contenu (défaut min-width:auto). Le titre de vidéo en nowrap imposait
+   449px sur un écran de 390 : tout le bloc débordait et le texte était coupé. */
+.wu{border-left:2px solid var(--line-2); padding:0 0 0 12px; min-width:0}
+.wu p{overflow-wrap:anywhere}
 .wu-h{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
 .wu-h b{font-family:var(--display); font-weight:700; text-transform:uppercase; font-size:14.5px; letter-spacing:.02em}
 .wu p{margin:4px 0 0; font-size:13px; color:var(--muted); line-height:1.5}
@@ -1662,7 +1671,10 @@ var SPRINTS={
     'Pourquoi : maintient ta VO2 de boxeur, brûle sans manger ta récupération, et c’est le format d’effort que ton corps connaît par cœur.'
   ]}
 };
-var VOLUME=[['Pecs',13],['Dos',16],['Épaules',12],['Quadris',11],['Ischios/fess.',12],['Bras directs',9],['Mollets',8],['Abdos',9]];
+/* "Ischios" et plus "Ischios/fess." : depuis le retrait du hip thrust (demande de
+   Rayan), les fessiers ne sont plus travaillés en primaire — seulement en
+   secondaire au SDT roumain. Le libellé débordait sur la barre, en plus. */
+var VOLUME=[['Pecs',13],['Dos',16],['Épaules',12],['Quadris',11],['Ischios',12],['Bras directs',9],['Mollets',8],['Abdos',9]];
 var ADAPT=[
   ['bolt','Nuit &lt; 6h','La séance a lieu, mais : <b>-1 série</b> par exercice, <b>RIR +1</b>, zéro technique d’intensité. Une mauvaise séance faite bat une bonne séance ratée.'],
   ['arrow','Séance manquée','Elle glisse au jour suivant disponible. <b>On ne double JAMAIS.</b> Si la semaine est pleine : priorité <b>Lower B &gt; Upper A &gt; le reste</b>.'],
@@ -2825,13 +2837,35 @@ rPrev.addEventListener('click',function(){if(RUN&&RUN.i>0){RUN.i--;saveRun();run
    restait derrière, dans du contenu masqué. `inert` rend tout le fond
    non-focusable et invisible aux lecteurs d'écran, en une propriété. */
 var focusReturn=[];
+/* ===== QUI EST INERTE =====
+   UN SEUL endroit décide, et il recalcule TOUT à chaque changement : seul
+   l'overlay du dessus est vivant, le reste est inerte.
+   Bug du 15/07 : trapOff ne relâchait rien tant qu'un overlay restait ouvert —
+   fermer l'éditeur de charge laissait la fiche exo ET l'app inertes, donc mortes
+   au toucher. La charge était bien enregistrée, mais Rayan ne pouvait plus rien
+   toucher et croyait que ça n'avait pas marché. */
+function applyInert(){
+  var app=document.getElementById('app'), nav=document.getElementById('nav');
+  var all=[].slice.call(document.querySelectorAll('.ovl-managed'));
+  var rm=function(el){if(el)el.removeAttribute('inert');};
+  [app,nav].forEach(rm); all.forEach(rm);
+  var remise=document.getElementById('remise');
+  if(remise&&!remise.classList.contains('gone')){
+    /* l'écran d'accueil est au-dessus de tout */
+    [app,nav].forEach(function(el){if(el)el.setAttribute('inert','');});
+    all.forEach(function(el){el.setAttribute('inert','');});
+    return;
+  }
+  if(remise)remise.setAttribute('inert','');
+  var top=topOverlay();
+  if(!top||!top.el)return;
+  [app,nav].forEach(function(el){if(el&&!top.el.contains(el))el.setAttribute('inert','');});
+  all.forEach(function(el){if(el!==top.el&&!el.contains(top.el))el.setAttribute('inert','');});
+}
 function trapOn(ov){
   if(!ov)return;
-  var app=document.getElementById('app'), nav=document.getElementById('nav');
   focusReturn.push(document.activeElement);
-  [app,nav].forEach(function(el){if(el&&!ov.contains(el))el.setAttribute('inert','');});
-  /* les autres overlays du fond aussi */
-  document.querySelectorAll('.ovl-managed').forEach(function(el){if(el!==ov&&!el.contains(ov))el.setAttribute('inert','');});
+  applyInert();
   /* le 1er élément VRAIMENT focusable : ni désactivé, ni masqué. On cherche APRÈS
      le rendu — au moment de l'ouverture, l'écran est encore vide et tout mesure 0.
      (le bouton "exercice précédent" est disabled au 1er exo : il faut le sauter) */
@@ -2848,14 +2882,11 @@ function trapOn(ov){
   },80);
 }
 function trapOff(ov){
-  var app=document.getElementById('app'), nav=document.getElementById('nav');
-  var stillOpen=document.querySelectorAll('.ovl-managed.show').length>(ov&&ov.classList.contains('show')?1:0);
-  if(!stillOpen){
-    [app,nav].forEach(function(el){if(el)el.removeAttribute('inert');});
-    document.querySelectorAll('.ovl-managed').forEach(function(el){el.removeAttribute('inert');});
-  }
+  /* on recalcule : l'overlay encore ouvert en dessous doit REPRENDRE la main */
+  applyInert();
   var back=focusReturn.pop();
-  if(back&&back.focus)setTimeout(function(){try{back.focus({preventScroll:true});}catch(e){}},40);
+  if(back&&back.focus&&document.contains(back)&&!back.closest('[inert]'))
+    setTimeout(function(){try{back.focus({preventScroll:true});}catch(e){}},40);
 }
 
 /* ===== PILE D'OVERLAYS =====
