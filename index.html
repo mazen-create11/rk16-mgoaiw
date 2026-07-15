@@ -927,6 +927,22 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 /* charge de semaine deload : allégée, donc en ice — jamais confondue avec un record */
 .exo-data .load.dl{color:var(--ice)}
 
+/* nuit courte : un aveu, pas une punition — ice comme tout ce qui touche la récup */
+.short-tgl{display:flex; align-items:center; gap:11px; width:100%; min-height:52px; margin-top:10px;
+  padding:10px 14px; background:none; border:1px dashed var(--line-2); border-radius:13px;
+  color:var(--muted); text-align:left; cursor:pointer; transition:border-color .2s, background .2s}
+.short-tgl .st-box{flex:0 0 auto; width:22px; height:22px; border-radius:7px; border:1.5px solid var(--line-2);
+  display:flex; align-items:center; justify-content:center; transition:.2s}
+.short-tgl .st-box svg{width:12px; height:12px; opacity:0; stroke:#0A0B0E; stroke-width:3.4; transition:.2s}
+.short-tgl .st-t{font-size:13px; color:var(--text); line-height:1.3}
+.short-tgl .st-s{display:block; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted); margin-top:2px}
+.short-tgl.on{border-style:solid; border-color:rgba(125,214,255,.4); background:rgba(125,214,255,.06)}
+.short-tgl.on .st-box{background:var(--ice); border-color:var(--ice)}
+.short-tgl.on .st-box svg{opacity:1}
+.short-tgl.on .st-s{color:var(--ice)}
+.short-tgl:focus-visible{outline:2px solid var(--volt); outline-offset:2px}
+
 .run-nm.sm{font-size:clamp(22px,7vw,30px); margin-bottom:6px}
 
 /* la sauvegarde auto : discrète, mais visible quand elle compte */
@@ -2005,12 +2021,12 @@ function adviceHTML(sk,i){
 var MG_LABEL={pecs:'Pectoraux',delts:'Épaules',arms:'Bras',back:'Dos',abs:'Abdos',quads:'Quadriceps',hams:'Ischios',glutes:'Fessiers',calves:'Mollets'};
 function exoRows(exos,opts){
   opts=opts||{};var checkable=opts.checkable,dateKey=opts.dateKey,sk=opts.sessionKey||'';
-  var dl=!!opts.deload;
+  var dl=!!opts.deload, short=!!opts.short;
   var done=checkable?loadDone(dateKey):[];
   var h='';
   for(var i=0;i<exos.length;i++){var e=exos[i];
     var lv=workLoad(sk,i,e,dl);
-    var nSets=setsOf(e,dl), pres=dl?nSets+'×'+repsMain(e):e.s;
+    var nSets=Math.max(1,setsOf(e,dl)-(short?1:0)), pres=(dl||short)?nSets+'×'+repsMain(e):e.s;
     var data=pres+(lv&&lv!=='—'?' · <span class="load'+(sk&&isCustomLoad(sk,i)&&!dl?' real':'')+(dl?' dl':'')+'">'+esc(lv)+'</span>':'')+' · repos '+e.rest;
     var isDone=checkable&&done[i];
     h+='<div class="exo'+(isDone?' done':'')+'" data-sk="'+sk+'" data-i="'+i+'">'+
@@ -2295,16 +2311,27 @@ function renderToday(){
   el.innerHTML=h;
   bindSessionInteractions(el);
 }
+/* ===== NUIT COURTE =====
+   La règle d'adaptation de l'app (« nuit < 6h → -1 série par exo, RIR +1, zéro
+   technique d'intensité ») était du texte que Rayan devait appliquer de tête.
+   Vu que le sommeil est SON chantier n°1, l'app la calcule — comme le deload.
+   Un tap avant la séance, et « une mauvaise séance faite bat une bonne séance
+   ratée » devient concret. */
+function isShortDay(dk){try{return localStorage.getItem('protocole_short_'+dk)==='1';}catch(e){return false;}}
+function setShortDay(dk,on){try{on?localStorage.setItem('protocole_short_'+dk,'1'):localStorage.removeItem('protocole_short_'+dk);}catch(e){}}
 function sessionInteractive(sess,dk,skey,deload){
   var n=sess.exos.length, ndone=loadDone(dk).filter(Boolean).length;
   var saved=loadJSON('protocole_run_'+dk,null), started=!!(saved&&saved.sets&&saved.sets.some(function(v){return v>0;}));
-  var fini=ndone>=n;
+  var fini=ndone>=n, short=isShortDay(dk);
   var lbl=fini?'Revoir la séance':(started?'Reprendre la séance':'Démarrer la séance');
   var sub=fini?'terminée':(started?'exo '+((saved.i||0)+1)+'/'+n:n+' exos guidés');
   return '<button class="run-start'+(fini?' fini':'')+'" data-run="'+skey+'"'+(deload?' data-deload="1"':'')+'><span class="ic">'+IC.play+'</span>'+lbl+'<span class="rs-sub">'+esc(sub)+'</span></button>'+
+    '<button class="short-tgl'+(short?' on':'')+'" id="short-tgl" type="button" aria-pressed="'+(short?'true':'false')+'">'+
+      '<span class="st-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
+      '<span class="st-t">Nuit courte (moins de 6 h) ?<span class="st-s">'+(short?'−1 série par exo · vise RIR +1 · zéro forcing':'coche et l’app allège la séance')+'</span></span></button>'+
     '<div class="seance-progress"><div class="bar"><i id="sp-bar"></i></div><div class="cnt"><b id="sp-cnt">0</b>/<span id="sp-tot">'+n+'</span></div></div>'+
     '<div class="exo-head"><span class="lbl">TES EXOS</span><span class="today-tag">ou coche à la main</span></div>'+
-    exoRows(sess.exos,{checkable:true,dateKey:dk,sessionKey:skey,deload:deload})+
+    exoRows(sess.exos,{checkable:true,dateKey:dk,sessionKey:skey,deload:deload,short:short})+
     '<div class="done-banner" id="done-banner"><span>💥</span><div><div class="t">Séance bouclée</div><div class="s">'+n+'/'+n+' — c’est noté. Récup, protéines, on remet ça.</div></div></div>'+
     '<div class="why" style="margin-top:14px"><span class="ic">'+IC.bulb+'</span><div class="tx"><b>Rappel :</b> double progression → quand tu boucles le haut de la fourchette sur toutes tes séries au RIR cible, tu montes. L’app te le dira. Straps sur les tirages si la prise lâche. Filme 1 série clé.</div></div>';
 }
@@ -2334,6 +2361,12 @@ function bindSessionInteractions(scope){
   var progBar=scope.querySelector('#sp-bar'),progCnt=scope.querySelector('#sp-cnt'),doneB=scope.querySelector('#done-banner');
   var rs=scope.querySelector('.run-start[data-run]');
   if(rs)rs.addEventListener('click',function(){openRun(rs.getAttribute('data-run'),rs.getAttribute('data-deload')==='1');});
+  var stg=scope.querySelector('#short-tgl');
+  if(stg)stg.addEventListener('click',function(){
+    setShortDay(dk,!isShortDay(dk));
+    if(navigator.vibrate)navigator.vibrate(8);
+    renderToday(); /* re-render : prescriptions et toggle se mettent à jour */
+  });
   var totEl=scope.querySelector('#sp-tot');
   var tot=(totEl&&+totEl.textContent)||scope.querySelectorAll('.exo').length||6;
   function refresh(){var arr=loadDone(dk);var n=arr.filter(Boolean).length;if(progBar)progBar.style.transform='scaleX('+(n/tot)+')';if(progCnt)progCnt.textContent=n;if(doneB)doneB.classList.toggle('show',n>=tot);}
@@ -2601,7 +2634,7 @@ function saveRun(){
     restEnd:RUN.phase==='rest'?RUN.restEnd:0,
     lastFrom:RUN.lastFrom==null?null:RUN.lastFrom});
 }
-function runTot(i){return setsOf(RUN.sess.exos[i],RUN.deload);}
+function runTot(i){return Math.max(1,setsOf(RUN.sess.exos[i],RUN.deload)-(RUN.short?1:0));}
 function runSetsTotal(){var n=0;for(var i=0;i<RUN.sess.exos.length;i++)n+=runTot(i);return n;}
 function runSetsDone(){var n=0;for(var i=0;i<RUN.sets.length;i++)n+=RUN.sets[i];return n;}
 function runAllDone(){for(var i=0;i<RUN.sess.exos.length;i++){if(RUN.sets[i]<runTot(i))return false;}return true;}
@@ -2615,7 +2648,7 @@ function openRun(sk,deload){
   var dk=dateKeyOf(today()), n=sess.exos.length, saved=loadJSON(runKey(dk),null), done=loadDone(dk);
   var sets=(saved&&saved.sets&&saved.sets.length===n)?saved.sets.slice():[];
   if(!sets.length){for(var z=0;z<n;z++)sets.push(0);}
-  RUN={sk:sk,dk:dk,sess:sess,deload:!!deload,sets:sets,i:0,t0:(saved&&saved.t0)||Date.now(),
+  RUN={sk:sk,dk:dk,sess:sess,deload:!!deload,short:isShortDay(dk),sets:sets,i:0,t0:(saved&&saved.t0)||Date.now(),
     phase:'exo',pr:(saved&&saved.pr)||0,lastFrom:(saved&&saved.lastFrom!=null)?saved.lastFrom:null};
   for(var j=0;j<n;j++){var t=runTot(j);if(done[j]&&sets[j]<t)sets[j]=t;if(sets[j]>t)sets[j]=t;}
   RUN.i=(saved&&typeof saved.i==='number'&&saved.i<n&&RUN.sets[saved.i]<runTot(saved.i))?saved.i:runFirstUndone();
@@ -2650,7 +2683,7 @@ function runSyncDone(){
 }
 function runChrome(){
   var n=RUN.sess.exos.length;
-  rK.innerHTML=RUN.phase==='end'?esc(RUN.sess.name):('<b>'+RUN.sess.name+'</b> · exo '+(RUN.i+1)+'/'+n+(RUN.deload?' · deload':''));
+  rK.innerHTML=RUN.phase==='end'?esc(RUN.sess.name):('<b>'+RUN.sess.name+'</b> · exo '+(RUN.i+1)+'/'+n+(RUN.deload?' · deload':'')+(RUN.short?' · nuit courte':''));
   var p=RUN.phase==='end'?1:runSetsDone()/Math.max(1,runSetsTotal());
   rProg.style.transform='scaleX('+p.toFixed(3)+')';
   rPrev.disabled=(RUN.i===0||RUN.phase==='end');
@@ -2682,6 +2715,7 @@ function runRender(){
             '<span class="m'+(custom||!/calibrer|actuelle|PDC/.test(lv)?' volt':'')+'">'+esc(lv)+'</span><span class="pen">'+IC.pen+'</span></button><span class="sep"></span>'))+
       '<span class="lb">Repos</span><span class="m">'+esc(e.rest)+'</span></div>'+
     (RUN.deload?'<div class="run-extra dl">semaine deload · charges -10 % · séries réduites</div>':'')+
+    (RUN.short?'<div class="run-extra dl">nuit courte · −1 série par exo · vise RIR +1 · zéro forcing</div>':'')+
     '<p class="run-cue">'+esc(e.note)+'</p>'+
     (noteOf(RUN.sk,RUN.i)?'<div class="run-note"><span class="k">ta note</span>'+esc(noteOf(RUN.sk,RUN.i))+'</div>':'');
   var lb=document.getElementById('run-loadb');
