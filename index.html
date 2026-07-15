@@ -3399,7 +3399,7 @@ function renderPhotos(){
       b.addEventListener('click',function(ev){
         var d=ev.target.closest('[data-del]');
         if(d){ev.stopPropagation();
-          if(confirm('Supprimer cette photo ?'))photoDel(d.getAttribute('data-del')).then(renderPhotos);
+          if(confirm('Supprimer cette photo ?'))photoDel(d.getAttribute('data-del')).then(function(){renderPhotos();syncPush();});
           return;}
         PHOTO_CTX={slot:b.getAttribute('data-slot'),angle:b.getAttribute('data-angle')};
         document.getElementById('photo-file').click();
@@ -3438,7 +3438,7 @@ function initPhotos(){
         return photoPut({id:photoId(ctx.slot,ctx.angle),slot:ctx.slot,angle:ctx.angle,
           blob:blob,at:dateKeyOf(today()),size:blob.size});
       })
-      .then(function(){toast('Photo enregistrée');renderPhotos();})
+      .then(function(){toast('Photo enregistrée');renderPhotos();syncPush();})
       .catch(function(){alert('Photo impossible à enregistrer (mémoire pleine ou format non lu).');});
   });
   renderPhotos();
@@ -3920,12 +3920,54 @@ function initReminders(){
    retirer l'icône, réinitialiser Safari, ou changer de téléphone — Apple ne
    documente nulle part si les données d'une PWA suivent une restauration iCloud.
    D'où la sauvegarde : pas contre un fantôme, contre ces trois cas-là. */
-var BACKUP_V=2;
+var BACKUP_V=3; /* v3 = les photos voyagent avec (v2 sans photos reste importable) */
 function collectData(){
   var o={},n=0;
   for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
     if(k&&k.indexOf('protocole_')===0){o[k]=localStorage.getItem(k);n++;}}
   return {v:BACKUP_V,app:'protocole-rayan',schema:SCHEMA_NOW,exported:dateKeyOf(today()),n:n,data:o};
+}
+/* ===== LES PHOTOS DANS LA SAUVEGARDE =====
+   Elles vivent en IndexedDB, pas en localStorage : sans ça, un changement de
+   téléphone rendait les charges mais PERDAIT les avant/après — le livrable
+   du défi. 15 photos compressées ≈ 3 Mo en base64, le worker accepte 6. */
+function blobToB64(blob){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){res(String(r.result).split(',')[1]||'');};
+    r.onerror=function(){rej(r.error);};
+    r.readAsDataURL(blob);
+  });
+}
+function b64ToBlob(b64,type){
+  var bin=atob(b64), u=new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+  return new Blob([u],{type:type||'image/jpeg'});
+}
+function photosExport(){
+  return photoAll().then(function(list){
+    return Promise.all(list.map(function(p){
+      return blobToB64(p.blob).then(function(b64){
+        return {id:p.id,slot:p.slot,angle:p.angle,at:p.at,type:p.blob.type,b64:b64};
+      });
+    }));
+  }).catch(function(){return [];});
+}
+function photosRestore(arr){
+  if(!arr||!arr.length)return Promise.resolve(0);
+  var ok=0;
+  return arr.reduce(function(chain,ph){
+    return chain.then(function(){
+      if(!ph||!ph.id||!ph.b64)return;
+      return photoPut({id:ph.id,slot:ph.slot,angle:ph.angle,at:ph.at||'',
+        blob:b64ToBlob(ph.b64,ph.type),size:0}).then(function(){ok++;}).catch(function(){});
+    });
+  },Promise.resolve()).then(function(){return ok;});
+}
+/* la sauvegarde complète : localStorage + photos. Toujours async. */
+function collectDataFull(){
+  var base=collectData();
+  return photosExport().then(function(ph){base.photos=ph;return base;});
 }
 function dataStat(){
   var el=document.getElementById('dc-stat');if(!el)return;
@@ -3970,18 +4012,31 @@ var _syncT=null, _syncing=false;
 function syncPush(delay){
   if(!syncOn())return;
   clearTimeout(_syncT);
-  _syncT=setTimeout(function(){
-    if(_syncing)return; _syncing=true;
-    var body=JSON.stringify(collectData());
-    fetch(SYNC_URL+'/prep16/'+encodeURIComponent(syncCode()),{
-      method:'PUT',headers:{'Content-Type':'application/json'},body:body,keepalive:true
-    }).then(function(r){
-      if(!r.ok)throw new Error('http '+r.status);
-      try{localStorage.setItem(LS_SYNC_AT,new Date().toISOString());}catch(e){}
-      renderSync();
-    }).catch(function(){/* silencieux : jamais sur le chemin de Rayan */})
-     .then(function(){_syncing=false;});
-  },delay==null?2500:delay);
+  _syncT=setTimeout(_syncNow,delay==null?2500:delay);
+}
+/* Un envoi demandé PENDANT qu'un autre vole se met en file, jamais à la poubelle.
+   Vécu en test : 2 photos ajoutées pendant un envoi en vol → la 2e n'arrivait
+   jamais sur le serveur. Le dernier état local doit toujours finir en ligne. */
+var _syncAgain=false;
+function _syncNow(){
+  if(_syncing){_syncAgain=true;return;}
+  _syncing=true;
+  collectDataFull().then(function(full){
+    /* PAS de keepalive : fetch le refuse au-delà de 64 Ko de corps — la sync
+       aurait cessé de marcher en silence vers la S8, photos ou pas. Le push
+       part app ouverte (fin de séance), il n'en a pas besoin. */
+    return fetch(SYNC_URL+'/prep16/'+encodeURIComponent(syncCode()),{
+      method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(full)
+    });
+  }).then(function(r){
+    if(!r.ok)throw new Error('http '+r.status);
+    try{localStorage.setItem(LS_SYNC_AT,new Date().toISOString());}catch(e){}
+    renderSync();
+  }).catch(function(){/* silencieux : jamais sur le chemin de Rayan */})
+   .then(function(){
+     _syncing=false;
+     if(_syncAgain){_syncAgain=false;_syncNow();}
+   });
 }
 function syncPull(){
   if(!syncOn())return Promise.reject(new Error('off'));
@@ -4045,7 +4100,9 @@ function renderBackupState(){
    (mdn/content#32019) — l'export était donc quasi inopérant sur le téléphone
    de Rayan, précisément là où il tourne. */
 function backupBlob(){
-  return new Blob([JSON.stringify(collectData(),null,2)],{type:'application/json'});
+  return collectDataFull().then(function(full){
+    return new Blob([JSON.stringify(full)],{type:'application/json'});
+  });
 }
 function downloadFallback(blob,name){
   var url=URL.createObjectURL(blob), a=document.createElement('a');
@@ -4054,18 +4111,23 @@ function downloadFallback(blob,name){
   setTimeout(function(){URL.revokeObjectURL(url);},1000);
 }
 function exportData(){
-  var name='protocole-rayan-'+dateKeyOf(today())+'.json', blob=backupBlob();
-  try{
-    var file=new File([blob],name,{type:'application/json'});
-    if(navigator.canShare&&navigator.canShare({files:[file]})){
-      navigator.share({files:[file]}) /* pas de title/text : ça casse le partage de fichier sur iOS */
-        .then(function(){markBackup();toast('Sauvegarde envoyée');})
-        .catch(function(err){if(err&&err.name==='AbortError')return;downloadFallback(blob,name);markBackup();});
-      return;
-    }
-  }catch(e){}
-  downloadFallback(blob,name);markBackup();
-  toast('Sauvegarde exportée');
+  var name='protocole-rayan-'+dateKeyOf(today())+'.json';
+  backupBlob().then(function(blob){
+    /* ⚠️ navigator.share doit être appelé dans la foulée du geste utilisateur ;
+       iOS tolère une promesse courte avant l'appel (la compression photo est
+       déjà faite, on ne fait que relire l'IDB) */
+    try{
+      var file=new File([blob],name,{type:'application/json'});
+      if(navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file]}) /* pas de title/text : ça casse le partage de fichier sur iOS */
+          .then(function(){markBackup();toast('Sauvegarde envoyée');})
+          .catch(function(err){if(err&&err.name==='AbortError')return;downloadFallback(blob,name);markBackup();});
+        return;
+      }
+    }catch(e){}
+    downloadFallback(blob,name);markBackup();
+    toast('Sauvegarde exportée');
+  });
 }
 /* ===== EXPORT CSV — tes séances, lisibles ailleurs =====
    Le JSON est un dump interne. Un CSV s'ouvre dans Numbers, se garde 10 ans,
@@ -4131,7 +4193,8 @@ function importData(file){
       }
       chargesDirty();logsDirty();
       toast('Sauvegarde restaurée');
-      setTimeout(function(){location.reload();},900);
+      /* les photos (backup v3+) reviennent aussi ; le reload attend leur écriture */
+      photosRestore(o.photos).then(function(){setTimeout(function(){location.reload();},400);});
     }catch(e){
       alert(e&&e.message==='futur'
         ? 'Cette sauvegarde vient d’une version plus récente de l’app.'
@@ -4162,7 +4225,8 @@ function syncRestore(){
     }
     chargesDirty();logsDirty();
     toast('Sauvegarde récupérée');
-    setTimeout(function(){location.reload();},900);
+    /* les photos reviennent aussi — c'était le trou : nouvelles charges, avant/après perdus */
+    return photosRestore(o.photos).then(function(){setTimeout(function(){location.reload();},400);});
   }).catch(function(e){
     alert(e&&e.message==='vide'
       ? 'Aucune sauvegarde trouvée pour ce code.'
