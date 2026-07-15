@@ -1042,7 +1042,7 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 /* les tests : une case cochée ne prouve rien, une mesure si */
 .test-blk{border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:10px}
 .test-blk:last-child{border-bottom:0; padding-bottom:0; margin-bottom:0}
-.test-vals{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:8px 0 2px; padding-left:38px}
+.test-vals{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:8px 0 2px; padding-left:38px}
 .test-vals label{display:flex; flex-direction:column; gap:4px}
 .test-vals span{font-family:var(--mono); font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
 .test-vals input{background:var(--surface-2); border:1px solid var(--line); border-radius:9px; color:var(--text);
@@ -3742,6 +3742,7 @@ function renderTests(){var done=loadJSON(LS_TESTS,{});var host=document.getEleme
         '<label><span>Taille</span><input type="number" inputmode="decimal" step="0.5" min="50" max="130" data-t="'+t.id+'" data-f="waist" value="'+(v.waist!=null?v.waist:'')+'" placeholder="cm"></label>'+
         '<label><span>30 m</span><input type="number" inputmode="decimal" step="0.01" min="2" max="15" data-t="'+t.id+'" data-f="sprint" value="'+(v.sprint!=null?v.sprint:'')+'" placeholder="s"></label>'+
         '<label><span>DC max</span><input type="number" inputmode="decimal" step="2.5" min="20" max="150" data-t="'+t.id+'" data-f="dc" value="'+(v.dc!=null?v.dc:'')+'" placeholder="kg"></label>'+
+        '<label><span>Tirage 6RM</span><input type="number" inputmode="decimal" step="2.5" min="20" max="150" data-t="'+t.id+'" data-f="pull" value="'+(v.pull!=null?v.pull:'')+'" placeholder="kg"></label>'+
       '</div></div>';
   });
   host.innerHTML=h;
@@ -3766,7 +3767,7 @@ function renderTestDelta(){
   var host=document.getElementById('tests-delta'); if(!host)return;
   var v=testVals(), s0=v.S0||{};
   var last=null,lastId='';
-  ['S16','S12','S8','S4'].forEach(function(id){if(!last&&v[id]&&(v[id].waist!=null||v[id].sprint!=null||v[id].dc!=null)){last=v[id];lastId=id;}});
+  ['S16','S12','S8','S4'].forEach(function(id){if(!last&&v[id]&&(v[id].waist!=null||v[id].sprint!=null||v[id].dc!=null||v[id].pull!=null)){last=v[id];lastId=id;}});
   if(!last||!Object.keys(s0).length){host.innerHTML='';return;}
   var row=function(lab,a,b,unit,lowerIsBetter){
     if(a==null||b==null)return '';
@@ -3776,7 +3777,8 @@ function renderTestDelta(){
   };
   var h=row('Tour de taille',s0.waist,last.waist,'cm',true)+
         row('30 m',s0.sprint,last.sprint,'s',true)+
-        row('Développé couché',s0.dc,last.dc,'kg',false);
+        row('Développé couché',s0.dc,last.dc,'kg',false)+
+        row('Tirage 6RM',s0.pull,last.pull,'kg',false);
   host.innerHTML=h?('<div class="test-delta"><div class="k">S0 → '+lastId+'</div>'+h+'</div>'):'';
 }
 
