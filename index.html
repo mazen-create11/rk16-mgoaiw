@@ -2012,6 +2012,12 @@ function lastTimeHTML(sk,i,exceptDK){
    - séries 'dur' partout = il est déjà au RIR 0, il n'a plus de marge → on tient
    - pas de charge chiffrée (à calibrer, gainage, PDC) → rien à proposer */
 function progressionAdvice(sk,i){
+  /* en deload on RÉCUPÈRE : conseiller de monter la charge cette semaine-là
+     contredit la carte du jour (« charges -10 % »). L'écran de séance masquait
+     déjà le conseil (RUN.deload), mais la fiche exo l'affichait — trouvé par la
+     simulation longitudinale 16 semaines du 16/07. */
+  var st=computeState(today());
+  if(st.phase==='active'&&st.deload)return null;
   var sess=SESSIONS[sk]; if(!sess)return null;
   var e=sess.exos[i]; if(!e||!e.step)return null;
   var p=mainPart(e);
@@ -2165,7 +2171,7 @@ function openExoDetail(sk,i){
     if(RUN){runRest(+rb.getAttribute('data-rest'),false);return;} /* en séance guidée : repos plein écran, pas la pastille */
     startRest(+rb.getAttribute('data-rest'),rb.getAttribute('data-restlabel'));});
 }
-function closeExoDetail(){var ov=document.getElementById('exo-ov');ov.classList.remove('show');ov.setAttribute('aria-hidden','true');trapOff(ov);}
+function closeExoDetail(){var ov=document.getElementById('exo-ov');ov.classList.remove('show');ovHide(ov);trapOff(ov);}
 function sprintSteps(sp){
   var h='<ol class="steps">';
   for(var i=0;i<sp.steps.length;i++){var s=sp.steps[i],core=false;if(s.indexOf('CORE|')===0){core=true;s=s.slice(5);}
@@ -2358,6 +2364,16 @@ function renderToday(){
    disparaît dès que c'est fait, et ne s'affiche plus passé S1 : un S0 mesuré trois
    semaines après le départ ne mesure plus rien. */
 function s0Done(){return !!loadJSON(LS_TESTS,{}).S0;}
+/* showView ne re-rend pas Today : cocher les tests dans Suivi puis revenir laissait
+   le CTA affiché (trouvé par la simulation u26). On rafraîchit juste le bouton,
+   pas la vue — re-render complet rejouerait les animations d'entrée à chaque onglet. */
+function s0CtaRefresh(){
+  var c=document.getElementById('s0-cta');
+  if(c){if(s0Done())c.remove();return;}
+  if(s0Done())return;
+  var el=document.getElementById('today-render');
+  if(el)injectS0Cta(el,computeState(today()));
+}
 function injectS0Cta(el,st){
   if(s0Done())return;
   if(!(st.phase==='pre'||st.phase==='kickoff'||st.week===1))return;
@@ -2535,7 +2551,7 @@ function openLoadEditor(sk,i,after){
   LOV.classList.add('show');LOV.setAttribute('aria-hidden','false');trapOn(LOV);
   if(navigator.vibrate)navigator.vibrate(6);
 }
-function closeLoadEditor(){LOV.classList.remove('show');LOV.setAttribute('aria-hidden','true');LOAD_CTX=null;trapOff(LOV);}
+function closeLoadEditor(){LOV.classList.remove('show');ovHide(LOV);LOAD_CTX=null;trapOff(LOV);}
 function loadCommit(val){
   if(!LOAD_CTX)return;var c=LOAD_CTX;
   var pr=(val!==null)&&isPR(c.sk,c.i,val);
@@ -2658,7 +2674,7 @@ function openTimer(){
   TOV.querySelector('.tmr-sheet').scrollTop=0;
   tmrPaint();
 }
-function closeTimer(){TOV.classList.remove('show');TOV.setAttribute('aria-hidden','true');trapOff(TOV);}
+function closeTimer(){TOV.classList.remove('show');ovHide(TOV);trapOff(TOV);}
 function initTimerPanel(){
   var host=document.getElementById('tmr-presets');
   host.innerHTML=TMR_PRESETS.map(function(p){return '<button class="tmr-p" data-s="'+p[0]+'">'+p[1]+'</button>';}).join('');
@@ -2745,7 +2761,7 @@ function openRun(sk,deload){
 function closeRun(){
   clearInterval(runInt);runInt=null;clearTimeout(goT);goT=null;wakeOff();FAB.classList.remove('hide');
   ROV.classList.remove('in');ROV.classList.remove('go');
-  setTimeout(function(){ROV.classList.remove('show');ROV.setAttribute('aria-hidden','true');trapOff(ROV);},reduceMotion?0:280);
+  setTimeout(function(){ROV.classList.remove('show');ovHide(ROV);trapOff(ROV);},reduceMotion?0:280);
   document.body.style.overflow='';
   var keep=RUN;RUN=null;
   if(keep){renderToday();var tr=document.getElementById('today-render');
@@ -3013,6 +3029,13 @@ function trapOn(ov){
     }
   },80);
 }
+/* poser aria-hidden pendant qu'un descendant garde le focus : Chrome le BLOQUE
+   (warning console) — le focus doit sortir AVANT l'attribut, pas 40 ms après
+   via trapOff. Trouvé par la simulation adversariale du 16/07. */
+function ovHide(ov){
+  if(ov.contains(document.activeElement)){try{document.activeElement.blur();}catch(e){}}
+  ov.setAttribute('aria-hidden','true');
+}
 function trapOff(ov){
   /* on recalcule : l'overlay encore ouvert en dessous doit REPRENDRE la main */
   applyInert();
@@ -3233,6 +3256,7 @@ function showView(tab){
   document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-go')===tab);});
   window.scrollTo(0,0);
   if(tab==='suivi'&&window.__trackerReady){renderTracker();dataStat();} /* les charges de la séance du jour doivent y être */
+  if(tab==='today'&&typeof s0CtaRefresh==='function')s0CtaRefresh();
   if(target)setupReveal(target);
   try{history.replaceState(null,'','#'+tab);}catch(e){}
 }
@@ -4431,7 +4455,7 @@ function initData(){
 function openCoach(){var ov=document.getElementById('coach-ov');if(!ov)return;
   ov.classList.add('show');ov.setAttribute('aria-hidden','false');ov.scrollTop=0;trapOn(ov);}
 function closeCoach(){var ov=document.getElementById('coach-ov');if(!ov)return;
-  ov.classList.remove('show');ov.setAttribute('aria-hidden','true');trapOff(ov);}
+  ov.classList.remove('show');ovHide(ov);trapOff(ov);}
 function initCoach(){
   document.getElementById('open-coach').addEventListener('click',openCoach);
   document.getElementById('coach-close').addEventListener('click',closeCoach);
