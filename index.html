@@ -2315,23 +2315,23 @@ function renderToday(){
   if(st.phase==='pre'){
     h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip">AVANT KICKOFF</span></div>'+
       '<div style="margin-top:14px"><span class="today-tag">Il reste</span><div class="today-jn">J-'+st.jMinus+'</div></div>'+
-      '<div class="today-head" style="font-size:clamp(24px,7.5vw,36px);margin-top:4px">KICKOFF · VEN 17.07</div>'+
+      '<h1 class="today-head" style="font-size:clamp(24px,7.5vw,36px);margin-top:4px">KICKOFF · VEN 17.07</h1>'+
       '<p class="view-sub" style="margin-top:8px">Tests S0 (photos face/profil/dos, poids, tour de taille) puis <span class="volt">Upper A en mode calibrage</span> (RIR 3-4 : on cherche les bonnes charges, pas la perf).</p>'+
       '<div class="facts"><div class="fact"><div class="k">Kickoff</div><div class="v sm">VEN 17.07</div></div><div class="fact"><div class="k">Semaine 1</div><div class="v sm">LUN 20.07</div></div><div class="fact"><div class="k">Durée</div><div class="v">16<span style="font-size:13px;color:var(--muted)"> sem.</span></div></div></div></div>';
   } else if(st.phase==='kickoff'){
     if(st.kday===0){ h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">KICKOFF · J0</span></div>'+
-      '<div class="today-head">TESTS S0<br>+ UPPER A</div><div class="today-tag">Mode calibrage · RIR 3-4</div>'+
+      '<h1 class="today-head">TESTS S0<br>+ UPPER A</h1><div class="today-tag">Mode calibrage · RIR 3-4</div>'+
       '<div class="deload-banner volt"><div><div class="t">On cherche les charges, pas la perf</div><div class="d">Tests S0 d’abord (photos, poids, tour de taille). Puis Upper A tranquille pour caler les bons poids.</div></div></div>'+
       muscleBlock(SESSIONS.UPPER_A)+ sessionInteractive(SESSIONS.UPPER_A,dateKeyOf(st.date),'UPPER_A')+'</div>';
     } else if(st.kday===1){ pill.classList.add('rest'); h=restDayHTML(st.date,'KICKOFF · SAMEDI','MARCHÉ<br>+ REPOS','Marché 6h-14h · sieste ≤ 30 min · soirée libre.',['Marché 6h-14h (debout, port de charges — un entraînement caché)','Sieste ≤ 30 min, jamais après 16h','Soirée libre — profites-en, le protocole démarre lundi']);
     } else { h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">KICKOFF · CALIBRAGE</span></div>'+
-      '<div class="today-head">LOWER A</div><div class="today-tag">Mode calibrage + 10 min mobilité</div>'+
+      '<h1 class="today-head">LOWER A</h1><div class="today-tag">Mode calibrage + 10 min mobilité</div>'+
       '<div class="deload-banner volt"><div><div class="t">Les charges « à calibrer » se règlent ici</div><div class="d">Presse, leg curl, mollets : trouve le poids qui te laisse à RIR 3. + 10 min mobilité pour finir.</div></div></div>'+
       muscleBlock(SESSIONS.LOWER_A)+ sessionInteractive(SESSIONS.LOWER_A,dateKeyOf(st.date),'LOWER_A')+'</div>';
     }
   } else if(st.phase==='done'){
     h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">FIN · 08.11.2026</span></div>'+
-      '<div class="today-head">PROTOCOLE<br>TERMINÉ</div><div class="today-tag">16 semaines. Une transformation.</div>'+
+      '<h1 class="today-head">PROTOCOLE<br>TERMINÉ</h1><div class="today-tag">16 semaines. Une transformation.</div>'+
       '<p class="view-sub" style="margin-top:10px">Direction les <span class="volt">tests finaux</span> : photos face/profil/dos, poids (moyenne des 7 dernières pesées), tour de taille, e1RM développé couché (depuis 5RM) + tirage 6RM, chrono 30 m.</p>'+
       '<div class="facts"><div class="fact"><div class="k">Cible poids</div><div class="v">69-71<span style="font-size:12px;color:var(--muted)"> kg</span></div></div><div class="fact"><div class="k">Masse grasse</div><div class="v">10-12<span style="font-size:12px;color:var(--muted)"> %</span></div></div><div class="fact"><div class="k">Preuve</div><div class="v sm">Photos avant/après</div></div></div>'+
       '<p class="view-sub" style="margin-top:12px">Les photos avant/après parlent toutes seules. Bravo, Rayan.</p></div>';
@@ -2413,18 +2413,18 @@ function sessionInteractive(sess,dk,skey,deload){
 function muscuDay(st,label,sess,dlBanner,skey,extra){
   var dlTag=st.deload?'<span class="chip ice">DELOAD</span>':'';
   return '<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+' · SEM. '+st.week+'</span>'+dlTag+'</div>'+
-    '<div class="today-head">'+label+'</div><div class="today-tag">'+sess.tag+' · '+esc(extra)+'</div>'+
+    '<h1 class="today-head">'+label+'</h1><div class="today-tag">'+sess.tag+' · '+esc(extra)+'</div>'+
     dlBanner+factsHTML(st.week)+muscleBlock(sess)+ sessionInteractive(sess,dateKeyOf(st.date),skey,st.deload)+'</div>';
 }
 function sprintDay(st,label,sp){
   return '<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+' · SEM. '+st.week+'</span><span class="chip on">SPRINT</span></div>'+
-    '<div class="today-head">'+label+'</div><div class="today-tag">'+sp.tag+'</div>'+factsHTML(st.week)+muscleBlock(sp)+
+    '<h1 class="today-head">'+label+'</h1><div class="today-tag">'+sp.tag+'</div>'+factsHTML(st.week)+muscleBlock(sp)+
     sprintInteractive(sp,dateKeyOf(st.date))+
     '<div class="why" style="margin-top:14px"><span class="ic">'+IC.bulb+'</span><div class="tx"><b>Récup complète entre les sprints</b> = qualité. Un sprint couru fatigué n’entraîne rien.</div></div></div>';
 }
 function restDayHTML(date,chip,head,tag,items,week,dlBanner){
   var facts=week?factsHTML(week):'';var h='<div class="today-shell rest"><div class="today-top"><span class="today-day">'+fmtDate(date)+(week?' · SEM. '+week:'')+'</span><span class="chip ice">RÉCUP</span></div>'+
-    '<div class="today-head" style="color:var(--ice)">'+head+'</div><div class="today-tag">'+esc(tag)+'</div>'+(dlBanner||'')+facts+'<ol class="steps leadzero ice" style="margin-top:16px">';
+    '<h1 class="today-head" style="color:var(--ice)">'+head+'</h1><div class="today-tag">'+esc(tag)+'</div>'+(dlBanner||'')+facts+'<ol class="steps leadzero ice" style="margin-top:16px">';
   for(var i=0;i<items.length;i++)h+='<li><span class="n"></span>'+esc(items[i])+'</li>';
   return h+'</ol></div>';
 }
@@ -3821,6 +3821,15 @@ function setTestVal(id,field,v){
   if(v==null||v==='')delete all[id][field]; else all[id][field]=v;
   saveJSON(LS_TVAL,all);
 }
+/* Les 4 mesures d'un jalon. `lab` est court parce que la grille fait 2 colonnes sur
+   390px ; `aria` porte le nom entier + le jalon, sinon un lecteur d'écran annonce
+   « Taille » cinq fois de suite sans dire de quel test il s'agit. */
+var TEST_FIELDS=[
+  {f:'waist', lab:'Taille',     aria:'Tour de taille',        step:'0.5',  min:50, max:130, ph:'cm'},
+  {f:'sprint',lab:'30 m',       aria:'Chrono 30 m',           step:'0.01', min:2,  max:15,  ph:'s'},
+  {f:'dc',    lab:'DC max',     aria:'Développé couché max',  step:'2.5',  min:20, max:150, ph:'kg'},
+  {f:'pull',  lab:'Tirage 6RM', aria:'Tirage 6 RM',           step:'2.5',  min:20, max:150, ph:'kg'}
+];
 function renderTests(){var done=loadJSON(LS_TESTS,{});var host=document.getElementById('tests-checks');
   if(!host)return;
   var vals=testVals(), h='';
@@ -3831,12 +3840,13 @@ function renderTests(){var done=loadJSON(LS_TESTS,{});var host=document.getEleme
         '<span class="chk-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
         '<span class="lab"><span class="n">'+t.name+'</span><span class="d">'+esc(t.d)+'</span></span>'+
         '<span class="wk">'+t.wk+'</span></div>'+
-      '<div class="test-vals">'+
-        '<label><span>Taille</span><input type="number" inputmode="decimal" step="0.5" min="50" max="130" data-t="'+t.id+'" data-f="waist" value="'+(v.waist!=null?v.waist:'')+'" placeholder="cm"></label>'+
-        '<label><span>30 m</span><input type="number" inputmode="decimal" step="0.01" min="2" max="15" data-t="'+t.id+'" data-f="sprint" value="'+(v.sprint!=null?v.sprint:'')+'" placeholder="s"></label>'+
-        '<label><span>DC max</span><input type="number" inputmode="decimal" step="2.5" min="20" max="150" data-t="'+t.id+'" data-f="dc" value="'+(v.dc!=null?v.dc:'')+'" placeholder="kg"></label>'+
-        '<label><span>Tirage 6RM</span><input type="number" inputmode="decimal" step="2.5" min="20" max="150" data-t="'+t.id+'" data-f="pull" value="'+(v.pull!=null?v.pull:'')+'" placeholder="kg"></label>'+
-      '</div></div>';
+      '<div class="test-vals">'+TEST_FIELDS.map(function(F){
+        var fid='tv-'+t.id+'-'+F.f;
+        return '<label for="'+fid+'"><span>'+F.lab+'</span>'+
+          '<input id="'+fid+'" name="'+fid+'" type="number" inputmode="decimal" step="'+F.step+'" min="'+F.min+'" max="'+F.max+'"'+
+          ' data-t="'+t.id+'" data-f="'+F.f+'" value="'+(v[F.f]!=null?v[F.f]:'')+'" placeholder="'+F.ph+'"'+
+          ' aria-label="'+esc(F.aria)+' — tests '+t.id+'"></label>';
+      }).join('')+'</div></div>';
   });
   host.innerHTML=h;
   host.querySelectorAll('.chk').forEach(function(row){
