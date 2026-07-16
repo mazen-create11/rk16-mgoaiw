@@ -766,6 +766,17 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 .load-hl .dl.dn{color:var(--ice); border-color:rgba(125,214,255,.4)}
 .load-reset{font-family:var(--mono); font-size:11px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-top:12px; padding:8px}
 
+/* CTA tests S0 : en ice, jamais en volt — le volt est réservé à « Démarrer la
+   séance ». Une proposition, pas l'action principale du jour. */
+.s0-cta{width:100%; display:flex; align-items:center; gap:11px; margin:14px 0 2px; padding:12px 14px; text-align:left;
+  background:rgba(125,214,255,.07); border:1px solid rgba(125,214,255,.28); border-radius:14px; color:var(--text)}
+.s0-cta .ic{display:flex; color:var(--ice); flex:none}
+.s0-cta .ic svg{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.s0-cta .t{flex:1; font-family:var(--display); font-weight:700; font-size:15.5px; letter-spacing:.01em; display:flex; flex-direction:column; gap:2px}
+.s0-cta .t .s{font-family:var(--sans); font-weight:400; font-size:11.5px; color:var(--muted); letter-spacing:0}
+.s0-cta .ar{color:var(--ice); font-size:15px; flex:none}
+.s0-cta:active{background:rgba(125,214,255,.13)}
+
 /* ===================== RUN MODE (séance guidée) ===================== */
 .run-start{position:relative; width:100%; display:flex; align-items:center; justify-content:center; gap:11px; margin:16px 0 4px;
   font-family:var(--display); font-weight:900; text-transform:uppercase; letter-spacing:.07em; font-size:21px;
@@ -825,8 +836,10 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 .run-meta .sep{width:1px; height:13px; background:var(--line-2)}
 .run-meta .lb{font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-right:-4px}
 .run-loadb{display:inline-flex; align-items:center; gap:9px; margin:-6px -4px; padding:6px 4px; border-radius:100px}
-.run-loadb .pen{display:flex; color:var(--muted); opacity:.8}
-.run-loadb .pen svg{width:12px; height:12px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+/* le crayon est le SEUL indice que la charge s'édite : en --muted à 12px, personne
+   ne le voit. En ice (la couleur d'interaction secondaire), il se lit comme une action. */
+.run-loadb .pen{display:flex; color:var(--ice); opacity:.9}
+.run-loadb .pen svg{width:13px; height:13px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
 .run-loadb:active{background:var(--volt-dim)}
 .run-cue{font-size:14px; line-height:1.5; color:#c9c8c2; max-width:30ch; margin:16px auto 0; font-style:italic}
 .run-cue::before{content:"“"} .run-cue::after{content:"”"}
@@ -1067,8 +1080,9 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 .adv b{color:var(--volt); font-weight:600; white-space:nowrap}
 .adv .ic{width:15px; height:15px; color:var(--volt); flex:none}
 .adv .ic svg{width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.8}
-.adv.hold{background:rgba(125,214,255,.07); border-color:rgba(125,214,255,.24)}
-.adv.hold b{color:var(--ice)}
+.adv.hold,.adv.est{background:rgba(125,214,255,.07); border-color:rgba(125,214,255,.24)}
+.adv.hold b,.adv.est b{color:var(--ice)}
+.adv.est .ic{color:var(--ice)}
 
 /* "la dernière fois" — le repère de Rayan, juste sous la cible */
 .lastt{margin:2px 0 12px; font-family:var(--mono); font-size:11.5px; letter-spacing:.02em;
@@ -2019,7 +2033,23 @@ function progressionAdvice(sk,i){
   if(!next)return null;
   return {up:true,from:cur,to:next,e:e,dk:L.dk};
 }
+/* Une charge chiffrée que Rayan n'a jamais saisie ET jamais soulevée est une
+   ESTIMATION posée sur le papier avant qu'il touche la machine. Affichée sèche,
+   "50 kg" se lit comme un ordre — et contredit le bandeau "on cherche les charges".
+   Symétrique de progressionAdvice() : elle exige un lastSessionOf, celle-ci exige
+   son absence → les deux conseils ne peuvent jamais s'afficher ensemble. */
+function isEstimatedLoad(sk,i){
+  var sess=SESSIONS[sk]; if(!sess)return false;
+  var e=sess.exos[i]; if(!e)return false;
+  if(isCustomLoad(sk,i))return false;
+  var p=mainPart(e);
+  if(p.kg==null||p.mode==='none'||p.mode==='tbd'||p.mode==='bw')return false;
+  return !lastSessionOf(sk,i,dateKeyOf(today()));
+}
 function adviceHTML(sk,i){
+  /* le texte dans un span : .adv est un flex, chaque nœud texte deviendrait un item
+     et la phrase se disloquerait en colonnes */
+  if(isEstimatedLoad(sk,i))return '<div class="adv est"><span class="ic">'+IC.pen+'</span><span>Charge estimée — <b>ajuste-la</b> à ton RIR 3.</span></div>';
   var a=progressionAdvice(sk,i); if(!a)return '';
   if(a.hold)return '<div class="adv hold">Tu as bouclé, mais tes séries étaient <b>dures</b> — reste à cette charge, gagne des reps propres.</div>';
   return '<div class="adv"><span class="ic">'+IC.flash+'</span>Tu as bouclé le haut à '+esc(a.from)+' — <b>monte à '+esc(a.to)+'</b></div>';
@@ -2317,7 +2347,44 @@ function renderToday(){
     else if(dow===6){ if(dl){pill.classList.add('rest');h=restDayHTML(st.date,'SEMAINE '+w+' · DELOAD','MARCHÉ<br>+ MARCHE','Semaine deload : marche à la place du sprint. Sortie OK.',['Marché 6h-14h · sieste 20-30 min','Marche tranquille à la place du sprint','Sortie OK — lever dimanche ≤ 9h30'],w,dlBanner);} else if(w>=5)h=sprintDay(st,'SPRINT 2',SPRINTS.S2); else {pill.classList.add('rest');h=restDayHTML(st.date,'SEMAINE '+w+' · SAMEDI','MARCHÉ<br>+ SORTIE','Marché · sieste · sortie OK. Le 2e sprint arrive au Bloc 2 (S5).',['Marché 6h-14h · sieste 20-30 min','Pas encore de Sprint 2 — il démarre en S5','Sortie OK — lever dimanche ≤ 9h30'],w);} }
   }
   el.innerHTML=h;
+  injectS0Cta(el,st);
   bindSessionInteractions(el);
+}
+/* ===== TESTS S0 : un chemin, pas une obligation =====
+   Today annonce « Tests S0 d'abord » depuis le J-1, mais rien n'y menait : il
+   fallait deviner l'onglet Suivi et scroller jusqu'en bas. Or S0 est la mesure de
+   départ — sans elle, aucune comparaison possible en novembre.
+   Le CTA reste tant que la case n'est pas cochée (il peut les faire lundi aussi),
+   disparaît dès que c'est fait, et ne s'affiche plus passé S1 : un S0 mesuré trois
+   semaines après le départ ne mesure plus rien. */
+function s0Done(){return !!loadJSON(LS_TESTS,{}).S0;}
+function injectS0Cta(el,st){
+  if(s0Done())return;
+  if(!(st.phase==='pre'||st.phase==='kickoff'||st.week===1))return;
+  var shell=el.querySelector('.today-shell'); if(!shell)return;
+  var b=document.createElement('button');
+  b.type='button'; b.className='s0-cta'; b.id='s0-cta';
+  b.innerHTML='<span class="ic">'+IC.pen+'</span><span class="t">Faire mes tests S0'+
+    '<span class="s">photos · poids · tour de taille — ta mesure de départ</span></span><span class="ar">→</span>';
+  b.addEventListener('click',gotoS0Tests);
+  /* au kickoff le bandeau volt dit déjà « Tests S0 d'abord » : le CTA se pose juste
+     dessous, dans la continuité de la phrase. Ailleurs, en tête sous la date. */
+  var vb=shell.querySelector('.deload-banner.volt');
+  if(vb)vb.insertAdjacentElement('afterend',b);
+  else {var top=shell.querySelector('.today-top');
+    if(top)top.insertAdjacentElement('afterend',b); else shell.insertBefore(b,shell.firstChild);}
+}
+function gotoS0Tests(){
+  showView('suivi');
+  var t=document.getElementById('tests-checks');
+  if(!t)return;
+  /* le reveal laisse les blocs à opacity:0 tant qu'ils n'ont pas croisé le viewport :
+     scroller dessus sans rvSweep() amènerait Rayan sur une carte invisible */
+  if(window.rvSweep)rvSweep();
+  requestAnimationFrame(function(){
+    var card=t.closest('.card')||t;
+    card.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});
+  });
 }
 /* ===== NUIT COURTE =====
    La règle d'adaptation de l'app (« nuit < 6h → -1 série par exo, RIR +1, zéro
@@ -2995,7 +3062,9 @@ var PREP=[
   ['balance','Pèse-personne + mètre ruban','Pesée vendredi au réveil, à jeun. Tour de taille au nombril.'],
   ['straps','Straps','Tirages et soulevé de terre : la prise ne doit jamais être ce qui lâche en premier.'],
   ['heure','Heure de séance calée','Vendredi 17/07. Décide-la maintenant, pas vendredi midi.'],
-  ['coucher','Coucher avant 1h dès ce soir','Le chantier n°1. Deux nuits d’avance, ça change ton kickoff.']
+  /* l'heure DÉRIVE de sleepTarget(1) : en dur, la checklist exigeait 1h alors que
+     le plan ne demande 1h30 qu'en S1-S2 — plus strict avant de commencer que pendant */
+  ['coucher','Coucher avant '+sleepTarget(1).c+' dès ce soir','Le chantier n°1. Deux nuits d’avance, ça change ton kickoff.']
 ];
 function dateOfWeekDow(week,dow){
   var w1=parseD(WEEK1_MONDAY), d=new Date(w1);
@@ -3889,12 +3958,28 @@ function buildICS(){
   function sleepPair(blockStart,stop,t,days,title,desc){
     var pre=minusMin(t,45), preDays=shiftDays(days,pre.shift);
     var dP=firstOn(blockStart,preDays), dC=firstOn(blockStart,days);
+    /* fenêtre trop courte pour contenir un seul des jours demandés : sans ça on
+       produirait un DTSTART postérieur à son propre UNTIL (occurrence fantôme) */
+    if(dC>stop)return;
     ev({start:icsDT(dP,pre.h,pre.m),end:icsAdd(dP,pre.h,pre.m,15),
       rrule:'FREQ=WEEKLY;BYDAY='+preDays.join(',')+';UNTIL='+untilOf(stop),
       title:'Alarme inversée — début de descente',desc:DESC_PRE});
     ev({start:icsDT(dC,t.h,t.m),end:icsAdd(dC,t.h,t.m,10),
       rrule:'FREQ=WEEKLY;BYDAY='+days.join(',')+';UNTIL='+untilOf(stop),
       title:title+' — '+hLab(t),desc:desc});
+  }
+  /* AVANT S1 — le chantier sommeil commence le soir où Rayan installe l'app, pas au
+     coup d'envoi du programme : la checklist lui dit « coucher dès ce soir » alors que
+     le calendrier ne sonnait qu'à partir du lundi de S1. Quatre nuits pendant lesquelles
+     le seul canal qui sonne pour de vrai démentait l'app. Cible = celle de S1 (même
+     source), fenêtre bornée au dimanche : le bloc S1 prend le relais le lendemain. */
+  var preStop=dPlus(w1,-1), preStart=atMid(today());
+  if(preStart<preStop){
+    var s1=sleepPlanBlocks()[0];
+    sleepPair(preStart,preStop,s1.cible,['MO','WE','FR'],'Coucher',
+      'Avant même le kickoff. Prendre deux nuits d’avance, c’est déjà commencer.');
+    sleepPair(preStart,preStop,s1.marche,['MO','WE'],'Coucher (veille de marché)',
+      'Lever 5h demain. Le marché ne se négocie pas.');
   }
   sleepPlanBlocks().forEach(function(s){
     var start=dPlus(w1,(s.w1-1)*7), stop=dPlus(w1,(s.w2-1)*7+6);
@@ -3927,7 +4012,12 @@ function buildICS(){
   /* 3. pesée + photos */
   ev({start:icsDT(dPlus(w1,6),9,0),end:icsDT(dPlus(w1,6),9,15),rrule:'FREQ=WEEKLY;UNTIL='+untilOf(end),
     title:'Point hebdo — pesée + photos',desc:'À jeun, après être passé aux toilettes. Reporte le point dans l’app (onglet Suivi).'});
-  /* 4. jalons */
+  /* 4. jalons — S0 compris : S4 à S16 étaient au calendrier, pas la mesure de départ.
+        C'est pourtant la seule qui ne se rattrape jamais (en novembre, il n'y aura
+        plus de « avant » à photographier). */
+  var kd=parseD(KICKOFF);
+  ev({start:icsDT(kd,9,0),end:icsDT(kd,9,30),title:'Tests S0 — photos, poids, tour de taille',
+    desc:'Ta mesure de départ. Photos face/profil/dos : même mur, même lumière, short uni. Ce sont elles qui parleront en novembre.'});
   [[4,'S4'],[8,'S8'],[12,'S12'],[16,'S16']].forEach(function(t){
     var d=dPlus(w1,(t[0]-1)*7+6);if(d>end)d=end;
     ev({start:icsDT(d,9,0),end:icsDT(d,9,30),title:'Tests '+t[1]+' — photos, poids, taille, force, chrono 30 m',
