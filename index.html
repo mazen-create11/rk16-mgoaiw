@@ -1602,10 +1602,10 @@ var SESSIONS={
     {id:'dc-barre',alt:['Développé couché barre si une barre se libère — même schéma','Développé haltères, ~2 kg de moins par main'],name:'Développé couché machine',sets:4,reps:[5,6],unit:'reps',kg:null,mode:'tbd',hint:'à calibrer S1 : RIR 3',step:2.5,restSec:180,note:'Ta ref force. Dos plaqué, poignées à hauteur de pecs, pas de rebond',mg:['pecs'],sec:['delts','arms']},
     {id:'tirage-horiz',alt:['Rowing haltère un bras, 1 s de squeeze','Rowing machine poitrine calée'],name:'Tirage horizontal poulie',sets:3,reps:[8,10],unit:'reps',kg:50,mode:'stack',step:2.5,restSec:120,note:'Coudes près du corps, 1 s de squeeze',mg:['back'],sec:['arms']},
     {id:'dev-mil-hal',alt:['Développé militaire machine, dossier 85°','Développé haltères assis en prise neutre — le plus doux pour ton poignet'],name:'Développé militaire haltères',sets:3,reps:[6,8],unit:'reps',kg:14,mode:'perHand',step:2,restSec:120,note:'Assis dossier 85°, poignets neutres',mg:['delts'],sec:['arms']},
-    {id:'tirage-vert-neutre',alt:['Tirage vertical poignées neutres (barre en V)','Tractions assistées prise neutre'],name:'Tirage vertical prise neutre',sets:3,reps:[8,10],unit:'reps',kg:52,mode:'stack',step:2.5,restSec:120,note:'Prise neutre = poignet épargné',mg:['back'],sec:['arms']},
+    {id:'traction-pronation',alt:['Tractions pronation assistées','Tirage vertical pronation si la barre est prise'],name:'Tractions pronation',sets:3,reps:[6,10],unit:'reps',kg:0,mode:'bw',hint:'PDC · assisté si besoin',step:2.5,restSec:120,note:'Poitrine vers la barre, épaules basses. Assistance si tu n’as pas 6 reps propres',mg:['back'],sec:['arms']},
     {id:'elev-lat-poulie',alt:['Élévations latérales haltères — plus dur en bas, va moins lourd','Élévations machine'],name:'Élévations latérales poulie',sets:3,reps:[12,15],unit:'reps',kg:5,mode:'stack',step:1,restSec:60,note:'Poulie > haltères : tension continue',mg:['delts'],sec:[]},
-    {id:'ss-triceps-curl',alt:['Extension triceps barre EZ + curl haltères prise marteau','Dips machine + curl poulie basse corde'],name:'Superset : extension triceps corde + curl marteau corde',sets:3,reps:[10,12],unit:'reps',restSec:75,note:'Corde = zéro stress poignet',mg:['arms'],sec:[],
-      parts:[{lab:'Extension triceps corde',kg:15,mode:'stack',step:2.5},{lab:'Curl marteau corde',kg:12,mode:'stack',step:2}]}
+    {id:'triceps-corde',alt:['Extension triceps barre EZ','Dips machine'],name:'Extension triceps corde',sets:3,reps:[10,12],unit:'reps',kg:15,mode:'stack',step:2.5,restSec:75,note:'Coudes fixes, écarte la corde en bas sans casser les poignets',mg:['arms'],sec:[]},
+    {id:'curl-marteau-corde',alt:['Curl haltères prise marteau','Curl poulie basse avec poignées neutres'],name:'Curl marteau corde',sets:3,reps:[10,12],unit:'reps',kg:12,mode:'stack',step:2,restSec:75,note:'Prise neutre, coudes fixes : zéro stress poignet',mg:['arms'],sec:[]}
   ]},
   LOWER_A:{name:'LOWER A',day:'Mercredi',tag:'Chaîne complète · sans squat',mg:['quads','hams','calves','abs'],mlab:['Quadris','Ischios','Mollets','Abdos'],exos:[
     {id:'presse-inclinee',alt:['Presse horizontale','Hack squat machine — même consigne, pieds mi-hauteur'],name:'Presse à cuisses inclinée',sets:4,reps:[8,10],unit:'reps',kg:null,mode:'tbd',hint:'à calibrer S1 : RIR 3',step:5,restSec:150,note:'Pieds mi-hauteur largeur épaules, amplitude complète',mg:['quads'],sec:['glutes']},
@@ -1618,9 +1618,9 @@ var SESSIONS={
     {id:'dev-incline-barre',alt:['Développé incliné barre si le banc est libre','Développé incliné haltères, ~2 kg de moins par main'],name:'Développé incliné machine',sets:3,reps:[8,10],unit:'reps',kg:null,mode:'tbd',hint:'à calibrer S1 : RIR 3',step:2.5,restSec:150,note:'Le haut de pecs, ton point visible en t-shirt. Dossier ~30-45°',mg:['pecs'],sec:['delts','arms']},
     {id:'tirage-vert-pron',alt:['Tractions assistées pronation','Tirage poitrine barre large'],name:'Tirage vertical pronation',sets:4,reps:[8,10],unit:'reps',kg:50,mode:'stack',step:2.5,restSec:120,note:'Poitrine vers la barre',mg:['back'],sec:['arms']},
     {id:'dips-lestes',alt:['Dips machine assistée','Développé couché prise serrée si les barres parallèles sont prises'],name:'Dips lestés (progressif)',sets:3,reps:[8,12],unit:'reps',kg:0,mode:'bw',hint:'PDC → +2,5 kg quand 3×12',step:2.5,restSec:120,note:'Ton exo — on le garde et on le charge',mg:['pecs'],sec:['arms','delts']},
-    {id:'rowing-machine',alt:['Rowing haltère un bras','Tirage horizontal poulie, coudes au corps'],name:'Rowing machine',sets:3,reps:[10,12],unit:'reps',kg:null,mode:'tbd',hint:'charge actuelle',step:2.5,restSec:120,note:'Dos épais = rowing',mg:['back'],sec:['arms']},
-    {id:'elev-lat-oiseau',alt:['Élévations machine + oiseau haltères buste penché','Oiseau machine (pec deck inversé)'],name:'Élévations latérales haltères + oiseau poulie',sets:3,restSec:60,note:'Épaules 3D — ton delta latéral est en retard',mg:['delts'],sec:['back'],
-      parts:[{lab:'Élévations latérales haltères',reps:[12,15],unit:'reps',kg:6,mode:'perHand',step:1},{lab:'Oiseau poulie',reps:[15],unit:'reps',kg:null,mode:'tbd',hint:'léger',step:1}]},
+    {id:'traction-supination',alt:['Tractions supination assistées','Tirage vertical supination si la barre est prise'],name:'Tractions supination',sets:3,reps:[6,10],unit:'reps',kg:0,mode:'bw',hint:'PDC · assisté si besoin',step:2.5,restSec:120,note:'Paumes vers toi, poitrine vers la barre, sans balancer',mg:['back'],sec:['arms']},
+    {id:'elev-lat-halteres',alt:['Élévations latérales poulie','Élévations machine'],name:'Élévations latérales haltères',sets:3,reps:[12,15],unit:'reps',kg:6,mode:'perHand',step:1,restSec:60,note:'Monte jusqu’à hauteur d’épaule, sans élan',mg:['delts'],sec:[]},
+    {id:'oiseau-poulie',alt:['Oiseau machine (pec deck inversé)','Oiseau haltères buste penché'],name:'Oiseau poulie',sets:3,reps:[15],unit:'reps',kg:null,mode:'tbd',hint:'léger',step:1,restSec:60,note:'Bras presque tendus, ouvre avec l’arrière d’épaule',mg:['delts'],sec:['back']},
     {id:'curl-ez',alt:['Curl haltères prise marteau — poignet neutre, ton ami','Curl poulie basse corde'],name:'Curl EZ',sets:3,reps:[10,12],unit:'reps',kg:null,mode:'tbd',hint:'charge actuelle',step:2.5,restSec:75,note:'Barre EZ = poignet neutre, on garde',mg:['arms'],sec:[]}
   ]},
   LOWER_B:{name:'LOWER B',day:'Dimanche',tag:'Quadris + posterior · finisher',mg:['quads','hams','calves','abs'],mlab:['Quadris','Ischios','Mollets','Abdos'],exos:[
@@ -2243,11 +2243,17 @@ function storeAlive(){STORE_DEAD=false;var b=document.getElementById('store-warn
    Le schéma est versionné pour de vrai : chaque migration s'exécute une fois,
    dans l'ordre, et le numéro atteint est gravé. Sans ça, toucher au programme
    corrompt l'historique en silence. */
-var LS_SCHEMA='protocole_schema_v', SCHEMA_NOW=3;
+var LS_SCHEMA='protocole_schema_v', SCHEMA_NOW=4;
 /* v1 → v2 : les clés d'exercice passent de la position ("UPPER_A|0") à l'id stable ("dc-barre") */
 function migV2(){
-  var MAP={};
-  Object.keys(SESSIONS).forEach(function(sk){SESSIONS[sk].exos.forEach(function(e,i){MAP[sk+'|'+i]=e.id;});});
+  /* table figée sur le programme v1 : la dériver du programme courant recollerait
+     un ancien historique sur un nouvel exercice après chaque modification */
+  var MAP={
+    'UPPER_A|0':'dc-barre','UPPER_A|1':'tirage-horiz','UPPER_A|2':'dev-mil-hal','UPPER_A|3':'tirage-vert-neutre','UPPER_A|4':'elev-lat-poulie','UPPER_A|5':'ss-triceps-curl',
+    'LOWER_A|0':'presse-inclinee','LOWER_A|1':'sdt-roumain','LOWER_A|2':'leg-curl-assis','LOWER_A|3':'mollets-debout','LOWER_A|4':'releve-jambes-barre',
+    'UPPER_B|0':'dev-incline-barre','UPPER_B|1':'tirage-vert-pron','UPPER_B|2':'dips-lestes','UPPER_B|3':'rowing-machine','UPPER_B|4':'elev-lat-oiseau','UPPER_B|5':'curl-ez',
+    'LOWER_B|0':'hack-squat','LOWER_B|1':'leg-curl-allonge','LOWER_B|2':'leg-ext','LOWER_B|3':'mollets-assis','LOWER_B|4':'crunch-cable-releves','LOWER_B|5':'farmers-walk'
+  };
   var remap=function(obj){
     if(!obj||typeof obj!=='object')return obj;
     var out={},touched=false;
@@ -2291,6 +2297,74 @@ function migV3(){
   });
   if(touched){saveJSON(LS_CHARGES,c);chargesDirty();}
 }
+/* v3 → v4 : les deux supersets deviennent quatre exercices autonomes. Les
+   coches et runs restent alignés ; les charges réellement saisies sont séparées. */
+function migV4(){
+  function splitLoad(v,idx,suffix){
+    if(v==null)return null;
+    var s=String(v).trim(),parts=s.split(/\s+\/\s+/);
+    if(parts.length<2){
+      var pair=/^\s*(\d+(?:[.,]\d+)?)\s*[,;]\s*(\d+(?:[.,]\d+)?)\s*(?:kg)?\s*$/.exec(s);
+      if(pair)parts=[pair[1],pair[2]];
+    }
+    var p=parts[idx];if(!p)return null;p=p.trim();
+    if(/^\d+(?:[.,]\d+)?$/.test(p))p+=suffix;
+    return p;
+  }
+  var charges=loadJSON(LS_CHARGES,{});
+  function forkCharge(src,dst,idx,suffix){
+    var old=charges[src];if(!old||charges[dst])return;
+    var neo={h:[]},v=splitLoad(old.v,idx,suffix);
+    if(v){neo.v=v;if(old.d)neo.d=old.d;}
+    (old.h||[]).forEach(function(h){var x=splitLoad(h[1],idx,suffix);if(x)neo.h.push([h[0],x]);});
+    if(v||neo.h.length)charges[dst]=neo;
+  }
+  forkCharge('ss-triceps-curl','triceps-corde',0,' kg');
+  forkCharge('ss-triceps-curl','curl-marteau-corde',1,' kg');
+  forkCharge('elev-lat-oiseau','elev-lat-halteres',0,' kg/main');
+  forkCharge('elev-lat-oiseau','oiseau-poulie',1,' kg');
+  saveJSON(LS_CHARGES,charges);chargesDirty();
+
+  var notes=loadJSON(LS_NOTES,{});
+  [['ss-triceps-curl','triceps-corde'],['ss-triceps-curl','curl-marteau-corde'],['elev-lat-oiseau','elev-lat-halteres'],['elev-lat-oiseau','oiseau-poulie']].forEach(function(m){
+    if(notes[m[0]]&&!notes[m[1]])notes[m[1]]=notes[m[0]];
+  });
+  saveJSON(LS_NOTES,notes);
+
+  function sessionOf(dk){
+    if(dk===KICKOFF)return 'UPPER_A';
+    var p=String(dk).split('-');if(p.length!==3)return null;
+    var dow=new Date(+p[0],+p[1]-1,+p[2]).getDay();
+    return dow===1?'UPPER_A':(dow===5?'UPPER_B':null);
+  }
+  function expand(arr,sk){
+    if(!Array.isArray(arr)||arr.length!==6)return arr;
+    if(sk==='UPPER_A')return [arr[0],arr[1],arr[2],arr[3],arr[4],arr[5],arr[5]];
+    if(sk==='UPPER_B')return [arr[0],arr[1],arr[2],arr[3],arr[4],arr[4],arr[5]];
+    return arr;
+  }
+  Object.keys(localStorage).forEach(function(k){
+    if(k.indexOf('protocole_seance_')===0){
+      var dk=k.slice('protocole_seance_'.length),sk=sessionOf(dk);
+      if(sk)saveJSON(k,expand(loadJSON(k,[]),sk));
+    }
+    if(k.indexOf('protocole_run_')===0){
+      var rdk=k.slice('protocole_run_'.length),rsk=sessionOf(rdk),run=loadJSON(k,null);
+      if(!rsk||!run||!Array.isArray(run.sets)||run.sets.length!==6)return;
+      run.sets=expand(run.sets,rsk);
+      if(rsk==='UPPER_B'&&run.i===5)run.i=6;
+      saveJSON(k,run);
+    }
+    if(k.indexOf(LS_LOG)===0){
+      var log=loadJSON(k,{}),changed=false;
+      if(log['ss-triceps-curl']&&!log['triceps-corde']){log['triceps-corde']=log['ss-triceps-curl'];changed=true;}
+      if(log['elev-lat-oiseau']&&!log['elev-lat-halteres']){log['elev-lat-halteres']=log['elev-lat-oiseau'];changed=true;}
+      if(changed)saveJSON(k,log);
+    }
+  });
+  var lifts=loadJSON(LS_LIFTS,null),liftMap={'ss-triceps-curl':'triceps-corde','elev-lat-oiseau':'elev-lat-halteres','tirage-vert-neutre':'traction-pronation','rowing-machine':'traction-supination'};
+  if(Array.isArray(lifts))saveJSON(LS_LIFTS,lifts.map(function(id){return liftMap[id]||id;}));
+}
 function runMigrations(){
   var from=parseInt(localStorage.getItem(LS_SCHEMA)||'0',10)||0;
   if(from>=SCHEMA_NOW)return;
@@ -2302,6 +2376,7 @@ function runMigrations(){
   try{
     if(from<2)migV2();
     if(from<3)migV3();
+    if(from<4)migV4();
     localStorage.setItem(LS_SCHEMA,String(SCHEMA_NOW));
   }catch(e){}
 }
@@ -3336,9 +3411,10 @@ var YT={
   'dc-barre':            ['1xaxYoUa12A','Développé couché à la machine convergente','TeamSuperPhysique'],
   'tirage-horiz':        ['sJOufHpvIpQ','Tirage horizontal poulie basse','Coach Gab'],
   'dev-mil-hal':         ['ihXHExaqP7c','Développé militaire assis avec haltères','Teladoc Health'],
-  'tirage-vert-neutre':  ['GK-rrvSlNVk','Tirage vertical prise neutre','Vidéos d’exécutions'],
+  'traction-pronation':  ['qu_xYq79oa8','Traction pronation','Anthony Oknaian'],
   'elev-lat-poulie':     ['jD7Qbnlnz60','Élévations latérales à la poulie','GuillaumeSimonCoach'],
-  'ss-triceps-curl':     ['s0bXp0Gd-QE','Extensions triceps poulie haute corde','GuillaumeSimonCoach'],
+  'triceps-corde':       ['s0bXp0Gd-QE','Extensions triceps poulie haute corde','GuillaumeSimonCoach'],
+  'curl-marteau-corde':  ['GzZ9Msg-Lyc','Curl marteau poulie basse','Vidéos d’exécutions'],
   'presse-inclinee':     ['Ef1wVCbLWN0','Presse à cuisses inclinée','Toute la musculation !'],
   'sdt-roumain':         ['Iy3J5_qzUdo','Soulevé de terre roumain avec haltères','Maxime Clergeau'],
   'leg-curl-assis':      ['Hrk_uByS6g8','Leg extension et leg curl assis','Momo Physic Form'],
@@ -3347,8 +3423,9 @@ var YT={
   'dev-incline-barre':   ['wIeYKKkXF4c','Machine convergente inclinée pour les pectoraux','POLATO Anthony'],
   'tirage-vert-pron':    ['8-cQb6CO9n0','Tirage vertical pronation poulie haute','BmD | Train With Me'],
   'dips-lestes':         ['CE7yqTCa_K0','Comment faire des dips à la barre parallèle','JamCore'],
-  'rowing-machine':      ['Jo86APbOBUE','Le rowing assis à la machine','ProTrainer'],
-  'elev-lat-oiseau':     ['q_DYeb_daeY','Élévations latérales : technique et astuces','Olymp’Fit'],
+  'traction-supination': ['OE7Ur8KczrU','Traction supination','Anthony Oknaian'],
+  'elev-lat-halteres':   ['q_DYeb_daeY','Élévations latérales : technique et astuces','Olymp’Fit'],
+  'oiseau-poulie':       ['iqYdTDerXfY','Oiseau à la poulie vis-à-vis','Endurxpert'],
   'curl-ez':             ['l0hojGc8ss4','Curl barre EZ debout','Toute la musculation !'],
   'hack-squat':          ['5gW-f95w_NA','Hack squat','Toute la musculation !'],
   'leg-curl-allonge':    ['s89-0M2q-YI','Leg curl allongé','AM Nutrition'],
@@ -3357,11 +3434,7 @@ var YT={
   'crunch-cable-releves':['RLv5LvqOSx0','Crunch à la poulie haute','TeamSuperPhysique'],
   'farmers-walk':        ['H0jm91-Il28','Marche du fermier avec haltères','Alexis YTR']
 };
-/* 2e mouvement d'un superset : sa propre vidéo */
-var YT2={
-  'ss-triceps-curl':     ['GzZ9Msg-Lyc','Curl marteau poulie basse','Vidéos d’exécutions'],
-  'elev-lat-oiseau':     ['iqYdTDerXfY','Oiseau à la poulie vis-à-vis','Endurxpert']
-};
+var YT2={};
 function ytWatch(id){return 'https://www.youtube.com/watch?v='+id;}
 function ytLink(q){return 'https://www.youtube.com/results?search_query='+encodeURIComponent(q);}
 /* le bloc "voir en vidéo" : titre + chaîne, pour que Rayan sache sur quoi il clique */
