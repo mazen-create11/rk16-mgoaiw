@@ -1,6 +1,6 @@
 {
-  "name": "Le Protocole — Rayan",
-  "short_name": "Protocole",
+  "name": "CRAN",
+  "short_name": "CRAN",
   "description": "4 séances haut du corps. Ta séance, tes poids, ta progression.",
   "start_url": "./index.html",
   "scope": "./",

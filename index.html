@@ -6,15 +6,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="LE PROTOCOLE">
+<meta name="apple-mobile-web-app-title" content="CRAN">
 <meta name="theme-color" content="#0A0B0E">
 <meta name="color-scheme" content="dark">
 <!-- l'app est perso : elle n'a rien à faire dans un moteur de recherche -->
 <meta name="robots" content="noindex, nofollow, noarchive">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0B0E'/%3E%3Crect x='7' y='17' width='4.5' height='8' rx='1.5' fill='%23C8F031'/%3E%3Crect x='13.75' y='12' width='4.5' height='13' rx='1.5' fill='%23C8F031'/%3E%3Crect x='20.5' y='7' width='4.5' height='18' rx='1.5' fill='%23C8F031'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0B0E'/%3E%3Cpolygon points='9.7,22 14.1,5 17.9,5 22.3,22 18.5,22 16,12 13.5,22' fill='%23C8F031'/%3E%3Crect x='9' y='24.2' width='14' height='2.4' rx='1' fill='%23C8F031'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="apple-touch-icon.png"><!-- iOS ignore le SVG : il lui faut un vrai PNG -->
 <link rel="manifest" href="manifest.json">
-<title>LE PROTOCOLE — Rayan</title>
+<title>CRAN</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -120,8 +120,11 @@ h1.view-title,h2.view-title{font-family:var(--display); font-weight:900; text-tr
 .appbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
 .wordmark{font-family:var(--display); font-weight:900; text-transform:uppercase; letter-spacing:-.01em; line-height:.82}
 .wordmark .a{font-size:15px; color:var(--muted)}
-.wordmark .b{font-size:27px; color:var(--text)}
+.wordmark .b{font-size:31px; color:var(--text)}
 .wordmark .b .v{color:var(--volt)}
+/* CRAN : le A est un chevron volt (un cran qui monte), même dessin que l'icône */
+.wordmark .cv{display:inline-block; width:.52em; height:.703em; margin:0 .02em 0 .035em}
+.wordmark .cv svg{display:block; width:100%; height:100%; fill:var(--volt)}
 .status-pill{display:flex; align-items:center; gap:9px; border:1px solid var(--line); border-radius:100px; padding:7px 12px 7px 11px}
 .status-pill .pulse{width:8px;height:8px;border-radius:50%;background:var(--volt);flex:0 0 auto; position:relative}
 .status-pill .pulse::after{content:''; position:absolute; inset:0; border-radius:50%; background:currentColor; color:var(--volt); animation:pulseRing 2.4s infinite}
@@ -1168,9 +1171,8 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
   <!-- ============ VUE : AUJOURD'HUI ============ -->
   <section class="view" id="v-today" data-tab="today">
     <div class="appbar">
-      <div class="wordmark">
-        <div class="a">LE PROTOCOLE</div>
-        <div class="b">RA<span class="v">Y</span>AN</div>
+      <div class="wordmark" role="img" aria-label="CRAN">
+        <div class="b">CR<span class="cv" aria-hidden="true"><svg viewBox="0 0 86 116"><polygon points="0,116 30,0 56,0 86,116 60,116 43,48 26,116"/></svg></span>N</div>
       </div>
       <div class="status-pill" id="status-pill">
         <span class="pulse"></span>
@@ -1290,7 +1292,7 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
       </tbody>
     </table></div>
     <div class="card" style="margin-top:12px">
-      <div class="eyebrow" style="margin-bottom:8px">PROTOCOLE RÉCUPÉRATION</div>
+      <div class="eyebrow" style="margin-bottom:8px">TA RÉCUPÉRATION</div>
       <ol class="reco-list">
         <li><b>Sommeil</b> — 80 % de ta récup, le reste est du détail</li>
         <li>Sieste courte post-marché 20-30 min</li>
@@ -3859,8 +3861,8 @@ function shiftDays(days,by){
   return days.map(function(d){var i=ICS_DAYS.indexOf(d);return ICS_DAYS[(i+by+7)%7];});
 }
 function buildICS(){
-  var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Le Protocole//Rayan//FR','CALSCALE:GREGORIAN','METHOD:PUBLISH',
-    'X-WR-CALNAME:Le Protocole — Rayan','X-WR-TIMEZONE:Europe/Paris'];
+  var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//CRAN//Rayan//FR','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+    'X-WR-CALNAME:CRAN','X-WR-TIMEZONE:Europe/Paris'];
   var uid=0, stamp=icsDT(new Date(),12,0)+'Z';
   /* nouveau préfixe d'UID : le calendrier du protocole 16 semaines s'arrête seul
      le 08/11, celui-ci ne doit pas se confondre avec lui */
@@ -3913,7 +3915,7 @@ function buildICS(){
   weekly(['SU'],9,0,15,'Pesée','À jeun, après être passé aux toilettes. Note-la dans l’app (onglet Suivi).');
   /* 4. sauvegarde fichier, le 1er dimanche du mois — la synchro auto couvre le reste */
   var d1=firstOn(start,['SU']);
-  ev({start:icsDT(d1,9,20),end:icsAdd(d1,9,20,10),rrule:'FREQ=MONTHLY;BYDAY=1SU',title:'Sauvegarde du protocole — 10 secondes',
+  ev({start:icsDT(d1,9,20),end:icsAdd(d1,9,20,10),rrule:'FREQ=MONTHLY;BYDAY=1SU',title:'Sauvegarde CRAN — 10 secondes',
     desc:'App → Suivi → Tes données → Sauvegarder. Envoie-toi le fichier (Fichiers, WhatsApp, Notes). C’est ton filet si tu changes de téléphone.'});
   L.push('END:VCALENDAR');
   return L.join('\r\n');
@@ -3921,7 +3923,7 @@ function buildICS(){
 function exportICS(){
   var blob=new Blob([buildICS()],{type:'text/calendar;charset=utf-8'});
   var url=URL.createObjectURL(blob), a=document.createElement('a');
-  a.href=url;a.download='protocole-rayan-rappels.ics';
+  a.href=url;a.download='cran-rappels.ics';
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   setTimeout(function(){URL.revokeObjectURL(url);},1000);
   toast('Rappels prêts — ouvre le fichier');
@@ -4160,7 +4162,7 @@ function downloadFallback(blob,name){
   setTimeout(function(){URL.revokeObjectURL(url);},1000);
 }
 function exportData(){
-  var name='protocole-rayan-'+dateKeyOf(today())+'.json';
+  var name='cran-sauvegarde-'+dateKeyOf(today())+'.json';
   backupBlob().then(function(blob){
     /* ⚠️ navigator.share doit être appelé dans la foulée du geste utilisateur ;
        iOS tolère une promesse courte avant l'appel (la compression photo est
@@ -4211,7 +4213,7 @@ function exportCSV(){
       return /[",;\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;
     }).join(';'); /* ; = le séparateur qu'Excel FR attend */
   }).join('\r\n');
-  var name='protocole-rayan-seances-'+dateKeyOf(today())+'.csv';
+  var name='cran-seances-'+dateKeyOf(today())+'.csv';
   var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}); /* BOM : sinon Excel mange les accents */
   try{
     var file=new File([blob],name,{type:'text/csv'});
