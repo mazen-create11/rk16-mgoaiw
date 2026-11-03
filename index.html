@@ -1108,15 +1108,59 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 @media (min-width:600px){
   .view{padding-left:24px; padding-right:24px}
 }
+
+/* ===== 03/11/2026 · PROGRAMME HAUT DU CORPS ===== */
+/* le bouton poids sur chaque exo : le geste que Rayan ne trouvait pas */
+.kg-btn{display:inline-flex; align-items:center; gap:7px; margin-top:9px; min-height:44px; padding:6px 14px 6px 12px; border-radius:100px;
+  border:1px solid rgba(200,240,49,.45); background:var(--volt-dim); color:var(--volt); font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; transition:transform .15s}
+.kg-btn b{font-family:var(--display); font-weight:700; font-size:16px; letter-spacing:.01em; color:var(--text)}
+.kg-btn .ic{display:flex} .kg-btn .ic svg{width:13px; height:13px}
+.kg-btn .kg-pg{font-size:10.5px; color:var(--volt); font-weight:700}
+.kg-btn .kg-pg.dn{color:var(--ice)}
+.kg-btn:active{transform:scale(.96)}
+.kg-btn:focus-visible{outline:2px solid var(--volt); outline-offset:2px}
+.exo.done .kg-btn{background:transparent; border-color:var(--line-2)}
+.exo-actions .rest-btn{margin-top:9px}
+/* la carte « ta progression » */
+.pg-lifts{margin-top:14px}
+.pg-l{display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center; padding:8px 0; border-top:1px solid var(--line); font-size:13.5px}
+.pg-l .n{color:#c9c8c2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+.pg-l .v{font-family:var(--display); font-weight:700; font-size:15.5px; white-space:nowrap}
+.pg-l .d{font-family:var(--mono); font-size:10.5px; padding:2px 7px; border-radius:100px; border:1px solid var(--line-2); color:var(--muted); white-space:nowrap}
+.pg-l .d.up{color:var(--volt); border-color:rgba(200,240,49,.4)}
+#prog-card .s0-cta{margin-top:16px}
+#prog-card .s0-cta .ic{color:var(--volt)}
+/* le planning : aujourd'hui ressort */
+.wk-day.now{background:var(--surface); border-color:rgba(200,240,49,.45)}
+.wk-day.off.now{border-color:rgba(125,214,255,.45)}
+.wk-day.now .d{color:var(--text)}
+/* tes charges */
+.ch-grp{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--volt); margin:18px 0 2px}
+.ch-row{display:grid; grid-template-columns:minmax(0,1fr) 64px auto; gap:12px; align-items:center; width:100%; text-align:left; padding:12px 0; border-top:1px solid var(--line); min-height:56px; color:var(--text)}
+.ch-grp + .ch-row{border-top:0}
+.ch-row:active{background:var(--surface-2)}
+.ch-row:focus-visible{outline:2px solid var(--volt); outline-offset:2px}
+.ch-nm{font-weight:600; font-size:14.5px; line-height:1.25}
+.ch-s{display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); font-weight:400; margin-top:3px; letter-spacing:.02em}
+.ch-spark{width:64px; height:24px; overflow:visible}
+.ch-spark polyline{fill:none; stroke:var(--volt); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.ch-spark circle{fill:var(--volt)}
+.ch-v{text-align:right; white-space:nowrap}
+.ch-v b{font-family:var(--display); font-weight:700; font-size:17px}
+.ch-v .add{font-family:var(--mono); font-size:11px; color:var(--volt); border:1px dashed rgba(200,240,49,.45); border-radius:100px; padding:4px 9px}
+.ch-d{display:block; font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:3px}
+.ch-d.up{color:var(--volt)} .ch-d.dn{color:var(--ice)}
+#wchart-d{font-family:var(--mono); font-size:10.5px; color:var(--muted)}
+#wchart-d b{color:var(--text)}
 </style>
 </head>
 <body>
 
 <!-- ===================== REMISE ===================== -->
-<div id="remise" role="dialog" aria-modal="true" aria-label="Bienvenue dans ton protocole">
+<div id="remise" role="dialog" aria-modal="true" aria-label="Ton nouveau programme">
   <div id="rm1" class="rm-line">RAYAN<span class="pt">.</span></div>
-  <div id="rm2" class="rm-line">Ton protocole est prêt.<br><b>16 semaines. Un objectif.</b></div>
-  <div id="rm-btn"><button class="btn-volt" id="rm-open">OUVRIR LE PROTOCOLE <span aria-hidden="true">→</span></button></div>
+  <div id="rm2" class="rm-line">Ton nouveau programme est prêt.<br><b>4 séances haut du corps. Note tes poids, regarde-les monter.</b></div>
+  <div id="rm-btn"><button class="btn-volt" id="rm-open">OUVRIR <span aria-hidden="true">→</span></button></div>
   <div class="rm-skip">Touchez pour passer</div>
 </div>
 
@@ -1130,12 +1174,12 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
       </div>
       <div class="status-pill" id="status-pill">
         <span class="pulse"></span>
-        <div class="st" id="status-txt">SEMAINE —</div>
+        <div class="st" id="status-txt">—</div>
       </div>
     </div>
     <div id="today-render" class="stagger" style="margin-top:4px"></div>
 
-    <div class="blockcap"><span class="ic" id="ic-progress"></span> <span id="prog-cap">OÙ TU EN ES</span></div>
+    <div class="blockcap"><span class="ic" id="ic-progress"></span> <span id="prog-cap">TA PROGRESSION</span></div>
     <div class="card" id="prog-card"></div>
 
     <button class="coach-cta" id="open-coach">
@@ -1147,43 +1191,34 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 
   <!-- ============ VUE : PROGRAMME ============ -->
   <section class="view sec-plan" id="v-programme" data-tab="programme">
-    <div class="eyebrow"><span class="idx">01</span> LA CARTE COMPLÈTE</div>
-    <h1 class="view-title">LE PLAN<br>16 SEMAINES</h1>
-    <div class="view-sub">4 blocs de 4 semaines. Chaque bloc monte d'un cran. Touche une semaine pour voir ce qui t'attend.</div>
+    <div class="eyebrow"><span class="idx">01</span> TON PROGRAMME</div>
+    <h1 class="view-title">HAUT<br>DU CORPS</h1>
+    <div class="view-sub">4 séances de muscu, de la natation, un jour de repos. Le même planning tant que tu progresses.</div>
 
-    <div class="blockcap"><span class="ic" id="ic-cal"></span> VOYAGE DANS LE TEMPS</div>
-    <div class="wk-strip" id="wk-strip"></div>
-    <div class="card wk-summary" id="wk-summary"></div>
-
-    <div class="blockcap"><span class="ic" id="ic-layers"></span> LES 4 BLOCS</div>
-    <div class="rail" id="blocks-rail"></div>
-    <div class="rail-hint" style="text-transform:none; letter-spacing:.02em; line-height:1.5; margin-top:2px">Bloc 03 · RIR 0-1 <b class="mut">sur les isolations uniquement</b> — jamais sur les composés lourds (DC, presse, RDL).</div>
-
-    <div class="blockcap"><span class="ic" id="ic-week"></span> LA SEMAINE TYPE</div>
+    <div class="blockcap"><span class="ic" id="ic-week"></span> LE PLANNING</div>
     <div class="wk-days" id="weektype-days"></div>
-    <div class="why"><span class="ic" id="ic-bulb1"></span><div class="tx"><b>Pourquoi ce placement ?</b> Jamais de muscu un jour de marché (8h debout = séance pourrie). Les sprints après le marché mais après la sieste. 48h entre Upper A et Upper B.</div></div>
 
     <div class="blockcap"><span class="ic" id="ic-dumb"></span> LES SÉANCES</div>
-    <div class="rule-strip"><span class="ic" id="ic-arrow2"></span><div class="t"><b>Double progression :</b> quand tu fais le haut de la fourchette de reps sur TOUTES les séries au RIR cible → <b>+2,5 kg</b> (haltères +2 kg) la fois d'après. C'est ça, progresser.</div></div>
-    <details class="def"><summary><span class="q">?</span>C'est quoi le RIR ?</summary><div class="def-body"><b>RIR = Reps In Reserve</b> (reps en réserve). RIR 2 = à la fin de ta série, tu aurais pu en faire 2 de plus. C'est la jauge de tout le programme : elle te dit à quel point tu pousses. Repos : 2-3 min sur les gros exos, 60-90 s sur les isolations.</div></details>
-    <details class="def"><summary><span class="q">?</span>C'est quoi un deload ?</summary><div class="def-body">Une <b>semaine allégée</b> (S4, S8, S12) : moitié des séries, charges -10 %, sprints remplacés par de la marche. Obligatoire même si tu te sens bien — surtout si tu te sens bien. <b>Le muscle se construit pendant la récup, pas pendant la séance.</b></div></details>
+    <div class="rule-strip"><span class="ic" id="ic-arrow2"></span><div class="t"><b>Double progression :</b> quand tu fais le haut de la fourchette de reps sur TOUTES tes séries, en gardant 1 à 2 reps en réserve → <b>+2,5 kg</b> (haltères +2 kg) la fois d'après. Note ton poids sur chaque exo : c'est comme ça que tu vois si tu progresses.</div></div>
+    <details class="def"><summary><span class="q">?</span>C'est quoi le RIR ?</summary><div class="def-body"><b>RIR = Reps In Reserve</b> (reps en réserve). RIR 2 = à la fin de ta série, tu aurais pu en faire 2 de plus. Ton programme : <b>RIR 1 à 2 partout, jamais d'échec.</b></div></details>
     <div id="acc-list" style="margin-top:12px"></div>
 
-    <details class="acc"><summary class="acc-sum"><span class="acc-ic" id="ic-fire"></span><span class="acc-ttl"><span class="n">ÉCHAUFFEMENT</span><span class="t">8 min · avant chaque séance · non négociable</span></span><span class="acc-cta ic" id="ic-chev1"></span></summary>
+    <details class="acc"><summary class="acc-sum"><span class="acc-ic" id="ic-fire"></span><span class="acc-ttl"><span class="n">ÉCHAUFFEMENT</span><span class="t">avant chaque séance · non négociable</span></span><span class="acc-cta ic" id="ic-chev1"></span></summary>
       <div class="acc-body"><div id="warmup-render"></div></div>
     </details>
 
-    <details class="acc"><summary class="acc-sum"><span class="acc-ic" id="ic-chart"></span><span class="acc-ttl"><span class="n">TON VOLUME</span><span class="t">séries dures par muscle / semaine</span></span><span class="acc-cta ic" id="ic-chev2"></span></summary>
-      <div class="acc-body"><div class="view-sub" style="margin:10px 0 8px">Dans les fourchettes optimales (10-16 séries/muscle) sans dépasser ta récup actuelle.</div><div class="vol" id="vol-bars"></div></div>
+    <details class="acc"><summary class="acc-sum"><span class="acc-ic" id="ic-chart"></span><span class="acc-ttl"><span class="n">TON VOLUME</span><span class="t">séries par muscle sur tes 4 séances</span></span><span class="acc-cta ic" id="ic-chev2"></span></summary>
+      <div class="acc-body"><div class="view-sub" style="margin:10px 0 8px">Calculé depuis ton programme, muscle visé en premier.</div><div class="vol" id="vol-bars"></div></div>
     </details>
 
-    <div class="blockcap"><span class="ic" id="ic-flash"></span> TECHNIQUES D'INTENSITÉ · BLOC 3</div>
+    <div class="blockcap"><span class="ic" id="ic-flash"></span> LES RÈGLES</div>
     <div class="card">
-      <div class="view-sub" style="margin:0 0 12px">On les sort en S9-S12 seulement, quand ton sommeil est réparé et l'adhérence prouvée — ces outils creusent la récup.</div>
       <ul class="coach-corr" style="margin:0">
-        <li><span class="dash">—</span><span><b>Myo-reps</b> sur élévations latérales et leg extension : série d'activation 12-15 reps RIR 1, puis 4×4-5 reps avec 15 s de repos</span></li>
-        <li><span class="dash">—</span><span><b>Drop set</b> sur la DERNIÈRE série des isolations : -30 % de charge, continuer jusqu'à RIR 1</span></li>
-        <li><span class="dash">—</span><span><b>Jamais sur les composés lourds</b> (DC, presse, RDL) — le risque technique n'en vaut pas le rendement</span></li>
+        <li><span class="dash">—</span><span><b>Repos :</b> 2’30 à 3’ sur les gros exercices, 60 à 90 s sur les autres. Le minuteur part sur le temps court, « + 30 s » si tu as besoin.</span></li>
+        <li><span class="dash">—</span><span><b>1 à 2 reps en réserve</b> sur chaque série. Pas d’échec.</span></li>
+        <li><span class="dash">—</span><span><b>Marche inclinée 30 min</b> après certaines séances, au choix.</span></li>
+        <li><span class="dash">—</span><span><b>Pas de jambes, pas de sprints, pas de shrugs.</b></span></li>
+        <li><span class="dash">—</span><span><b>Curl :</b> barre le lundi, corde le jeudi.</span></li>
       </ul>
     </div>
 
@@ -1200,33 +1235,14 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
   <section class="view sec-ice sec-plan" id="v-sommeil" data-tab="sommeil">
     <div class="eyebrow"><span class="idx" style="color:var(--ice)">01</span> CHANTIER N°1</div>
     <h1 class="view-title">SOMMEIL</h1>
-    <div class="view-sub">Ton sommeil te limite plus que ton programme. On le répare d'abord. Objectif : <span class="ice">4/10 → 8/10 en 8 semaines.</span></div>
+    <div class="view-sub">Ton sommeil te limite plus que ton programme. Les horaires que tu as atteints, on les garde.</div>
 
-    <div class="sleep-chart" style="margin-top:16px">
-      <div class="eyebrow" style="color:var(--ice)">LA DESCENTE · COUCHER PROGRESSIF</div>
-      <svg viewBox="0 0 340 180" width="100%" height="180" role="img" aria-label="Descente du coucher sur 16 semaines" style="margin-top:8px">
-        <line x1="30" y1="20" x2="320" y2="20" stroke="#1E2128"/>
-        <line x1="30" y1="85" x2="320" y2="85" stroke="#1E2128" stroke-dasharray="2 4"/>
-        <line x1="30" y1="146.4" x2="320" y2="146.4" stroke="#1E2128"/>
-        <text x="26" y="24" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="9">3h</text>
-        <text x="26" y="89" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="9">0h</text>
-        <text x="26" y="150" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="9">22h30</text>
-        <polyline id="sleep-line-a" fill="none" stroke="#7DD6FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" points="30,20 66.25,63.3 102.5,77.8 138.75,92.2 156.9,106.7 320,106.7" stroke-dasharray="600" stroke-dashoffset="600"/>
-        <polyline fill="none" stroke="#4a8bb0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="3 4" points="30,20 66.25,121.1 102.5,135.6 138.75,142.8 156.9,146.4 320,146.4"/>
-        <text x="30" y="170" text-anchor="start" fill="#767C88" font-family="JetBrains Mono" font-size="9">actuel</text>
-        <text x="175" y="170" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="9">S8</text>
-        <text x="320" y="170" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="9">S16</text>
-      </svg>
-      <div class="sleep-legend"><span><i style="background:#7DD6FF"></i>Coucher cible (dim-jeu)</span><span><i style="background:#4a8bb0"></i>Veille de marché</span></div>
-      <table class="sleep-table">
-        <thead><tr><th>Semaines</th><th>Coucher cible</th><th>Veille marché</th></tr></thead>
-        <tbody>
-          <tr><td>S1-S2</td><td class="hl">1h30</td><td>23h30</td></tr>
-          <tr><td>S3-S4</td><td class="hl">1h00</td><td>23h00</td></tr>
-          <tr><td>S5-S6</td><td class="hl">0h30</td><td>22h45</td></tr>
-          <tr><td>S7-S16</td><td class="hl">0h00</td><td>22h30-45</td></tr>
-        </tbody>
-      </table>
+    <div class="card" style="margin-top:16px">
+      <div class="eyebrow" style="color:var(--ice)">TES HORAIRES</div>
+      <div class="facts"><div class="fact"><div class="k">Coucher</div><div class="v ice">0h00</div></div>
+        <div class="fact"><div class="k">Veille marché</div><div class="v sm ice">22h30-45</div></div>
+        <div class="fact"><div class="k">Caféine</div><div class="v sm">avant 14h</div></div></div>
+      <div class="sleep-legend" style="margin-top:12px"><span><i style="background:#7DD6FF"></i>Coucher : dim, mar et jeu soir</span><span><i style="background:#4a8bb0"></i>Veille de marché : lun et mer soir</span></div>
     </div>
 
     <div style="margin-top:12px">
@@ -1237,7 +1253,7 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 
     <div class="blockcap" style="color:var(--text)"><span class="ic" style="color:var(--ice)" id="ic-moon2"></span> ROUTINE DU SOIR</div>
     <div class="card"><div class="view-sub" style="margin:0 0 6px">30 min avant le coucher. Coche au fur et à mesure — c'est ta descente.</div><div id="routine-soir"></div>
-      <div class="why" style="margin-top:12px"><span class="ic" style="color:var(--ice)" id="ic-bulb2"></span><div class="tx">Pas de mélatonine par défaut à 19 ans : l'hygiène d'abord. Si après 4 semaines l'endormissement reste &gt; 45 min → en parler à un médecin.</div></div>
+      <div class="why" style="margin-top:12px"><span class="ic" style="color:var(--ice)" id="ic-bulb2"></span><div class="tx">Pas de mélatonine par défaut à 19 ans : l'hygiène d'abord. Si l'endormissement reste au-dessus de 45 min malgré la routine → en parler à un médecin.</div></div>
     </div>
 
     <div class="blockcap" style="color:var(--text)"><span class="ic" style="color:var(--ice)" id="ic-sun"></span> ROUTINE DU MATIN</div>
@@ -1253,7 +1269,7 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
       <ol class="rem-how">
         <li>Touche le bouton — le fichier s’ouvre.</li>
         <li>« <b>Tout ajouter</b> » → choisis ton calendrier.</li>
-        <li>C’est fini. Les alertes sonnent toutes seules jusqu’au 8 novembre.</li>
+        <li>C’est fini. Les alertes sonnent toutes seules, sans date de fin.</li>
       </ol>
       <div class="why" style="margin-top:12px"><span class="ic" id="ic-bulb5"></span><div class="tx"><b>Pourquoi le calendrier et pas une notif de l’app :</b> sur iPhone, une app web ne peut pas déclencher d’alarme sans passer par un serveur, et son son est cassé. Le calendrier d’Apple, lui, sonne pour de vrai. C’est la seule méthode fiable — et elle marche même si tu désinstalles l’app.</div></div>
     </div>
@@ -1278,12 +1294,11 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
       <ol class="reco-list">
         <li><b>Sommeil</b> — 80 % de ta récup, le reste est du détail</li>
         <li>Sieste courte post-marché 20-30 min</li>
-        <li>Deload S4/S8/S12 (obligatoire même si tu te sens bien)</li>
-        <li>Marche inclinée post-séance 20 min à 6-6,5 km/h pente 10-12 %</li>
-        <li>Douche fraîche post-sprint (pas de bain glacé post-muscu : il atténue le signal d'hypertrophie 4-6h)</li>
+        <li>Marche inclinée 30 min après certaines séances, au choix (6-6,5 km/h, pente 10-12 %)</li>
+        <li>Pas de bain glacé après la muscu : il atténue le signal d'hypertrophie 4-6h</li>
         <li>Hydratation 2,5-3 L/jour, +1 L les jours de marché</li>
-        <li>Mobilité mardi/dimanche</li>
-        <li>Un OFF total par semaine : mardi. Pas de « cardio en plus » caché</li>
+        <li>Mobilité le dimanche</li>
+        <li>Dimanche, repos total. Pas de « cardio en plus » caché</li>
       </ol>
     </div>
   </section>
@@ -1291,26 +1306,13 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
   <!-- ============ VUE : SUIVI ============ -->
   <section class="view sec-plan" id="v-suivi" data-tab="suivi">
     <div class="eyebrow"><span class="idx">01</span> LE SUIVI</div>
-    <h1 class="view-title">TES<br>PREUVES</h1>
-    <div class="view-sub">Ce qui se mesure progresse. Dimanche, 5 min. Tout reste sur ton téléphone.</div>
+    <h1 class="view-title">TA<br>PROGRESSION</h1>
+    <div class="view-sub">Ce qui se mesure progresse. Tes poids exo par exo, ta pesée, tes photos. Tout reste sur ton téléphone.</div>
 
-    <div class="blockcap"><span class="ic" id="ic-pen"></span> POINT HEBDO</div>
+    <div class="blockcap"><span class="ic" id="ic-kg"></span> TES CHARGES</div>
     <div class="card">
-      <form class="trk-form" id="trk-form" autocomplete="off">
-        <div class="field"><label for="f-week">Semaine</label><select id="f-week"></select></div>
-        <div class="field"><label for="f-weight">Poids moyen (kg)</label><input id="f-weight" type="number" inputmode="decimal" step="0.1" min="50" max="110" placeholder="76,5"></div>
-        <div class="field"><label for="f-waist">Tour de taille (cm)</label><input id="f-waist" type="number" inputmode="decimal" step="0.5" min="50" max="130" placeholder="82"></div>
-        <div class="field"><label for="f-sleep">Sommeil / 10</label><input id="f-sleep" type="number" inputmode="numeric" step="1" min="1" max="10" placeholder="6"></div>
-        <div class="field"><label for="f-comp">Séances (x/6)</label><input id="f-comp" type="number" inputmode="numeric" step="1" min="0" max="6" placeholder="5"></div>
-        <button class="btn-save" type="submit">Enregistrer le point</button>
-      </form>
-      <div class="wchart-card wchart">
-        <div class="wchart-top">
-          <div><div class="k">Poids · trajectoire 16 semaines</div><div class="wchart-now" id="wchart-now">—<span class="u"> kg</span></div></div>
-          <div class="wchart-leg"><span><i class="rl"></i>Ton poids réel</span><span><i class="ob"></i>Objectif · 77→70</span></div>
-        </div>
-        <svg id="wchart" viewBox="0 0 320 156" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Courbe de poids sur 16 semaines"></svg>
-      </div>
+      <div class="view-sub" style="margin:0 0 4px">Touche un exo pour noter ton poids. Chaque exo coché en séance garde ta charge du jour : c’est ta courbe.</div>
+      <div id="ch-list"></div>
       <div class="wchart-card fchart">
         <div class="wchart-top">
           <div><div class="k" id="fchart-k">Force · tes charges réelles</div><div class="wchart-now" id="fchart-now">—</div></div>
@@ -1324,62 +1326,66 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
           <label for="flift">Exercice suivi</label>
           <select id="flift"></select>
         </div>
-        <svg id="fchart" viewBox="0 0 320 156" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Courbe de force sur 16 semaines"></svg>
+        <svg id="fchart" viewBox="0 0 320 156" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Courbe de force dans le temps"></svg>
         <div class="fchart-foot" id="fchart-foot"></div>
-      </div>
-      <div class="trk-log" id="trk-log"></div>
-
-      <div class="card data-card">
-        <div class="dc-top"><div><div class="dc-t">Tes données</div><div class="dc-s" id="dc-stat">—</div></div><span class="ic" id="ic-save"></span></div>
-        <p class="dc-p">Tout est sur ton téléphone, rien sur un serveur. Tant que l’app est sur ton écran d’accueil, iOS ne les efface pas. Mais si tu retires l’icône ou que tu changes de téléphone, elles partent avec — <b>une sauvegarde de temps en temps et tu es tranquille</b>.</p>
-        <div class="dc-last" id="dc-last"></div>
-        <div class="dc-btns">
-          <button class="dc-b" id="dc-export">Sauvegarder</button>
-          <button class="dc-b" id="dc-import">Restaurer</button>
-          <button class="dc-b" id="dc-csv">Export CSV</button>
-          <input type="file" id="dc-file" accept="application/json,.json" hidden>
-        </div>
-
-        <div class="sync-box" id="sync-box">
-          <div class="sync-h"><span class="ic" id="ic-cloud"></span><b>Sauvegarde automatique</b></div>
-          <p class="dc-p" style="margin:6px 0 0">Tes séances se copient toutes seules après chaque entraînement. Si tu changes de téléphone ou que tu supprimes l’app, tu tapes ton code et tout revient.</p>
-          <div class="dc-last" id="sync-state"></div>
-          <div class="sync-code-row">
-            <span class="sync-k">Ton code</span>
-            <code id="sync-code">—</code>
-            <button class="dc-b sm" id="sync-copy" type="button">Copier</button>
-          </div>
-          <div class="dc-btns" style="margin-top:10px">
-            <button class="dc-b" id="sync-new" type="button">Créer mon code</button>
-            <button class="dc-b" id="sync-enter" type="button">J’ai déjà un code</button>
-            <button class="dc-b" id="sync-restore" type="button">Tout récupérer</button>
-          </div>
-          <div class="why" style="margin-top:10px"><span class="ic" id="ic-bulb6"></span><div class="tx"><b>Note ton code quelque part.</b> C’est la seule clé de ta sauvegarde — personne ne peut te le redonner s’il est perdu.</div></div>
-        </div>
       </div>
     </div>
 
-    <div class="blockcap"><span class="ic" id="ic-camera"></span> TESTS MENSUELS</div>
+    <div class="blockcap"><span class="ic" id="ic-pen"></span> TA PESÉE</div>
     <div class="card">
-      <div class="view-sub" style="margin:0 0 8px">Le dimanche matin. Photos face/profil/dos, même lieu, lumière naturelle, pas de flash, pas de pompe, short uni. Poids = moyenne des 7 dernières pesées. Taille au nombril. Force = e1RM DC (depuis 5RM) + tirage 6RM. Chrono 30 m.</div>
-      <div class="checks" id="tests-checks"></div>
-      <div id="tests-delta"></div>
+      <form class="trk-form" id="trk-form" autocomplete="off">
+        <div class="field"><label for="f-date">Date</label><input id="f-date" type="date"></div>
+        <div class="field"><label for="f-weight">Poids (kg)</label><input id="f-weight" type="number" inputmode="decimal" step="0.1" min="40" max="150" placeholder="76,5"></div>
+        <div class="field"><label for="f-waist">Tour de taille (cm)</label><input id="f-waist" type="number" inputmode="decimal" step="0.5" min="50" max="130" placeholder="82"></div>
+        <div class="field"><label for="f-sleep">Sommeil / 10</label><input id="f-sleep" type="number" inputmode="numeric" step="1" min="1" max="10" placeholder="7"></div>
+        <button class="btn-save" type="submit">Enregistrer la pesée</button>
+      </form>
+      <div class="wchart-card wchart">
+        <div class="wchart-top">
+          <div><div class="k">Poids · dans le temps</div><div class="wchart-now" id="wchart-now">—<span class="u"> kg</span></div></div>
+          <div class="wchart-leg"><span id="wchart-d"></span></div>
+        </div>
+        <svg id="wchart" viewBox="0 0 320 156" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Courbe de poids dans le temps"></svg>
+      </div>
+      <div class="trk-log" id="trk-log"></div>
     </div>
 
     <div class="blockcap"><span class="ic" id="ic-camera2"></span> TES PHOTOS</div>
     <div class="card">
-      <div class="view-sub" style="margin:0 0 10px">Même mur, même lumière, même heure, short uni. Elles restent sur ton téléphone — l’app ne les envoie nulle part. Ce sont elles qui parleront en novembre.</div>
+      <div class="view-sub" style="margin:0 0 10px">Une série de temps en temps : face, profil, dos. Même mur, même lumière, short uni. Elles restent sur ton téléphone et dans ta sauvegarde.</div>
       <div id="photo-grid"></div>
       <div class="ph-cmp" id="photo-compare"></div>
       <input type="file" id="photo-file" accept="image/*" hidden>
     </div>
 
-    <div class="blockcap"><span class="ic" id="ic-flag"></span> JALONS ATTENDUS</div>
-    <div class="jalons">
-      <div class="jal"><div class="w">S4</div><div class="tx"><b>-1,5 à -2,5 kg</b> · coucher à 1h · DC 42,5 kg×6</div></div>
-      <div class="jal"><div class="w">S8</div><div class="tx"><b>-3,5 à -5 kg</b> · taille -3/-4 cm · 2 sprints/sem installés</div></div>
-      <div class="jal"><div class="w">S12</div><div class="tx"><b>-5,5 à -7 kg</b> · abdos visibles en lumière directe · DC ~50 kg×6</div></div>
-      <div class="jal"><div class="w">S16</div><div class="tx"><b>69-71 kg</b> · 10-12 % BF · photos avant/après qui parlent toutes seules</div></div>
+    <div class="blockcap"><span class="ic" id="ic-save2"></span> TES DONNÉES</div>
+    <div class="card data-card" style="margin-top:0">
+      <div class="dc-top"><div><div class="dc-t">Tes données</div><div class="dc-s" id="dc-stat">—</div></div><span class="ic" id="ic-save"></span></div>
+      <p class="dc-p">Tout est sur ton téléphone. Tant que l’app est sur ton écran d’accueil, iOS ne l’efface pas. Si tu retires l’icône ou que tu changes de téléphone, ta sauvegarde automatique te rend tout.</p>
+      <div class="dc-last" id="dc-last"></div>
+      <div class="dc-btns">
+        <button class="dc-b" id="dc-export">Sauvegarder</button>
+        <button class="dc-b" id="dc-import">Restaurer</button>
+        <button class="dc-b" id="dc-csv">Export CSV</button>
+        <input type="file" id="dc-file" accept="application/json,.json" hidden>
+      </div>
+
+      <div class="sync-box" id="sync-box">
+        <div class="sync-h"><span class="ic" id="ic-cloud"></span><b>Sauvegarde automatique</b></div>
+        <p class="dc-p" style="margin:6px 0 0">Tes séances, tes poids et tes photos se copient tout seuls dès que tu as du réseau. Si tu changes de téléphone, tu tapes ton code et tout revient.</p>
+        <div class="dc-last" id="sync-state"></div>
+        <div class="sync-code-row">
+          <span class="sync-k">Ton code</span>
+          <code id="sync-code">—</code>
+          <button class="dc-b sm" id="sync-copy" type="button">Copier</button>
+        </div>
+        <div class="dc-btns" style="margin-top:10px">
+          <button class="dc-b" id="sync-new" type="button">Créer mon code</button>
+          <button class="dc-b" id="sync-enter" type="button">J’ai déjà un code</button>
+          <button class="dc-b" id="sync-restore" type="button">Tout récupérer</button>
+        </div>
+        <div class="why" style="margin-top:10px"><span class="ic" id="ic-bulb6"></span><div class="tx"><b>Note ton code quelque part.</b> C’est la seule clé de ta sauvegarde — personne ne peut te le redonner s’il est perdu.</div></div>
+      </div>
     </div>
   </section>
 </div>
@@ -1387,11 +1393,10 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 <!-- ============ MOT DU COACH OVERLAY ============ -->
 <div id="coach-ov" class="ovl-managed" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Le mot du coach">
   <div class="coach-wrap">
-    <div class="ov-bar"><span class="lbl">LE MOT DU COACH · #RK-16</span><button class="ov-close" id="coach-close" aria-label="Fermer">✕</button></div>
+    <div class="ov-bar"><span class="lbl">LE MOT DU COACH</span><button class="ov-close" id="coach-close" aria-label="Fermer">✕</button></div>
     <div class="coach-quote">Ce n'est pas ton programme qui te limite. <span class="hl">C'est ton sommeil.</span></div>
-    <div class="coach-block"><h3>Ce que tu fais déjà bien</h3><p>10 à 15 000 pas par jour, trois matinées de manutention par semaine, quatre séances régulières, une nutritionniste, et des charges propres pour ton niveau. Ta base cardio de boxeur est un vrai atout : <b>ton moteur est déjà construit.</b></p></div>
-    <div class="coach-block"><h3>Ce qui te limite vraiment</h3><p>Ce n'est pas ton programme. C'est ton sommeil. Tu t'endors à 3h, tu compenses par des siestes de 3h : ton corps ne sait plus quand récupérer. À 5h30 de sommeil, tu perds sur tous les tableaux — moins de muscle construit, plus de faim le lendemain (ghréline ↑, leptine ↓), moins de force en séance. <b>Régler le sommeil te fera plus progresser que n'importe quel changement d'exercice.</b> C'est le chantier n°1 des 4 premières semaines.</p></div>
-    <div class="coach-block"><h3>Deuxième vérité : tu n'entraînes pas tes jambes</h3><p>Ton programme actuel, c'est Push/Pull. Un physique sec avec des jambes vides, ça ne tient pas debout — littéralement. Tu n'aimes pas le squat ni les fentes : très bien, on n'en fera pas. <b>Presse, soulevé de terre roumain, leg curl, hip thrust : tes jambes vont pousser sans un seul squat.</b></p></div>
+    <div class="coach-block"><h3>Ce que tu fais déjà bien</h3><p>10 à 15 000 pas par jour, trois matinées de manutention au marché, quatre séances régulières, une nutritionniste, et des charges propres pour ton niveau. Ta base cardio de boxeur est un vrai atout : <b>ton moteur est déjà construit.</b></p></div>
+    <div class="coach-block"><h3>Ce qui te limite vraiment</h3><p>Ce n'est pas ton programme. C'est ton sommeil. Tu t'endors à 3h, tu compenses par des siestes de 3h : ton corps ne sait plus quand récupérer. À 5h30 de sommeil, tu perds sur tous les tableaux — moins de muscle construit, plus de faim le lendemain (ghréline ↑, leptine ↓), moins de force en séance. <b>Régler le sommeil te fera plus progresser que n'importe quel changement d'exercice.</b></p></div>
     <div class="coach-block"><h3>Le retour sur investissement de tes habitudes</h3>
       <ol class="coach-roi">
         <li><span>Avancer ton coucher <span class="x">(impact ×10)</span> — récupération, hormones, faim, énergie</span></li>
@@ -1399,16 +1404,9 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
         <li><span>Noter tes charges à chaque séance <span class="x">(×3)</span> — on ne progresse que sur ce qu'on mesure</span></li>
         <li><span>Sieste ≤ 30 min, jamais après 16h <span class="x">(×2)</span> — protège ta nuit</span></li>
       </ol>
-      <p style="margin-top:14px"><b>L'ordre de mise en place :</b> sommeil (S1-4) → nutrition calée (S3-6) → intensité d'entraînement (S5+). Pas tout en même temps : <span class="v">c'est comme ça qu'on tient 16 semaines.</span></p>
+      <p style="margin-top:14px"><b>Maintenant :</b> note ton poids à chaque séance. <span class="v">Une courbe qui monte, c'est la seule preuve qui compte.</span></p>
     </div>
-    <div class="coach-block"><h3>Corrections de tes idées</h3>
-      <ul class="coach-corr">
-        <li><span class="dash">—</span><span><b>Marche inclinée 30 min après CHAQUE séance :</b> avec tes 10-15k pas quotidiens, 20 min suffisent. Garde 30 min uniquement si le temps le permet — c'est un outil de dépense, pas un dogme.</span></li>
-        <li><span class="dash">—</span><span><b>2 sprints/semaine dès le début :</b> non. Avec ton sommeil actuel, c'est de la récupération que tu n'as pas. 1 sprint les 4 premières semaines, 2 à partir du Bloc 2, quand tes nuits seront réparées.</span></li>
-        <li><span class="dash">—</span><span><b>4 séances muscu en Push/Pull :</b> on passe en Upper/Lower ×2 — chaque muscle travaillé 2×/semaine (la fréquence 2 bat la fréquence 1 à volume égal), et tes jambes entrent enfin dans le game.</span></li>
-      </ul>
-    </div>
-    <div class="sign">— TON COACH · DOSSIER #RK-16</div>
+    <div class="sign">— TON COACH</div>
   </div>
 </div>
 
@@ -1512,7 +1510,8 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
 <script>
 "use strict";
 /* ===== CONSTANTES VERROUILLÉES ===== */
-var KICKOFF='2026-07-17', WEEK1_MONDAY='2026-07-20', PROTOCOLE_END='2026-11-08';
+/* dates du protocole 16 semaines : ne servent plus qu'aux migrations */
+var KICKOFF='2026-07-17', WEEK1_MONDAY='2026-07-20';
 var Q=new URLSearchParams(location.search);
 var DATE_OVERRIDE=Q.get('date'), INTRO_MODE=Q.get('intro'), START_TAB=Q.get('tab');
 var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1568,71 +1567,85 @@ var IC={
   soundOff:'<svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4V5zM16 9l5 6M21 9l-5 6"/></svg>',
   save:'<svg viewBox="0 0 24 24"><path d="M4 4h12l4 4v12H4V4zM8 4v5h7M8 20v-6h8v6"/></svg>',
   pill:'<svg viewBox="0 0 24 24"><rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M8.6 8.6l6.8 6.8"/></svg>',
-  bell:'<svg viewBox="0 0 24 24"><path d="M18 15v-4a6 6 0 1 0-12 0v4l-2 3h16l-2-3zM10 21h4"/></svg>'
+  bell:'<svg viewBox="0 0 24 24"><path d="M18 15v-4a6 6 0 1 0-12 0v4l-2 3h16l-2-3zM10 21h4"/></svg>',
+  swim:'<svg viewBox="0 0 24 24"><circle cx="17" cy="6.5" r="1.7"/><path d="M5 13.5l4.5-3.5 3 2.2 2.5-2M2.5 17c1.6 1.2 3.2 1.2 4.8 0s3.2-1.2 4.8 0 3.2 1.2 4.8 0 3.2-1.2 4.8 0M2.5 20.5c1.6 1.2 3.2 1.2 4.8 0s3.2-1.2 4.8 0 3.2 1.2 4.8 0 3.2-1.2 4.8 0"/></svg>'
 };
 function setIc(id,name){var e=document.getElementById(id);if(e)e.innerHTML=IC[name];}
 
 /* ===== DATA ===== */
-var BLOCKS=[
-  {n:'01',name:'FONDATIONS',wk:'S1 → S4',weeks:[1,4],focus:'Technique, adhérence, chantier sommeil',def:'-300',spr:'1/sem',rir:'2-3',jalon:'S4 : -1,5 à -2,5 kg · coucher à 1h · DC 42,5 kg×6',deload:'S4'},
-  {n:'02',name:'CONSTRUCTION',wk:'S5 → S8',weeks:[5,8],focus:'Volume ↑, 2e sprint, nutrition calée',def:'-400',spr:'2/sem',rir:'1-2',jalon:'S8 : -3,5 à -5 kg · taille -3/-4 cm · 2 sprints/sem installés',deload:'S8'},
-  {n:'03',name:'INTENSIFICATION',wk:'S9 → S12',weeks:[9,12],focus:'Charges ↑, techniques d’intensité',def:'-500',spr:'2/sem',rir:'0-1',jalon:'S12 : -5,5 à -7 kg · abdos visibles en lumière directe · DC ~50 kg×6',deload:'S12'},
-  {n:'04',name:'RÉVÉLATION',wk:'S13 → S16',weeks:[13,16],focus:'Sec final, maintien force, tests + photos',def:'-500',spr:'2/sem',rir:'1-2',jalon:'S16 : 69-71 kg · 10-12 % BF · photos avant/après qui parlent toutes seules',deload:'TESTS'}
-];
-function blockOfWeek(w){return BLOCKS[Math.ceil(w/4)-1];}
-/* les semaines allégées, définies UNE fois. Étaient recopiées à 5 endroits. */
-var DELOAD_WEEKS=[4,8,12], TEST_WEEK=16, TOTAL_WEEKS=16;
-function isDeload(w){return DELOAD_WEEKS.indexOf(w)>=0;}
-function sleepTarget(w){if(w<=2)return{c:'1h30',m:'23h30'};if(w<=4)return{c:'1h00',m:'23h00'};if(w<=6)return{c:'0h30',m:'22h45'};return{c:'0h00',m:'22h30-45'};}
+/* 03/11/2026 — PROGRAMME CONTINU (demande de Rayan) : plus de semaines, plus de
+   blocs, plus de deload. Le planning se lit au jour : lundi = Haut A, etc.
+   L'historique du protocole 16 semaines (Upper/Lower) reste intact en base. */
+/* les horaires de sommeil atteints en fin de protocole, gardés tels quels */
+var SLEEP={c:'0h00',m:'22h30-45'};
+var RIR='1-2';
+/* repos : le minuteur part sur la borne basse, « + 30 s » couvre la borne haute.
+   Gros exos : +1 min sur la fourchette de Rayan (consigne Mazen, 03/11/2026) */
+var REST_BIG=150, REST_SMALL=60;
 
-/* muscle groups highlighted per session */
 /* ===== LE PROGRAMME =====
    Source de vérité UNIQUE et structurée. Les chaînes affichées (e.s, e.load, e.rest)
    sont DÉRIVÉES au boot par hydrate() — ne jamais les écrire à la main ici.
    id     : identité stable de l'exercice. C'est la clé de TOUT l'historique
-            (charges, notes, séries loguées). Ne JAMAIS renommer ni réutiliser un id,
-            même si l'exercice change de nom ou de place : l'historique suivrait.
+            (charges, notes, séries loguées). Un exo déjà fait sous le protocole
+            garde son id (dc-barre, rowing-machine, tirage-vert-neutre…) : ses
+            charges de juillet restent la première marche de sa courbe.
+            Un même exo dans deux séances = même id = même courbe.
+   kg     : la charge par défaut de l'ANCIEN programme est conservée sur les ids
+            repris — chargeAtDate() s'en sert pour dater les séances passées.
    mode   : bar|stack (charge totale) · perHand|pair (×2 pour le tonnage)
-            bw (poids de corps + lest) · tbd (à calibrer) · none (pas de charge)
-   unit   : reps | s (secondes) | m (mètres) | max — décide ce qui est tonnable
-   step   : incrément de progression, choisi PAR exercice (un +2,5 kg sur une
-            élévation latérale à 5 kg, c'est +50 % : c'est comme ça qu'on se blesse) */
+            bw (poids de corps + lest) · tbd (à noter) · none (pas de charge)
+   step   : incrément de progression, choisi PAR exercice */
+var CRUNCH={id:'crunch-machine',alt:['Crunch à la poulie haute, à genoux','Relevés de genoux suspendu'],name:'Crunch machine',sets:3,reps:[12,15],kg:null,mode:'tbd',step:2.5,restSec:REST_SMALL,note:'Enroule le buste, souffle en fermant. Les abdos, pas les bras',mg:['abs'],sec:[]};
+var ELEV_LAT={id:'elev-lat-poulie',alt:['Élévations latérales haltères, va moins lourd','Élévations machine'],name:'Élévations latérales poulie',sets:3,reps:[12,15],kg:5,mode:'stack',step:1,restSec:REST_SMALL,note:'L’épaule du milieu. Tension continue, sans élan',mg:['delts'],sec:[]};
+var TRICEPS_V={id:'triceps-barre-v',alt:['Extension triceps à la corde','Extension triceps barre droite'],name:'Triceps poulie à la barre en V',sets:3,reps:[10,12],kg:null,mode:'tbd',step:2.5,restSec:REST_SMALL,note:'Coudes collés au corps, tends complètement en bas',mg:['arms'],sec:[]};
+function cp(o){var c={};Object.keys(o).forEach(function(k){c[k]=Array.isArray(o[k])?o[k].slice():o[k];});return c;}
 var SESSIONS={
-  UPPER_A:{name:'UPPER A',day:'Lundi',tag:'Poussée · Force',mg:['pecs','delts','arms','back'],mlab:['Pecs','Épaules','Triceps','Dos'],exos:[
-    {id:'dc-barre',alt:['Développé couché barre si une barre se libère — même schéma','Développé haltères, ~2 kg de moins par main'],name:'Développé couché machine',sets:4,reps:[5,6],unit:'reps',kg:null,mode:'tbd',hint:'à calibrer S1 : RIR 3',step:2.5,restSec:180,note:'Ta ref force. Dos plaqué, poignées à hauteur de pecs, pas de rebond',mg:['pecs'],sec:['delts','arms']},
-    {id:'tirage-horiz',alt:['Rowing haltère un bras, 1 s de squeeze','Rowing machine poitrine calée'],name:'Tirage horizontal poulie',sets:3,reps:[8,10],unit:'reps',kg:50,mode:'stack',step:2.5,restSec:120,note:'Coudes près du corps, 1 s de squeeze',mg:['back'],sec:['arms']},
-    {id:'dev-mil-hal',alt:['Développé militaire machine, dossier 85°','Développé haltères assis en prise neutre — le plus doux pour ton poignet'],name:'Développé militaire haltères',sets:3,reps:[6,8],unit:'reps',kg:14,mode:'perHand',step:2,restSec:120,note:'Assis dossier 85°, poignets neutres',mg:['delts'],sec:['arms']},
-    {id:'traction-pronation',alt:['Tractions pronation assistées','Tirage vertical pronation si la barre est prise'],name:'Tractions pronation',sets:3,reps:[6,10],unit:'reps',kg:0,mode:'bw',hint:'PDC · assisté si besoin',step:2.5,restSec:120,note:'Poitrine vers la barre, épaules basses. Assistance si tu n’as pas 6 reps propres',mg:['back'],sec:['arms']},
-    {id:'elev-lat-poulie',alt:['Élévations latérales haltères — plus dur en bas, va moins lourd','Élévations machine'],name:'Élévations latérales poulie',sets:3,reps:[12,15],unit:'reps',kg:5,mode:'stack',step:1,restSec:60,note:'Poulie > haltères : tension continue',mg:['delts'],sec:[]},
-    {id:'triceps-corde',alt:['Extension triceps barre EZ','Dips machine'],name:'Extension triceps corde',sets:3,reps:[10,12],unit:'reps',kg:15,mode:'stack',step:2.5,restSec:75,note:'Coudes fixes, écarte la corde en bas sans casser les poignets',mg:['arms'],sec:[]},
-    {id:'curl-marteau-corde',alt:['Curl haltères prise marteau','Curl poulie basse avec poignées neutres'],name:'Curl marteau corde',sets:3,reps:[10,12],unit:'reps',kg:12,mode:'stack',step:2,restSec:75,note:'Prise neutre, coudes fixes : zéro stress poignet',mg:['arms'],sec:[]}
+  HAUT_A:{name:'HAUT A',day:'Lundi',tag:'Poussée',mg:['pecs','delts','arms','abs'],mlab:['Pecs','Épaules','Triceps','Biceps','Abdos'],exos:[
+    {id:'dc-barre',alt:['Développé couché barre si une barre se libère, même schéma','Développé haltères, ~2 kg de moins par main'],name:'Développé couché ou machine pecs',sets:4,reps:[6,8],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Prise un peu plus large que les épaules. Dos plaqué, pas de rebond',mg:['pecs'],sec:['delts','arms']},
+    {id:'dev-incline-barre',alt:['Développé incliné haltères, ~2 kg de moins par main','Développé incliné barre si le banc est libre'],name:'Développé incliné machine',sets:3,reps:[8,10],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Le haut des pecs et l’avant d’épaule',mg:['pecs'],sec:['delts','arms']},
+    {id:'dev-epaules-machine',alt:['Développé militaire haltères assis','Développé épaules à la Smith machine'],name:'Développé épaules machine',sets:3,reps:[8,10],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Épaules avant et milieu, triceps. Dos calé au dossier',mg:['delts'],sec:['arms']},
+    cp(ELEV_LAT),
+    {id:'curl-poulie-barre',alt:['Curl barre EZ','Curl haltères paumes vers le haut'],name:'Curl poulie basse à la barre',sets:3,reps:[10,12],kg:null,mode:'tbd',step:2.5,restSec:REST_SMALL,note:'Paumes vers le haut, coudes fixes. Le lundi c’est la barre, le jeudi la corde',mg:['arms'],sec:[]},
+    cp(CRUNCH)
   ]},
-  LOWER_A:{name:'LOWER A',day:'Mercredi',tag:'Chaîne complète · sans squat',mg:['quads','hams','calves','abs'],mlab:['Quadris','Ischios','Mollets','Abdos'],exos:[
-    {id:'presse-inclinee',alt:['Presse horizontale','Hack squat machine — même consigne, pieds mi-hauteur'],name:'Presse à cuisses inclinée',sets:4,reps:[8,10],unit:'reps',kg:null,mode:'tbd',hint:'à calibrer S1 : RIR 3',step:5,restSec:150,note:'Pieds mi-hauteur largeur épaules, amplitude complète',mg:['quads'],sec:['glutes']},
-    {id:'sdt-roumain',alt:['SDT roumain barre — straps d’office','Good morning léger si les barres sont prises'],name:'Soulevé de terre roumain haltères',sets:3,reps:[8,10],unit:'reps',kg:20,mode:'pair',step:2,restSec:150,note:'Straps d’office. LE constructeur d’ischios/fessiers',mg:['hams'],sec:['glutes','back']},
-    {id:'leg-curl-assis',alt:['Leg curl allongé','Leg curl debout un pied'],name:'Leg curl assis',sets:3,reps:[10,12],unit:'reps',kg:null,mode:'tbd',step:2.5,restSec:90,note:'Ischios = 40 % de l’esthétique jambes',mg:['hams'],sec:[]},
-    {id:'mollets-debout',alt:['Mollets à la presse','Mollets debout un pied au poids de corps, +2 s de pause'],name:'Mollets debout',sets:4,reps:[10,12],unit:'reps',kg:null,mode:'tbd',step:5,restSec:60,note:'2 s de pause en bas — l’étirement fait le mollet',mg:['calves'],sec:[]},
-    {id:'releve-jambes-barre',alt:['Relevé de genoux suspendu si les jambes tendues tirent trop','Relevé de jambes au banc incliné'],name:'Relevé de jambes à la barre',sets:3,reps:[8,12],unit:'reps',kg:0,mode:'bw',hint:'poids de corps',step:2.5,restSec:60,note:'Suspendu, sans balancer : c’est le bas des abdos qui monte, pas l’élan',mg:['abs'],sec:['arms']}
+  HAUT_B:{name:'HAUT B',day:'Mardi',tag:'Tirage',mg:['back','delts','arms','abs'],mlab:['Dos','Arrière d’épaule','Biceps','Triceps','Abdos'],exos:[
+    {id:'traction-pronation',alt:['Tractions assistées (machine ou élastique)','Tirage vertical pronation si la barre est prise'],name:'Tractions',sets:3,reps:[6,8],kg:0,mode:'bw',hint:'PDC · assisté si besoin',step:2.5,restSec:REST_BIG,note:'Pronation, un peu plus large que les épaules. Poitrine vers la barre',mg:['back'],sec:['arms']},
+    {id:'tirage-vert-pron',alt:['Tractions assistées pronation','Tirage vertical à la machine convergente'],name:'Tirage vertical',sets:3,reps:[10,12],kg:50,mode:'stack',step:2.5,restSec:REST_BIG,note:'Longue barre courbée, prise pronation large. Tout le grand dorsal',mg:['back'],sec:['arms']},
+    {id:'rowing-machine',alt:['Tirage horizontal poulie, poignée neutre','Rowing haltère un bras'],name:'Rowing machine',sets:3,reps:[8,10],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Poignées neutres, poitrine calée. L’épaisseur du dos',mg:['back'],sec:['delts','arms']},
+    {id:'iso-high-row',alt:['Tirage vertical un bras à la poulie','Rowing machine poignées hautes'],name:'Iso latéral high row',sets:3,reps:[8,10],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Un bras après l’autre, poignée neutre. Coude vers le bas et l’arrière',mg:['back'],sec:['arms','delts']},
+    {id:'pec-deck-inverse',alt:['Oiseau à la poulie','Oiseau haltères buste penché'],name:'Pec deck inversé',sets:3,reps:[12,15],kg:null,mode:'tbd',step:2.5,restSec:REST_SMALL,note:'Poignées neutres, bras presque tendus. Ouvre avec l’arrière d’épaule',mg:['delts'],sec:['back']},
+    cp(TRICEPS_V),
+    cp(CRUNCH)
   ]},
-  UPPER_B:{name:'UPPER B',day:'Vendredi',tag:'Tirage · Hypertrophie',mg:['back','delts','arms','pecs'],mlab:['Dos','Épaules','Biceps','Haut pecs'],exos:[
-    {id:'dev-incline-barre',alt:['Développé incliné barre si le banc est libre','Développé incliné haltères, ~2 kg de moins par main'],name:'Développé incliné machine',sets:3,reps:[8,10],unit:'reps',kg:null,mode:'tbd',hint:'à calibrer S1 : RIR 3',step:2.5,restSec:150,note:'Le haut de pecs, ton point visible en t-shirt. Dossier ~30-45°',mg:['pecs'],sec:['delts','arms']},
-    {id:'tirage-vert-pron',alt:['Tractions assistées pronation','Tirage poitrine barre large'],name:'Tirage vertical pronation',sets:4,reps:[8,10],unit:'reps',kg:50,mode:'stack',step:2.5,restSec:120,note:'Poitrine vers la barre',mg:['back'],sec:['arms']},
-    {id:'dips-lestes',alt:['Dips machine assistée','Développé couché prise serrée si les barres parallèles sont prises'],name:'Dips lestés (progressif)',sets:3,reps:[8,12],unit:'reps',kg:0,mode:'bw',hint:'PDC → +2,5 kg quand 3×12',step:2.5,restSec:120,note:'Ton exo — on le garde et on le charge',mg:['pecs'],sec:['arms','delts']},
-    {id:'traction-supination',alt:['Tractions supination assistées','Tirage vertical supination si la barre est prise'],name:'Tractions supination',sets:3,reps:[6,10],unit:'reps',kg:0,mode:'bw',hint:'PDC · assisté si besoin',step:2.5,restSec:120,note:'Paumes vers toi, poitrine vers la barre, sans balancer',mg:['back'],sec:['arms']},
-    {id:'elev-lat-halteres',alt:['Élévations latérales poulie','Élévations machine'],name:'Élévations latérales haltères',sets:3,reps:[12,15],unit:'reps',kg:6,mode:'perHand',step:1,restSec:60,note:'Monte jusqu’à hauteur d’épaule, sans élan',mg:['delts'],sec:[]},
-    {id:'oiseau-poulie',alt:['Oiseau machine (pec deck inversé)','Oiseau haltères buste penché'],name:'Oiseau poulie',sets:3,reps:[15],unit:'reps',kg:null,mode:'tbd',hint:'léger',step:1,restSec:60,note:'Bras presque tendus, ouvre avec l’arrière d’épaule',mg:['delts'],sec:['back']},
-    {id:'curl-ez',alt:['Curl haltères prise marteau — poignet neutre, ton ami','Curl poulie basse corde'],name:'Curl EZ',sets:3,reps:[10,12],unit:'reps',kg:null,mode:'tbd',hint:'charge actuelle',step:2.5,restSec:75,note:'Barre EZ = poignet neutre, on garde',mg:['arms'],sec:[]}
+  HAUT_C:{name:'HAUT C',day:'Jeudi',tag:'Épaules · bras',mg:['delts','arms','abs'],mlab:['Épaules','Biceps','Triceps','Abdos'],exos:[
+    {id:'dev-mil-hal',alt:['Développé épaules machine','Développé haltères assis en prise neutre, le plus doux pour ton poignet'],name:'Développé militaire haltères',sets:4,reps:[6,8],kg:14,mode:'perHand',step:2,restSec:REST_BIG,note:'Prise neutre ou légèrement tournée. Assis, dossier à 85°',mg:['delts'],sec:['arms']},
+    cp(ELEV_LAT),
+    {id:'oiseau-poulie',alt:['Pec deck inversé','Oiseau haltères buste penché'],name:'Oiseau',sets:3,reps:[12,15],kg:null,mode:'tbd',step:1,restSec:REST_SMALL,note:'L’arrière d’épaule. Bras presque tendus, sans élan',mg:['delts'],sec:['back']},
+    {id:'curl-marteau-corde',alt:['Curl haltères prise marteau','Curl poulie basse poignées neutres'],name:'Curl poulie basse à la corde',sets:3,reps:[10,12],kg:12,mode:'stack',step:2,restSec:REST_SMALL,note:'Prise marteau, coudes fixes : brachioradial, brachial, biceps',mg:['arms'],sec:[]},
+    cp(TRICEPS_V),
+    cp(CRUNCH)
   ]},
-  LOWER_B:{name:'LOWER B',day:'Dimanche',tag:'Quadris + posterior · finisher',mg:['quads','hams','calves','abs'],mlab:['Quadris','Ischios','Mollets','Abdos'],exos:[
-    {id:'hack-squat',alt:['Presse à cuisses pieds bas','Presse inclinée — jamais de squat libre'],name:'Hack squat machine OU presse pieds bas',sets:4,reps:[8,10],unit:'reps',kg:null,mode:'tbd',step:5,restSec:150,note:'Machine = pas un squat libre, quadris ciblés',mg:['quads'],sec:['glutes']},
-    {id:'leg-curl-allonge',alt:['Leg curl assis','Leg curl debout un pied'],name:'Leg curl allongé',sets:3,reps:[10,12],unit:'reps',kg:null,mode:'tbd',step:2.5,restSec:90,note:'Variante allongée ≠ assise : les deux comptent',mg:['hams'],sec:[]},
-    {id:'leg-ext',alt:['Presse pieds hauts, amplitude complète','Sissy squat machine'],name:'Leg extension',sets:3,reps:[12,15],unit:'reps',kg:null,mode:'tbd',step:2.5,restSec:90,note:'1 s squeeze en haut',mg:['quads'],sec:[]},
-    {id:'mollets-assis',alt:['Mollets à la presse genoux fléchis','Mollets debout — moins de soléaire, mais ça compte'],name:'Mollets assis',sets:4,reps:[12,15],unit:'reps',kg:null,mode:'tbd',step:5,restSec:60,note:'Soléaire — complète le mollet debout de mercredi',mg:['calves'],sec:[]},
-    {id:'crunch-cable-releves',alt:['Crunch machine + relevés de jambes au banc','Planche lestée + relevés de genoux suspendu'],name:'Crunch câble + relevés de jambes suspendu',sets:3,restSec:60,note:'Abdos chargés = abdos qui ressortent une fois sec',mg:['abs'],sec:[],
-      parts:[{lab:'Crunch câble',reps:[12,15],unit:'reps',kg:null,mode:'tbd',step:2.5},{lab:'Relevés de jambes suspendu',unit:'max',mode:'none'}]},
-    {id:'farmers-walk',alt:['Farmer’s walk kettlebells','Suitcase carry (une main) — 30 m par côté'],name:'Farmer’s walk (straps)',sets:3,reps:[30],unit:'m',kg:24,mode:'pair',step:2,restSec:90,note:'Grip, trapèzes, gainage — l’exo du boxeur',mg:['arms'],sec:['back','abs']}
+  HAUT_D:{name:'HAUT D',day:'Vendredi',tag:'Dos · pecs',mg:['back','pecs','arms','abs'],mlab:['Dos','Pecs','Triceps','Abdos'],exos:[
+    {id:'tirage-vert-neutre',alt:['Tirage vertical prise neutre à la machine','Tractions prise neutre, assistées si besoin'],name:'Tirage vertical prise serrée',sets:3,reps:[8,10],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Poignée triangle (V), paumes face à face. Milieu et bas du grand dorsal',mg:['back'],sec:['arms']},
+    {id:'pec-deck',alt:['Écarté à la poulie vis-à-vis','Écarté haltères au banc'],name:'Pec deck',sets:3,reps:[10,12],kg:null,mode:'tbd',step:2.5,restSec:REST_SMALL,note:'L’intérieur des pecs. Serre 1 s quand les poignées se rejoignent',mg:['pecs'],sec:['delts']},
+    {id:'iso-dy-row',alt:['Rowing machine poignées neutres','Rowing haltère un bras'],name:'Iso latéral D.Y. row',sets:3,reps:[8,10],kg:null,mode:'tbd',step:2.5,restSec:REST_BIG,note:'Un bras après l’autre, poignées neutres. Milieu du dos, arrière d’épaule',mg:['back'],sec:['delts','arms']},
+    {id:'dips-lestes',alt:['Dips machine assistée','Développé couché prise serrée si les barres sont prises'],name:'Dips',sets:3,reps:[8,10],kg:0,mode:'bw',hint:'PDC · lest quand 3×10 propres',step:2.5,restSec:REST_BIG,note:'Buste un peu penché pour le bas des pecs. Descends sans forcer l’épaule',mg:['pecs'],sec:['arms','delts']},
+    cp(CRUNCH)
   ]}
 };
+/* le planning, au jour. t : m = muscu · n = natation · r = repos */
+var PLAN={1:{t:'m',sk:'HAUT_A'},2:{t:'m',sk:'HAUT_B'},3:{t:'n'},4:{t:'m',sk:'HAUT_C'},5:{t:'m',sk:'HAUT_D'},6:{t:'n',opt:true},0:{t:'r'}};
+var PLAN_ROWS=[[1,'LUN'],[2,'MAR'],[3,'MER'],[4,'JEU'],[5,'VEN'],[6,'SAM'],[0,'DIM']];
+function dayPlan(d){return PLAN[d.getDay()];}
+function sessionKeyOn(d){var p=d&&dayPlan(d);return (p&&p.sk)||null;}
+function planLabel(p){return p.t==='m'?SESSIONS[p.sk].name:(p.t==='n'?'NATATION':'REPOS');}
+/* le prochain jour de muscu, pour dire « demain : … » les jours sans séance */
+function nextTraining(d){
+  for(var k=1;k<=7;k++){var x=new Date(d);x.setDate(d.getDate()+k);var p=dayPlan(x);
+    if(p.t==='m')return {d:x,k:k,sess:SESSIONS[p.sk]};}
+  return null;
+}
 
 /* ===== DÉRIVATION DES CHAÎNES AFFICHÉES =====
    Une seule source (le structuré ci-dessus) → toutes les vues. */
@@ -1643,8 +1656,8 @@ function repsLabel(p){
   var r=p.reps.length>1?p.reps[0]+'-'+p.reps[1]:String(p.reps[0]);
   return p.unit==='s'?r+' s':(p.unit==='m'?r+' m':r);
 }
-/* la prescription : "4×5-6", "3×30-45 s / 3×12", "3×30 m".
-   Un superset dont les 2 parties partagent la même prescription ne l'écrit qu'une fois. */
+/* la prescription : "4×6-8". Un superset dont les 2 parties partagent la même
+   prescription ne l'écrit qu'une fois. */
 function fmtPrescription(e){
   if(e.parts&&e.parts.some(function(p){return p.reps||p.unit==='max';}))
     return e.parts.map(function(p){return e.sets+'×'+repsLabel({reps:p.reps||e.reps,unit:p.unit||e.unit});}).join(' / ');
@@ -1653,9 +1666,9 @@ function fmtPrescription(e){
 /* la charge d'UNE partie, telle qu'elle s'écrit : "37,5 kg" · "14 kg/main" · "2×20 kg" */
 function fmtLoadPart(p){
   if(p.mode==='none')return '—';
-  if(p.mode==='tbd')return p.hint||'à calibrer';
+  if(p.mode==='tbd')return p.hint||'à noter';
   if(p.mode==='bw')return p.hint||(p.kg?'PDC +'+fmtKg(p.kg)+' kg':'PDC');
-  if(p.kg==null)return p.hint||'à calibrer';
+  if(p.kg==null)return p.hint||'à noter';
   if(p.mode==='perHand')return fmtKg(p.kg)+' kg/main';
   if(p.mode==='pair')return '2×'+fmtKg(p.kg)+' kg';
   return fmtKg(p.kg)+' kg';
@@ -1664,16 +1677,16 @@ function fmtLoad(e){
   if(e.parts)return e.parts.every(function(p){return p.mode==='none';})?'—':e.parts.map(fmtLoadPart).join(' / ');
   return fmtLoadPart(e);
 }
-/* 150 s = "2-3 min" : sur un lourd à barre libre, le repos est une fourchette,
-   pas un chiffre — le minuteur prend 150 s, l'affichage dit la vérité du terrain. */
+/* les fourchettes de Rayan, écrites comme il les dit */
 function fmtRest(sec){
+  if(sec===REST_BIG)return '2’30 à 3’';
+  if(sec===REST_SMALL)return '60 à 90 s';
   if(sec===150)return '2-3 min';
   return sec<120?sec+' s':(sec/60)+' min';
 }
 /* le multiplicateur de tonnage : un haltère dans CHAQUE main compte double */
 function multOf(p){return (p.mode==='perHand'||p.mode==='pair')?2:1;}
-/* ce qui est tonnable : des reps avec une charge. Ni les secondes de gainage,
-   ni les mètres de farmer's walk — porter 24 kg sur 30 m n'est pas "soulever 30 fois". */
+/* ce qui est tonnable : des reps avec une charge */
 function tonnable(p){return (p.unit==='reps'||!p.unit)&&p.mode!=='none'&&p.kg!=null;}
 
 /* hydrate() : dérive les chaînes + grave sk/id sur chaque exo. Appelé une fois au boot. */
@@ -1690,46 +1703,36 @@ function hydrate(){
   });
 }
 hydrate();
-/* index id → exo, pour retrouver un exercice sans dépendre de sa position */
+/* index id → exo. Un exo présent dans deux séances pointe sur sa PREMIÈRE
+   occurrence (même id = même historique, peu importe laquelle). */
 var EXO_BY_ID={};
-Object.keys(SESSIONS).forEach(function(sk){SESSIONS[sk].exos.forEach(function(e){EXO_BY_ID[e.id]=e;});});
-var SPRINTS={
-  S1:{name:'SPRINT 1',tag:'Explosivité · jeudi 17h30 · dès S1',mg:['quads','hams','calves'],mlab:['Explosivité','Jambes','Cardio'],steps:[
-    'Échauffement 12 min : jog 3 min → gammes (montées de genoux, talons-fesses, jambes tendues, skips A) 2×20 m chaque → 3 accélérations progressives 60 % / 75 % / 90 %',
-    'CORE|6× 30 m à 95 %, départ 3 points, récup 2 min 30 marchée (récup complète = qualité ; un sprint fatigué n’entraîne rien)',
-    '2× 10 m départ arrêté, explosif pur',
-    'Retour au calme : 5 min marche + 3 min respiration nasale',
-    'Progression : +1 sprint toutes les 2 semaines, plafond 10. Chrono le 30 m en S4/S8/S12/S16.'
-  ]},
-  S2:{name:'SPRINT 2',tag:'Capacité · samedi 17h30 · dès S5 (Bloc 2)',mg:['quads','hams','calves'],mlab:['Capacité','VO2','Jambes'],steps:[
-    'Même échauffement (12 min : jog + gammes + accélérations)',
-    'CORE|6× 150 m à 75-80 %, récup 90 s marchée (ou 8× côte de 20 m si piste indisponible)',
-    'Progression : 6 → 8 répétitions sur le bloc, puis réduire la récup à 75 s',
-    'Pourquoi : maintient ta VO2 de boxeur, brûle sans manger ta récupération, et c’est le format d’effort que ton corps connaît par cœur.'
-  ]}
-};
-/* "Ischios" et plus "Ischios/fess." : depuis le retrait du hip thrust (demande de
-   Rayan), les fessiers ne sont plus travaillés en primaire — seulement en
-   secondaire au SDT roumain. Le libellé débordait sur la barre, en plus. */
-var VOLUME=[['Pecs',13],['Dos',16],['Épaules',12],['Quadris',11],['Ischios',12],['Bras directs',9],['Mollets',8],['Abdos',9]];
+Object.keys(SESSIONS).forEach(function(sk){SESSIONS[sk].exos.forEach(function(e){if(!EXO_BY_ID[e.id])EXO_BY_ID[e.id]=e;});});
+/* chaque exo une seule fois, dans l'ordre du programme, avec les séances où il revient */
+function uniqueExos(){
+  var out=[],seen={};
+  Object.keys(SESSIONS).forEach(function(sk){
+    SESSIONS[sk].exos.forEach(function(e,i){
+      if(seen[e.id]){seen[e.id].in.push(SESSIONS[sk].name);return;}
+      var x={id:e.id,sk:sk,i:i,e:e,in:[SESSIONS[sk].name]};seen[e.id]=x;out.push(x);
+    });
+  });
+  return out;
+}
+/* le volume se CALCULE depuis le programme : plus de tableau recopié à la main */
+function volumeOf(){
+  var m={};
+  Object.keys(SESSIONS).forEach(function(sk){SESSIONS[sk].exos.forEach(function(e){
+    (e.mg||[]).forEach(function(g){m[g]=(m[g]||0)+(e.sets||3);});
+  });});
+  return Object.keys(m).map(function(g){return [MG_LABEL[g]||g,m[g]];}).sort(function(a,b){return b[1]-a[1];});
+}
 var ADAPT=[
-  ['bolt','Nuit &lt; 6h','La séance a lieu, mais : <b>-1 série</b> par exercice, <b>RIR +1</b>, zéro technique d’intensité. Une mauvaise séance faite bat une bonne séance ratée.'],
-  ['arrow','Séance manquée','Elle glisse au jour suivant disponible. <b>On ne double JAMAIS.</b> Si la semaine est pleine : priorité <b>Lower B &gt; Upper A &gt; le reste</b>.'],
-  ['alert','3 signaux de fatigue','Nuits &lt; 6h ×3, perfs -10 %, irritabilité → <b>deload anticipé de 3 jours</b>, reprise ensuite au même point.'],
-  ['moon','Sortie imprévue en semaine','Protocole sortie + lendemain : sieste 30 min max, séance décalée à 17h et <b>allégée (-1 série/exo)</b>.'],
-  ['stretch','Douleur poignet en séance','<b>Swap immédiat</b> : DC → machine convergente · curls → corde/marteau · tirages → straps. Persistance 7 jours → kiné.'],
-  ['pen','Semaine d’examens','Mode maintien : <b>3 séances</b> (Upper A, Lower A, Upper B), 1 sprint, calories à maintenance. Le programme reprend après.'],
-  ['walk','Vacances / déplacement','Version adaptée à toi : <b>hip thrust unilatéral, marche rapide 45 min/j, protéines tenues.</b>']
+  ['bolt','Nuit &lt; 6h','La séance a lieu, mais : <b>-1 série</b> par exercice, <b>RIR +1</b>. Une mauvaise séance faite bat une bonne séance ratée. Coche « nuit courte » avant de démarrer, l’app allège pour toi.'],
+  ['arrow','Séance manquée','Elle glisse au jour suivant disponible. <b>On ne double JAMAIS.</b>'],
+  ['stretch','Douleur poignet en séance','<b>Swap immédiat</b> : développé couché → machine convergente · curls → corde/marteau · tirages → straps. Persistance 7 jours → kiné.']
 ];
 var ROUTINE_SOIR=['Alarme inversée : elle sonne 45 min AVANT le coucher → début de descente','Douche chaude (la chute de température qui suit déclenche l’endormissement)','Écrans : mode nuit dès 21h, téléphone EN CHARGE HORS DE PORTÉE du lit','Chambre : 18-19 °C, noir complet','10 min de lecture ou mobilité douce'];
 var ROUTINE_MATIN=['500 ml d’eau dès le lever (+ pincée de sel les jours de marché)','Lumière du jour dans les 30 min (marché : auto ; lycée : 10 min dehors)','Petit-déjeuner 30-40 g de protéines (œufs, skyr, thon)','2 min de CARs poignets les jours de marché','1 min : ouvrir l’app, lire sa journée'];
-var TESTS=[
-  {id:'S0',wk:'S0',name:'Tests initiaux',d:'Photos + poids + tour de taille (kickoff 17/07)'},
-  {id:'S4',wk:'S4',name:'Contrôle bloc 1',d:'Photos, poids, taille, force, chrono 30 m'},
-  {id:'S8',wk:'S8',name:'Contrôle bloc 2',d:'Photos, poids, taille, force, chrono 30 m'},
-  {id:'S12',wk:'S12',name:'Contrôle bloc 3',d:'Photos, poids, taille, force, chrono 30 m'},
-  {id:'S16',wk:'S16',name:'Tests finaux',d:'Photos avant/après, 5RM DC, tirage 6RM, chrono 30 m'}
-];
 
 /* ===== muscle silhouette (front + back schematic) ===== */
 function muscleSVG(primary,secondary){
@@ -1784,12 +1787,10 @@ window.__lightMuscles=function(scope){
 };
 
 /* ===== état du jour ===== */
+/* plus de phases ni de numéro de semaine : le jour décide, c'est tout */
 function computeState(d){
-  var k=parseD(KICKOFF),w1=parseD(WEEK1_MONDAY),end=parseD(PROTOCOLE_END);d=atMid(d);
-  if(d<k)return{phase:'pre',jMinus:daysBetween(d,k),date:d};
-  if(d<w1)return{phase:'kickoff',kday:daysBetween(k,d),date:d};
-  if(d<=end){var week=Math.floor(daysBetween(w1,d)/7)+1;if(week>16)week=16;return{phase:'active',week:week,block:blockOfWeek(week),deload:isDeload(week),dow:d.getDay(),date:d};}
-  return{phase:'done',date:d};
+  d=atMid(d);var p=dayPlan(d);
+  return {phase:'active',dow:d.getDay(),date:d,plan:p,sk:p.sk||null,deload:false};
 }
 
 /* ===== rest seconds =====
@@ -1848,10 +1849,48 @@ function setCharge(sk,i,val){
   if(!val){delete all[k];saveJSON(LS_CHARGES,all);chargesDirty();return;}
   var c=all[k]||{h:[]};if(!c.h)c.h=[];
   var last=c.h[c.h.length-1];
-  if(last&&last[0]===dk)last[1]=val; else c.h.push([dk,val]);
-  if(c.h.length>60)c.h=c.h.slice(-60);
+  /* une saisie le même jour remplace la charge auto du jour : elle n'est plus « auto » */
+  if(last&&last[0]===dk){last[1]=val;last.length=2;} else c.h.push([dk,val]);
+  if(c.h.length>H_MAX)c.h=c.h.slice(-H_MAX);
   c.v=val;c.d=dk;all[k]=c;saveJSON(LS_CHARGES,all);chargesDirty();
 }
+var H_MAX=300;
+/* ===== LA CHARGE DU JOUR, NOTÉE TOUTE SEULE =====
+   Rayan coche ses exos à la main. Avant, seule une charge MODIFIÉE laissait une
+   trace datée : un poids tenu 3 mois avait un seul point, aucune courbe possible.
+   Cocher un exo (ou faire sa 1re série guidée) date maintenant la charge du jour.
+   Marquée 'a' (auto) pour pouvoir la retirer si la coche était une erreur. */
+function stampCharge(sk,i,dk){
+  var e=SESSIONS[sk]&&SESSIONS[sk].exos[i]; if(!e)return;
+  var cur=effLoad(sk,i,e); if(!loadParts(cur))return;
+  var all=loadCharges(),k=chargeKey(sk,i),c=all[k]||{h:[]};if(!c.h)c.h=[];
+  var last=c.h[c.h.length-1];
+  if(last&&last[0]===dk)return; /* une charge existe déjà ce jour-là : elle fait foi */
+  c.h.push([dk,cur,'a']);
+  if(c.h.length>H_MAX)c.h=c.h.slice(-H_MAX);
+  all[k]=c;saveJSON(LS_CHARGES,all);chargesDirty();
+}
+function unstampCharge(sk,i,dk){
+  var all=loadCharges(),k=chargeKey(sk,i),c=all[k];if(!c||!c.h||!c.h.length)return;
+  var last=c.h[c.h.length-1];
+  if(last[0]!==dk||last[2]!=='a')return;
+  c.h.pop();
+  if(!c.h.length&&!c.v)delete all[k];
+  saveJSON(LS_CHARGES,all);chargesDirty();
+}
+/* "35" saisi sans unité s'affiche "35 kg" */
+function dispLoad(s){s=String(s==null?'':s).trim();return /^\d+(?:[.,]\d+)?$/.test(s)?s+' kg':s;}
+/* la progression d'un exo, depuis ses charges datées */
+function progressOf(sk,i){
+  var e=SESSIONS[sk]&&SESSIONS[sk].exos[i]; if(!e)return null;
+  var pts=histOf(sk,i).map(function(x){var p=loadParts(x[1]);return p?{d:x[0],n:p.n}:null;}).filter(Boolean);
+  var cur=loadParts(effLoad(sk,i,e));
+  if(!pts.length&&!cur)return null;
+  var curN=cur?cur.n:pts[pts.length-1].n, first=pts.length?pts[0]:null;
+  var best=pts.length?Math.max.apply(null,pts.map(function(x){return x.n;})):curN;
+  return {pts:pts,cur:curN,first:first,best:Math.max(best,curN),delta:first?curN-first.n:0};
+}
+function deltaTxt(d){return d>0?'+'+fmtNum(d)+' kg':(d<0?fmtNum(d)+' kg':'');}
 function resetCharge(sk,i){var all=loadCharges(),k=chargeKey(sk,i);if(all[k]){delete all[k].v;delete all[k].d;if(!all[k].h||!all[k].h.length)delete all[k];saveJSON(LS_CHARGES,all);chargesDirty();}}
 /* '2×20 kg' → {pre:'2×', n:20, suf:' kg'} · 'à calibrer' → null */
 function loadParts(str){
@@ -1923,7 +1962,10 @@ function logSets(dk,sk,i){var l=loadLog(dk);return l[chargeKey(sk,i)]||[];}
 function pushSet(dk,sk,i,reps,rpe){
   var l=loadLog(dk),k=chargeKey(sk,i);
   if(!l[k])l[k]=[];
-  l[k].push({r:reps,e:rpe||null});
+  /* la charge de la série est gravée avec elle : changer de poids en plein exo
+     ne réécrit plus les séries d'avant */
+  var ex=SESSIONS[sk]&&SESSIONS[sk].exos[i], kg=ex?kgOf(sk,i,ex):null;
+  l[k].push(kg!=null?{r:reps,e:rpe||null,k:kg}:{r:reps,e:rpe||null});
   saveJSON(logKey(dk),l);logsDirty();
 }
 function updateLastSet(dk,sk,i,reps,rpe){
@@ -1996,7 +2038,7 @@ function lastTimeHTML(sk,i,exceptDK){
   var c=chargeStrAtDate(sk,i,L.dk);
   var reps=L.sets.map(function(s){return s.r;}).filter(function(r){return r!=null;});
   if(!reps.length)return '';
-  var noLoad=(!c||c==='—'||/calibrer|actuelle/.test(c));
+  var noLoad=(!c||c==='—'||/calibrer|actuelle|noter/.test(c));
   return '<div class="lastt"><span class="k">la dernière fois</span>'+
     '<b>'+esc(fmtDK(L.dk))+'</b> · '+(noLoad?'':esc(c)+' · ')+esc(reps.join(' / '))+
     '<span class="u">reps</span></div>';
@@ -2012,18 +2054,12 @@ function lastTimeHTML(sk,i,exceptDK){
    - séries 'dur' partout = il est déjà au RIR 0, il n'a plus de marge → on tient
    - pas de charge chiffrée (à calibrer, gainage, PDC) → rien à proposer */
 function progressionAdvice(sk,i){
-  /* en deload on RÉCUPÈRE : conseiller de monter la charge cette semaine-là
-     contredit la carte du jour (« charges -10 % »). L'écran de séance masquait
-     déjà le conseil (RUN.deload), mais la fiche exo l'affichait — trouvé par la
-     simulation longitudinale 16 semaines du 16/07. */
-  var st=computeState(today());
-  if(st.phase==='active'&&st.deload)return null;
   var sess=SESSIONS[sk]; if(!sess)return null;
   var e=sess.exos[i]; if(!e||!e.step)return null;
   var p=mainPart(e);
   if(p.mode==='none'||p.mode==='bw'||(p.unit&&p.unit!=='reps'))return null;
   var cur=effLoad(sk,i,e);
-  if(!loadParts(cur)||/calibrer|actuelle/.test(cur))return null;
+  if(!loadParts(cur)||/calibrer|actuelle|noter/.test(cur))return null;
   var L=lastSessionOf(sk,i,dateKeyOf(today()));
   if(!L)return null;
   /* la charge doit être la même que la dernière fois, sinon on compare des pommes et des poires */
@@ -2055,7 +2091,7 @@ function isEstimatedLoad(sk,i){
 function adviceHTML(sk,i){
   /* le texte dans un span : .adv est un flex, chaque nœud texte deviendrait un item
      et la phrase se disloquerait en colonnes */
-  if(isEstimatedLoad(sk,i))return '<div class="adv est"><span class="ic">'+IC.pen+'</span><span>Charge estimée — <b>ajuste-la</b> à ton RIR 3.</span></div>';
+  if(isEstimatedLoad(sk,i))return '<div class="adv est"><span class="ic">'+IC.pen+'</span><span>Charge de départ — <b>ajuste-la</b> pour garder 1 à 2 reps en réserve.</span></div>';
   var a=progressionAdvice(sk,i); if(!a)return '';
   if(a.hold)return '<div class="adv hold">Tu as bouclé, mais tes séries étaient <b>dures</b> — reste à cette charge, gagne des reps propres.</div>';
   return '<div class="adv"><span class="ic">'+IC.flash+'</span>Tu as bouclé le haut à '+esc(a.from)+' — <b>monte à '+esc(a.to)+'</b></div>';
@@ -2065,13 +2101,13 @@ function adviceHTML(sk,i){
 var MG_LABEL={pecs:'Pectoraux',delts:'Épaules',arms:'Bras',back:'Dos',abs:'Abdos',quads:'Quadriceps',hams:'Ischios',glutes:'Fessiers',calves:'Mollets'};
 function exoRows(exos,opts){
   opts=opts||{};var checkable=opts.checkable,dateKey=opts.dateKey,sk=opts.sessionKey||'';
-  var dl=!!opts.deload, short=!!opts.short;
+  var short=!!opts.short;
   var done=checkable?loadDone(dateKey):[];
   var h='';
   for(var i=0;i<exos.length;i++){var e=exos[i];
-    var lv=workLoad(sk,i,e,dl);
-    var nSets=Math.max(1,setsOf(e,dl)-(short?1:0)), pres=(dl||short)?nSets+'×'+repsMain(e):e.s;
-    var data=pres+(lv&&lv!=='—'?' · <span class="load'+(sk&&isCustomLoad(sk,i)&&!dl?' real':'')+(dl?' dl':'')+'">'+esc(lv)+'</span>':'')+' · repos '+e.rest;
+    var nSets=Math.max(1,setsOf(e,false)-(short?1:0)), pres=short?nSets+'×'+repsMain(e):e.s;
+    /* la charge n'est plus noyée dans la ligne grise : elle a son propre bouton */
+    var data=pres+' · repos '+esc(e.rest);
     var isDone=checkable&&done[i];
     h+='<div class="exo'+(isDone?' done':'')+'" data-sk="'+sk+'" data-i="'+i+'">'+
       (checkable
@@ -2081,12 +2117,45 @@ function exoRows(exos,opts){
         '<div class="exo-name">'+esc(e.name)+'<span class="exo-see">'+IC.chevron+'</span></div>'+
         '<div class="exo-data">'+data+'</div><div class="exo-note">'+esc(e.note)+'</div>'+
         '<div class="exo-actions">'+
-          (checkable?'<button class="rest-btn" data-rest="'+restSeconds(e.rest)+'" data-restlabel="'+esc(e.rest)+'"><span class="ic">'+IC.clock+'</span> Repos '+esc(e.rest)+'</button>':'')+
-          '<span class="exo-mini">'+IC.body+' voir le muscle</span>'+
+          (sk?kgBtnHTML(sk,i,e):'')+
+          (checkable?'<button class="rest-btn" data-rest="'+restSecOf(e)+'" data-restlabel="'+esc(e.rest)+'"><span class="ic">'+IC.clock+'</span> Repos</button>':'')+
         '</div>'+
       '</div></div>';
   }
   return h;
+}
+/* ===== LE BOUTON POIDS =====
+   Demande de Rayan : « mettre le poids pour savoir s'il a progressé ». L'éditeur
+   existait mais se cachait derrière un crayon gris dans la fiche exo. Il est
+   maintenant SUR la ligne, avec la progression depuis la première charge notée. */
+function kgBtnHTML(sk,i,e){
+  var p=mainPart(e); if(p.mode==='none')return '';
+  var lv=effLoad(sk,i,e), num=!!loadParts(lv), P=num?progressOf(sk,i):null, d=P?deltaTxt(P.delta):'';
+  var lab=num?'<b>'+esc(dispLoad(lv))+'</b>':(p.mode==='bw'?'<b>PDC</b>':'Noter mon poids');
+  return '<button class="kg-btn'+(num?' has':'')+'" type="button" aria-label="Poids : '+esc(num?dispLoad(lv):'à noter')+'. Modifier pour '+esc(e.name)+'">'+
+    '<span class="ic">'+IC.pen+'</span>'+lab+(d?'<span class="kg-pg'+(P.delta<0?' dn':'')+'">'+d+'</span>':'')+'</button>';
+}
+/* un seul écouteur, en capture : il passe AVANT celui qui ouvre la fiche exo,
+   et sert aussi la liste « Tes charges » du Suivi */
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest&&ev.target.closest('.kg-btn,.ch-row'); if(!b)return;
+  var row=b.closest('[data-sk]'); if(!row)return;
+  ev.stopPropagation();ev.preventDefault();
+  var sk=row.getAttribute('data-sk'), i=+row.getAttribute('data-i');
+  if(!SESSIONS[sk])return;
+  openLoadEditor(sk,i,function(){afterLoadChange(sk,i);});
+},true);
+/* une charge a changé : on repeint ce qui l'affiche, sans re-rendre les vues
+   (un re-render rejouerait les animations et refermerait les accordéons) */
+function afterLoadChange(sk,i){
+  var id=chargeKey(sk,i);
+  document.querySelectorAll('.exo[data-sk]').forEach(function(row){
+    var rsk=row.getAttribute('data-sk'), ri=+row.getAttribute('data-i'), ex=SESSIONS[rsk]&&SESSIONS[rsk].exos[ri];
+    if(!ex||ex.id!==id)return;
+    var old=row.querySelector('.kg-btn'); if(old)old.outerHTML=kgBtnHTML(rsk,ri,ex);
+  });
+  step('r:progress',renderProgress);
+  if(window.__trackerReady){step('r:charges',renderChargesList);step('r:force',renderForceChart);}
 }
 function bindExoRows(scope,onCheck){
   scope.querySelectorAll('.exo[data-sk]').forEach(function(row){
@@ -2095,7 +2164,9 @@ function bindExoRows(scope,onCheck){
     var body=row.querySelector('.exo-body');
     if(body){var opn=function(){openExoDetail(sk,i);};
       body.addEventListener('click',function(ev){if(ev.target.closest&&ev.target.closest('.rest-btn'))return;opn();});
-      body.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();opn();}});}
+      /* seulement si c'est la ligne elle-même : Entrée sur un bouton intérieur
+         (poids, repos) ouvrait aussi la fiche par-dessus */
+      body.addEventListener('keydown',function(ev){if(ev.target!==body)return;if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();opn();}});}
     var chk=row.querySelector('.exo-check[data-check]');
     if(chk&&onCheck){var tg=function(){onCheck(row,i,chk);};
       chk.addEventListener('click',function(ev){ev.stopPropagation();tg();});
@@ -2107,8 +2178,8 @@ function bindExoRows(scope,onCheck){
 function exoDetailHTML(e,sk,i){
   var pri=(e.mg||[]).map(function(k){return '<span class="mm-chip">'+esc(MG_LABEL[k]||k)+'</span>';}).join('');
   var sec=(e.sec||[]).map(function(k){return '<span class="mm-chip out">'+esc(MG_LABEL[k]||k)+'</span>';}).join('');
-  var lv=sk?effLoad(sk,i,e):e.load, custom=sk?isCustomLoad(sk,i):false;
-  var loadCls=(custom||!/calibrer|actuelle|PDC|—/.test(lv))?' sm volt':' sm';
+  var lv=dispLoad(sk?effLoad(sk,i,e):e.load), custom=sk?isCustomLoad(sk,i):false;
+  var loadCls=(custom||!/calibrer|actuelle|noter|PDC|—/.test(lv))?' sm volt':' sm';
   return '<div class="muscle-map lg dim">'+muscleSVG(e.mg,e.sec)+'</div>'+
     '<div class="mm-legend"><span class="ll"><i class="pri"></i>Muscle ciblé</span>'+((e.sec&&e.sec.length)?'<span class="ll"><i class="sec"></i>Assistants</span>':'')+'</div>'+
     '<div class="mm-chips" style="justify-content:center;margin-top:12px">'+pri+sec+'</div>'+
@@ -2130,7 +2201,7 @@ function exoDetailHTML(e,sk,i){
     '<div class="exo-d-cue"><div class="k">Exécution</div><ul>'+
       '<li>Amplitude complète — descends jusqu\'au bout, pas de demi-reps.</li>'+
       '<li>Descente contrôlée (~2 s), remontée franche et explosive.</li>'+
-      '<li>Arrête-toi au RIR cible du bloc — garde toujours 1-2 reps en réserve.</li></ul></div>'+
+      '<li>Garde toujours 1 à 2 reps en réserve. Jamais d’échec.</li></ul></div>'+
     /* Un texte ne remplace pas de VOIR quelqu'un le faire. Vidéo précise et
        vérifiée, pas une recherche : à 19 ans et débutant, il ne peut pas trier
        une page de résultats entre une bonne technique et une mauvaise. */
@@ -2138,7 +2209,7 @@ function exoDetailHTML(e,sk,i){
       vidHTML(YT[e.id], e.name+' technique musculation')+
       (YT2[e.id]?vidHTML(YT2[e.id]):'')+
     '</div>'+
-    '<button class="btn-volt" id="exo-d-rest" data-rest="'+restSeconds(e.rest)+'" data-restlabel="'+esc(e.rest)+'" style="width:100%;justify-content:center;margin-top:14px"><span class="ic">'+IC.clock+'</span> Lancer le repos · '+esc(e.rest)+'</button>';
+    '<button class="btn-volt" id="exo-d-rest" data-rest="'+restSecOf(e)+'" data-restlabel="'+esc(e.rest)+'" style="width:100%;justify-content:center;margin-top:14px"><span class="ic">'+IC.clock+'</span> Lancer le repos · '+esc(e.rest)+'</button>';
 }
 function openExoDetail(sk,i){
   var sess=SESSIONS[sk];if(!sess)return;var e=sess.exos[i];if(!e)return;
@@ -2146,7 +2217,7 @@ function openExoDetail(sk,i){
   document.getElementById('exo-sheet-nm').textContent=e.name;
   document.getElementById('exo-sheet-body').innerHTML=exoDetailHTML(e,sk,i);
   var ld=document.getElementById('exo-d-load');
-  if(ld){var edit=function(){openLoadEditor(sk,i,function(){openExoDetail(sk,i);if(!RUN)renderToday();});};
+  if(ld){var edit=function(){openLoadEditor(sk,i,function(){openExoDetail(sk,i);afterLoadChange(sk,i);if(RUN&&RUN.phase==='exo')runRender();});};
     ld.addEventListener('click',edit);
     ld.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();edit();}});}
   var nt=document.getElementById('exo-d-note'), sv=document.getElementById('note-saved'), ntT=null;
@@ -2172,47 +2243,17 @@ function openExoDetail(sk,i){
     startRest(+rb.getAttribute('data-rest'),rb.getAttribute('data-restlabel'));});
 }
 function closeExoDetail(){var ov=document.getElementById('exo-ov');ov.classList.remove('show');ovHide(ov);trapOff(ov);}
-function sprintSteps(sp){
-  var h='<ol class="steps">';
-  for(var i=0;i<sp.steps.length;i++){var s=sp.steps[i],core=false;if(s.indexOf('CORE|')===0){core=true;s=s.slice(5);}
-    h+='<li><span class="n">'+(i+1<10?'0':'')+(i+1)+'</span><span class="'+(core?'core':'')+'">'+esc(s)+'</span></li>';}
-  return h+'</ol>';
+/* ===== NATATION — mercredi, et samedi en option =====
+   Une case, pas un protocole : Rayan l'a écrit « natation 30 min », rien de plus. */
+function swimDone(dk){try{return localStorage.getItem('protocole_nage_'+dk)==='1';}catch(e){return false;}}
+function setSwim(dk,on){
+  try{on?localStorage.setItem('protocole_nage_'+dk,'1'):localStorage.removeItem('protocole_nage_'+dk);}catch(e){}
+  syncSoon();
 }
-/* sprint : coché étape par étape, comme une séance */
-function loadSprint(dk,n){var d=loadJSON('protocole_sprint_'+dk,null);if(d&&d.length===n)return d;var a=[];for(var i=0;i<n;i++)a.push(false);return a;}
-function saveSprint(dk,arr){saveJSON('protocole_sprint_'+dk,arr);}
-function sprintDone(dk,n){var a=loadSprint(dk,n);return a.length&&a.filter(Boolean).length===n;}
-function sprintInteractive(sp,dk){
-  var n=sp.steps.length, arr=loadSprint(dk,n), nd=arr.filter(Boolean).length;
-  var h='<div class="seance-progress"><div class="bar"><i id="sp-bar" style="transform:scaleX('+(nd/n)+')"></i></div><div class="cnt"><b id="sp-cnt">'+nd+'</b>/'+n+'</div></div>'+
-    '<div class="exo-head"><span class="lbl">LE PROTOCOLE</span><span class="today-tag">coche au fur et à mesure</span></div>'+
-    '<div class="spr-list" id="spr-list">';
-  for(var i=0;i<sp.steps.length;i++){
-    var s=sp.steps[i],core=false;if(s.indexOf('CORE|')===0){core=true;s=s.slice(5);}
-    h+='<div class="spr'+(arr[i]?' done':'')+(core?' core':'')+'" data-si="'+i+'" role="checkbox" tabindex="0" aria-checked="'+(arr[i]?'true':'false')+'">'+
-      '<span class="chk-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
-      '<span class="tx">'+esc(s)+'</span></div>';
-  }
-  return h+'</div><div class="done-banner" id="done-banner"><span>⚡</span><div><div class="t">Sprint bouclé</div><div class="s">C’est la séance qui te garde explosif. Retour au calme, puis repas.</div></div></div>';
-}
-function bindSprint(scope,dk,n){
-  var host=scope.querySelector('#spr-list');if(!host)return;
-  var bar=scope.querySelector('#sp-bar'),cnt=scope.querySelector('#sp-cnt'),ban=scope.querySelector('#done-banner');
-  function refresh(){var a=loadSprint(dk,n),k=a.filter(Boolean).length;
-    if(bar)bar.style.transform='scaleX('+(k/n)+')';if(cnt)cnt.textContent=k;if(ban)ban.classList.toggle('show',k===n);}
-  host.querySelectorAll('.spr[data-si]').forEach(function(row){
-    function tg(){var i=+row.getAttribute('data-si'),a=loadSprint(dk,n);a[i]=!a[i];saveSprint(dk,a);
-      row.classList.toggle('done',a[i]);row.setAttribute('aria-checked',a[i]?'true':'false');
-      if(a[i]&&navigator.vibrate)navigator.vibrate(8);refresh();}
-    row.addEventListener('click',tg);
-    row.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();tg();}});
-  });
-  refresh();
-}
-function factsHTML(week){var b=blockOfWeek(week),sl=sleepTarget(week);
-  return '<div class="facts"><div class="fact"><div class="k">Bloc</div><div class="v sm">'+b.n+' · '+esc(b.name)+'</div></div>'+
-    '<div class="fact"><div class="k">RIR cible</div><div class="v">'+b.rir+'</div></div>'+
-    '<div class="fact"><div class="k">Coucher</div><div class="v sm ice">'+sl.c+'</div></div></div>';
+function factsHTML(sess){
+  return '<div class="facts"><div class="fact"><div class="k">Exos</div><div class="v">'+sess.exos.length+'</div></div>'+
+    '<div class="fact"><div class="k">En réserve</div><div class="v">'+RIR+'<span style="font-size:12px;color:var(--muted)"> reps</span></div></div>'+
+    '<div class="fact"><div class="k">Coucher</div><div class="v sm ice">'+SLEEP.c+'</div></div></div>';
 }
 
 /* ===== localStorage helpers =====
@@ -2221,7 +2262,7 @@ function factsHTML(week){var b=blockOfWeek(week),sl=sleepTarget(week);
 var STORE_DEAD=false;
 function loadJSON(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
 function saveJSON(k,v){
-  try{localStorage.setItem(k,JSON.stringify(v));if(STORE_DEAD)storeAlive();return true;}
+  try{localStorage.setItem(k,JSON.stringify(v));if(STORE_DEAD)storeAlive();syncSoon();return true;}
   catch(e){storeFailed(e);return false;}
 }
 function storeFailed(e){
@@ -2243,7 +2284,7 @@ function storeAlive(){STORE_DEAD=false;var b=document.getElementById('store-warn
    Le schéma est versionné pour de vrai : chaque migration s'exécute une fois,
    dans l'ordre, et le numéro atteint est gravé. Sans ça, toucher au programme
    corrompt l'historique en silence. */
-var LS_SCHEMA='protocole_schema_v', SCHEMA_NOW=4;
+var LS_SCHEMA='protocole_schema_v', SCHEMA_NOW=5;
 /* v1 → v2 : les clés d'exercice passent de la position ("UPPER_A|0") à l'id stable ("dc-barre") */
 function migV2(){
   /* table figée sur le programme v1 : la dériver du programme courant recollerait
@@ -2365,6 +2406,23 @@ function migV4(){
   var lifts=loadJSON(LS_LIFTS,null),liftMap={'ss-triceps-curl':'triceps-corde','elev-lat-oiseau':'elev-lat-halteres','tirage-vert-neutre':'traction-pronation','rowing-machine':'traction-supination'};
   if(Array.isArray(lifts))saveJSON(LS_LIFTS,lifts.map(function(id){return liftMap[id]||id;}));
 }
+/* v4 → v5 : fin des semaines. Les pesées étaient rangées par n° de semaine (w) :
+   elles passent à une date (d) — le dimanche de leur semaine, le jour du point
+   hebdo. Pas l'horodatage : des semaines remplies le même soir s'écraseraient. */
+function migV5(){
+  var arr=loadJSON(LS_ENTRIES,[]); if(!Array.isArray(arr)||!arr.length)return;
+  var by={}, w1=parseD(WEEK1_MONDAY);
+  arr.forEach(function(e){
+    if(!e)return; var d=e.d;
+    if(!d&&e.w!=null){var x=new Date(w1);x.setDate(w1.getDate()+(e.w-1)*7+6);d=dateKeyOf(x);}
+    if(!d&&e.ts)d=dateKeyOf(new Date(e.ts));
+    if(!d)return;
+    var o=by[d]||{d:d,weight:null,waist:null,sleep:null,ts:e.ts||0};
+    ['weight','waist','sleep'].forEach(function(f){if(e[f]!=null)o[f]=e[f];});
+    by[d]=o;
+  });
+  saveJSON(LS_ENTRIES,Object.keys(by).sort().map(function(k){return by[k];}));
+}
 function runMigrations(){
   var from=parseInt(localStorage.getItem(LS_SCHEMA)||'0',10)||0;
   if(from>=SCHEMA_NOW)return;
@@ -2377,6 +2435,7 @@ function runMigrations(){
     if(from<2)migV2();
     if(from<3)migV3();
     if(from<4)migV4();
+    if(from<5)migV5();
     localStorage.setItem(LS_SCHEMA,String(SCHEMA_NOW));
   }catch(e){}
 }
@@ -2386,96 +2445,32 @@ function dateKeyOf(d){
   var p=function(n){return (n<10?'0':'')+n;};
   return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
 }
-function loadDone(dk){return loadJSON('protocole_seance_'+dk,[false,false,false,false,false,false]);}
+function loadDone(dk){return loadJSON('protocole_seance_'+dk,[]);}
 function saveDone(dk,arr){saveJSON('protocole_seance_'+dk,arr);}
 
 /* ===== RENDER TODAY ===== */
 function renderToday(){
-  var st=computeState(today());var el=document.getElementById('today-render');var h='';var pill=document.getElementById('status-pill');
+  var st=computeState(today()), el=document.getElementById('today-render'), pill=document.getElementById('status-pill'), h='';
+  var p=st.plan, nx=nextTraining(st.date);
+  var nxt=nx?(nx.k===1?'Demain : ':DOW_FR[nx.d.getDay()].charAt(0)+DOW_FR[nx.d.getDay()].slice(1).toLowerCase()+' : ')+nx.sess.name+' · '+nx.sess.tag.toLowerCase():'';
   pill.classList.remove('rest');
-  if(st.phase==='pre'){
-    h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip">AVANT KICKOFF</span></div>'+
-      '<div style="margin-top:14px"><span class="today-tag">Il reste</span><div class="today-jn">J-'+st.jMinus+'</div></div>'+
-      '<h1 class="today-head" style="font-size:clamp(24px,7.5vw,36px);margin-top:4px">KICKOFF · VEN 17.07</h1>'+
-      '<p class="view-sub" style="margin-top:8px">Tests S0 (photos face/profil/dos, poids, tour de taille) puis <span class="volt">Upper A en mode calibrage</span> (RIR 3-4 : on cherche les bonnes charges, pas la perf).</p>'+
-      '<div class="facts"><div class="fact"><div class="k">Kickoff</div><div class="v sm">VEN 17.07</div></div><div class="fact"><div class="k">Semaine 1</div><div class="v sm">LUN 20.07</div></div><div class="fact"><div class="k">Durée</div><div class="v">16<span style="font-size:13px;color:var(--muted)"> sem.</span></div></div></div></div>';
-  } else if(st.phase==='kickoff'){
-    if(st.kday===0){ h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">KICKOFF · J0</span></div>'+
-      '<h1 class="today-head">TESTS S0<br>+ UPPER A</h1><div class="today-tag">Mode calibrage · RIR 3-4</div>'+
-      '<div class="deload-banner volt"><div><div class="t">On cherche les charges, pas la perf</div><div class="d">Tests S0 d’abord (photos, poids, tour de taille). Puis Upper A tranquille pour caler les bons poids.</div></div></div>'+
-      muscleBlock(SESSIONS.UPPER_A)+ sessionInteractive(SESSIONS.UPPER_A,dateKeyOf(st.date),'UPPER_A')+'</div>';
-    } else if(st.kday===1){ pill.classList.add('rest'); h=restDayHTML(st.date,'KICKOFF · SAMEDI','MARCHÉ<br>+ REPOS','Marché 6h-14h · sieste ≤ 30 min · soirée libre.',['Marché 6h-14h (debout, port de charges — un entraînement caché)','Sieste ≤ 30 min, jamais après 16h','Soirée libre — profites-en, le protocole démarre lundi']);
-    } else { h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">KICKOFF · CALIBRAGE</span></div>'+
-      '<h1 class="today-head">LOWER A</h1><div class="today-tag">Mode calibrage + 10 min mobilité</div>'+
-      '<div class="deload-banner volt"><div><div class="t">Les charges « à calibrer » se règlent ici</div><div class="d">Presse, leg curl, mollets : trouve le poids qui te laisse à RIR 3. + 10 min mobilité pour finir.</div></div></div>'+
-      muscleBlock(SESSIONS.LOWER_A)+ sessionInteractive(SESSIONS.LOWER_A,dateKeyOf(st.date),'LOWER_A')+'</div>';
-    }
-  } else if(st.phase==='done'){
-    h='<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">FIN · 08.11.2026</span></div>'+
-      '<h1 class="today-head">PROTOCOLE<br>TERMINÉ</h1><div class="today-tag">16 semaines. Une transformation.</div>'+
-      '<p class="view-sub" style="margin-top:10px">Direction les <span class="volt">tests finaux</span> : photos face/profil/dos, poids (moyenne des 7 dernières pesées), tour de taille, e1RM développé couché (depuis 5RM) + tirage 6RM, chrono 30 m.</p>'+
-      '<div class="facts"><div class="fact"><div class="k">Cible poids</div><div class="v">69-71<span style="font-size:12px;color:var(--muted)"> kg</span></div></div><div class="fact"><div class="k">Masse grasse</div><div class="v">10-12<span style="font-size:12px;color:var(--muted)"> %</span></div></div><div class="fact"><div class="k">Preuve</div><div class="v sm">Photos avant/après</div></div></div>'+
-      '<p class="view-sub" style="margin-top:12px">Les photos avant/après parlent toutes seules. Bravo, Rayan.</p></div>';
-  } else {
-    var w=st.week,dow=st.dow,dl=st.deload,dk=dateKeyOf(st.date);
-    var dlBanner=dl?'<div class="deload-banner"><div><div class="t">Semaine deload</div><div class="d">Volume -50 % (moitié des séries), charges -10 %, sprints remplacés par marche. Le muscle se construit pendant la récup.</div></div></div>':'';
-    if(dow===1)h=muscuDay(st,'UPPER A',SESSIONS.UPPER_A,dlBanner,'UPPER_A','+ 20 min marche inclinée');
-    else if(dow===3)h=muscuDay(st,'LOWER A',SESSIONS.LOWER_A,dlBanner,'LOWER_A','+ 20 min marche inclinée');
-    else if(dow===5)h=muscuDay(st,'UPPER B',SESSIONS.UPPER_B,dlBanner,'UPPER_B','+ marche · soirée libre (rentrer ≤ 1h)');
-    else if(dow===0)h=muscuDay(st,'LOWER B',SESSIONS.LOWER_B,dlBanner,'LOWER_B','+ marche · mobilité matin · prépa semaine');
-    else if(dow===2){pill.classList.add('rest');h=restDayHTML(st.date,'SEMAINE '+w+' · OFF TOTAL','MARCHÉ<br>+ OFF','Marché 6h-14h · sieste 20-30 min · OFF total · mobilité 10 min ce soir.',['Marché 6h-14h — 8h debout à porter, c’est ta récup active','Sieste 20-30 min max, réveil au minuteur, jamais après 16h','OFF total : pas de « cardio en plus » caché','Mobilité 10 min ce soir (épaules · poignets · hanches)'],w);}
-    else if(dow===4){ if(dl){pill.classList.add('rest');h=restDayHTML(st.date,'SEMAINE '+w+' · DELOAD','MARCHÉ<br>+ MARCHE','Semaine deload : le sprint devient de la marche.',['Marché 6h-14h · sieste 20-30 min','Sprint remplacé par 30-40 min de marche tranquille','On laisse le corps encaisser'],w,dlBanner);} else h=sprintDay(st,'SPRINT 1',SPRINTS.S1); }
-    else if(dow===6){ if(dl){pill.classList.add('rest');h=restDayHTML(st.date,'SEMAINE '+w+' · DELOAD','MARCHÉ<br>+ MARCHE','Semaine deload : marche à la place du sprint. Sortie OK.',['Marché 6h-14h · sieste 20-30 min','Marche tranquille à la place du sprint','Sortie OK — lever dimanche ≤ 9h30'],w,dlBanner);} else if(w>=5)h=sprintDay(st,'SPRINT 2',SPRINTS.S2); else {pill.classList.add('rest');h=restDayHTML(st.date,'SEMAINE '+w+' · SAMEDI','MARCHÉ<br>+ SORTIE','Marché · sieste · sortie OK. Le 2e sprint arrive au Bloc 2 (S5).',['Marché 6h-14h · sieste 20-30 min','Pas encore de Sprint 2 — il démarre en S5','Sortie OK — lever dimanche ≤ 9h30'],w);} }
-  }
+  if(p.t==='m')h=muscuDay(st,SESSIONS[p.sk],p.sk);
+  else if(p.t==='n'){pill.classList.add('rest');h=swimDay(st,p,nxt);}
+  else {pill.classList.add('rest');
+    h=restDayHTML(st.date,'REPOS','REPOS','Rien au programme. Le muscle se construit pendant la récup.',
+      ['Repos complet : pas de « cardio en plus » caché','Tu suis ton poids ? Pèse-toi ce matin et note-le dans Suivi',nxt]);}
   el.innerHTML=h;
-  injectS0Cta(el,st);
   bindSessionInteractions(el);
 }
-/* ===== TESTS S0 : un chemin, pas une obligation =====
-   Today annonce « Tests S0 d'abord » depuis le J-1, mais rien n'y menait : il
-   fallait deviner l'onglet Suivi et scroller jusqu'en bas. Or S0 est la mesure de
-   départ — sans elle, aucune comparaison possible en novembre.
-   Le CTA reste tant que la case n'est pas cochée (il peut les faire lundi aussi),
-   disparaît dès que c'est fait, et ne s'affiche plus passé S1 : un S0 mesuré trois
-   semaines après le départ ne mesure plus rien. */
-function s0Done(){return !!loadJSON(LS_TESTS,{}).S0;}
-/* showView ne re-rend pas Today : cocher les tests dans Suivi puis revenir laissait
-   le CTA affiché (trouvé par la simulation u26). On rafraîchit juste le bouton,
-   pas la vue — re-render complet rejouerait les animations d'entrée à chaque onglet. */
-function s0CtaRefresh(){
-  var c=document.getElementById('s0-cta');
-  if(c){if(s0Done())c.remove();return;}
-  if(s0Done())return;
-  var el=document.getElementById('today-render');
-  if(el)injectS0Cta(el,computeState(today()));
-}
-function injectS0Cta(el,st){
-  if(s0Done())return;
-  if(!(st.phase==='pre'||st.phase==='kickoff'||st.week===1))return;
-  var shell=el.querySelector('.today-shell'); if(!shell)return;
-  var b=document.createElement('button');
-  b.type='button'; b.className='s0-cta'; b.id='s0-cta';
-  b.innerHTML='<span class="ic">'+IC.pen+'</span><span class="t">Faire mes tests S0'+
-    '<span class="s">photos · poids · tour de taille — ta mesure de départ</span></span><span class="ar">→</span>';
-  b.addEventListener('click',gotoS0Tests);
-  /* au kickoff le bandeau volt dit déjà « Tests S0 d'abord » : le CTA se pose juste
-     dessous, dans la continuité de la phrase. Ailleurs, en tête sous la date. */
-  var vb=shell.querySelector('.deload-banner.volt');
-  if(vb)vb.insertAdjacentElement('afterend',b);
-  else {var top=shell.querySelector('.today-top');
-    if(top)top.insertAdjacentElement('afterend',b); else shell.insertBefore(b,shell.firstChild);}
-}
-function gotoS0Tests(){
-  showView('suivi');
-  var t=document.getElementById('tests-checks');
-  if(!t)return;
-  /* le reveal laisse les blocs à opacity:0 tant qu'ils n'ont pas croisé le viewport :
-     scroller dessus sans rvSweep() amènerait Rayan sur une carte invisible */
-  if(window.rvSweep)rvSweep();
-  requestAnimationFrame(function(){
-    var card=t.closest('.card')||t;
-    card.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'});
-  });
+function swimDay(st,p,nxt){
+  var dk=dateKeyOf(st.date), on=swimDone(dk);
+  return '<div class="today-shell rest"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip ice">'+(p.opt?'OPTIONNEL':'CARDIO')+'</span></div>'+
+    '<h1 class="today-head" style="color:var(--ice)">NATATION</h1><div class="today-tag">30 min'+(p.opt?' · en option le samedi':'')+'</div>'+
+    '<button class="short-tgl'+(on?' on':'')+'" id="swim-tgl" type="button" aria-pressed="'+(on?'true':'false')+'" style="margin-top:16px">'+
+      '<span class="st-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
+      '<span class="st-t">'+(on?'Natation faite':'J’ai nagé aujourd’hui')+'<span class="st-s">'+(on?'c’est noté':'30 min · coche quand c’est fait')+'</span></span></button>'+
+    '<ol class="steps leadzero ice" style="margin-top:14px"><li><span class="n"></span>30 min de natation'+(p.opt?', si tu en as envie':'')+'</li>'+
+    (nxt?'<li><span class="n"></span>'+esc(nxt)+'</li>':'')+'</ol></div>';
 }
 /* ===== NUIT COURTE =====
    La règle d'adaptation de l'app (« nuit < 6h → -1 série par exo, RIR +1, zéro
@@ -2485,48 +2480,42 @@ function gotoS0Tests(){
    ratée » devient concret. */
 function isShortDay(dk){try{return localStorage.getItem('protocole_short_'+dk)==='1';}catch(e){return false;}}
 function setShortDay(dk,on){try{on?localStorage.setItem('protocole_short_'+dk,'1'):localStorage.removeItem('protocole_short_'+dk);}catch(e){}}
-function sessionInteractive(sess,dk,skey,deload){
+function sessionInteractive(sess,dk,skey){
   var n=sess.exos.length, ndone=loadDone(dk).filter(Boolean).length;
   var saved=loadJSON('protocole_run_'+dk,null), started=!!(saved&&saved.sets&&saved.sets.some(function(v){return v>0;}));
   var fini=ndone>=n, short=isShortDay(dk);
   var lbl=fini?'Revoir la séance':(started?'Reprendre la séance':'Démarrer la séance');
   var sub=fini?'terminée':(started?'exo '+((saved.i||0)+1)+'/'+n:n+' exos guidés');
-  return '<button class="run-start'+(fini?' fini':'')+'" data-run="'+skey+'"'+(deload?' data-deload="1"':'')+'><span class="ic">'+IC.play+'</span>'+lbl+'<span class="rs-sub">'+esc(sub)+'</span></button>'+
+  return '<button class="run-start'+(fini?' fini':'')+'" data-run="'+skey+'"><span class="ic">'+IC.play+'</span>'+lbl+'<span class="rs-sub">'+esc(sub)+'</span></button>'+
     '<button class="short-tgl'+(short?' on':'')+'" id="short-tgl" type="button" aria-pressed="'+(short?'true':'false')+'">'+
       '<span class="st-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
       '<span class="st-t">Nuit courte (moins de 6 h) ?<span class="st-s">'+(short?'−1 série par exo · vise RIR +1 · zéro forcing':'coche et l’app allège la séance')+'</span></span></button>'+
     '<div class="seance-progress"><div class="bar"><i id="sp-bar"></i></div><div class="cnt"><b id="sp-cnt">0</b>/<span id="sp-tot">'+n+'</span></div></div>'+
     '<div class="exo-head"><span class="lbl">TES EXOS</span><span class="today-tag">ou coche à la main</span></div>'+
-    exoRows(sess.exos,{checkable:true,dateKey:dk,sessionKey:skey,deload:deload,short:short})+
-    '<div class="done-banner" id="done-banner"><span>💥</span><div><div class="t">Séance bouclée</div><div class="s">'+n+'/'+n+' — c’est noté. Récup, protéines, on remet ça.</div></div></div>'+
-    '<div class="why" style="margin-top:14px"><span class="ic">'+IC.bulb+'</span><div class="tx"><b>Rappel :</b> double progression → quand tu boucles le haut de la fourchette sur toutes tes séries au RIR cible, tu montes. L’app te le dira. Straps sur les tirages si la prise lâche. Filme 1 série clé.</div></div>';
+    exoRows(sess.exos,{checkable:true,dateKey:dk,sessionKey:skey,short:short})+
+    '<div class="done-banner" id="done-banner"><span>💥</span><div><div class="t">Séance bouclée</div><div class="s">'+n+'/'+n+' — c’est noté, tes charges aussi. Récup, protéines, on remet ça.</div></div></div>'+
+    '<div class="why" style="margin-top:14px"><span class="ic">'+IC.bulb+'</span><div class="tx"><b>Ton poids sur chaque exo :</b> touche le bouton vert pour le changer. Cocher un exo garde ta charge du jour en mémoire, c’est ta courbe dans Suivi. Garde 1 à 2 reps en réserve, jamais d’échec : quand tu boucles le haut de la fourchette sur toutes tes séries, tu montes, l’app te le dira.</div></div>';
 }
-function muscuDay(st,label,sess,dlBanner,skey,extra){
-  var dlTag=st.deload?'<span class="chip ice">DELOAD</span>':'';
-  return '<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+' · SEM. '+st.week+'</span>'+dlTag+'</div>'+
-    '<h1 class="today-head">'+label+'</h1><div class="today-tag">'+sess.tag+' · '+esc(extra)+'</div>'+
-    dlBanner+factsHTML(st.week)+muscleBlock(sess)+ sessionInteractive(sess,dateKeyOf(st.date),skey,st.deload)+'</div>';
+function muscuDay(st,sess,skey){
+  var dk=dateKeyOf(st.date);
+  return '<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+'</span><span class="chip on">'+esc(sess.tag)+'</span></div>'+
+    '<h1 class="today-head">'+sess.name+'</h1><div class="today-tag">Repos 2’30 à 3’ sur les gros · 60 à 90 s sur les autres<br>+ marche inclinée 30 min si tu veux</div>'+
+    factsHTML(sess)+muscleBlock(sess)+sessionInteractive(sess,dk,skey)+'</div>';
 }
-function sprintDay(st,label,sp){
-  return '<div class="today-shell"><div class="today-top"><span class="today-day">'+fmtDate(st.date)+' · SEM. '+st.week+'</span><span class="chip on">SPRINT</span></div>'+
-    '<h1 class="today-head">'+label+'</h1><div class="today-tag">'+sp.tag+'</div>'+factsHTML(st.week)+muscleBlock(sp)+
-    sprintInteractive(sp,dateKeyOf(st.date))+
-    '<div class="why" style="margin-top:14px"><span class="ic">'+IC.bulb+'</span><div class="tx"><b>Récup complète entre les sprints</b> = qualité. Un sprint couru fatigué n’entraîne rien.</div></div></div>';
-}
-function restDayHTML(date,chip,head,tag,items,week,dlBanner){
-  var facts=week?factsHTML(week):'';var h='<div class="today-shell rest"><div class="today-top"><span class="today-day">'+fmtDate(date)+(week?' · SEM. '+week:'')+'</span><span class="chip ice">RÉCUP</span></div>'+
-    '<h1 class="today-head" style="color:var(--ice)">'+head+'</h1><div class="today-tag">'+esc(tag)+'</div>'+(dlBanner||'')+facts+'<ol class="steps leadzero ice" style="margin-top:16px">';
-  for(var i=0;i<items.length;i++)h+='<li><span class="n"></span>'+esc(items[i])+'</li>';
+function restDayHTML(date,chip,head,tag,items){
+  var h='<div class="today-shell rest"><div class="today-top"><span class="today-day">'+fmtDate(date)+'</span><span class="chip ice">'+esc(chip)+'</span></div>'+
+    '<h1 class="today-head" style="color:var(--ice)">'+head+'</h1><div class="today-tag">'+esc(tag)+'</div><ol class="steps leadzero ice" style="margin-top:16px">';
+  for(var i=0;i<items.length;i++)if(items[i])h+='<li><span class="n"></span>'+esc(items[i])+'</li>';
   return h+'</ol></div>';
 }
 /* interactions: check exos + rest timer */
 function bindSessionInteractions(scope){
   var st=computeState(today());var dk=dateKeyOf(st.date);
-  var sl=scope.querySelector('#spr-list');
-  if(sl){var sp=(st.phase==='active'&&st.dow===6)?SPRINTS.S2:SPRINTS.S1;bindSprint(scope,dk,sp.steps.length);return;}
+  var sw=scope.querySelector('#swim-tgl');
+  if(sw){sw.addEventListener('click',function(){setSwim(dk,!swimDone(dk));if(navigator.vibrate)navigator.vibrate(8);renderToday();renderProgress();});return;}
   var progBar=scope.querySelector('#sp-bar'),progCnt=scope.querySelector('#sp-cnt'),doneB=scope.querySelector('#done-banner');
   var rs=scope.querySelector('.run-start[data-run]');
-  if(rs)rs.addEventListener('click',function(){openRun(rs.getAttribute('data-run'),rs.getAttribute('data-deload')==='1');});
+  if(rs)rs.addEventListener('click',function(){openRun(rs.getAttribute('data-run'));});
   var stg=scope.querySelector('#short-tgl');
   if(stg)stg.addEventListener('click',function(){
     setShortDay(dk,!isShortDay(dk));
@@ -2536,7 +2525,15 @@ function bindSessionInteractions(scope){
   var totEl=scope.querySelector('#sp-tot');
   var tot=(totEl&&+totEl.textContent)||scope.querySelectorAll('.exo').length||6;
   function refresh(){var arr=loadDone(dk);var n=arr.filter(Boolean).length;if(progBar)progBar.style.transform='scaleX('+(n/tot)+')';if(progCnt)progCnt.textContent=n;if(doneB)doneB.classList.toggle('show',n>=tot);}
-  bindExoRows(scope,function(row,i,chk){var arr=loadDone(dk);arr[i]=!arr[i];saveDone(dk,arr);row.classList.toggle('done',arr[i]);chk.setAttribute('aria-checked',arr[i]?'true':'false');if(arr[i]&&navigator.vibrate)navigator.vibrate(8);refresh();});
+  bindExoRows(scope,function(row,i,chk){
+    var arr=loadDone(dk);arr[i]=!arr[i];saveDone(dk,arr);
+    var sk=row.getAttribute('data-sk');
+    /* cocher = la charge du jour est notée ; décocher une erreur la retire */
+    if(arr[i])stampCharge(sk,i,dk); else unstampCharge(sk,i,dk);
+    row.classList.toggle('done',arr[i]);chk.setAttribute('aria-checked',arr[i]?'true':'false');
+    if(arr[i]&&navigator.vibrate)navigator.vibrate(8);
+    refresh();afterLoadChange(sk,i);
+  });
   refresh();
 }
 
@@ -2602,13 +2599,13 @@ var LOAD_CTX=null;
 function loadStepsState(){var ok=!!loadParts(lIn.value);lMinus.disabled=!ok;lPlus.disabled=!ok;}
 function histHTML(sk,i){
   var h=histOf(sk,i);if(!h.length)return '';
-  var best=maxOf(sk,i), last3=h.slice(-3).reverse(), out='';
+  var best=maxOf(sk,i), last3=h.slice(-5).reverse(), out='';
   for(var k=0;k<last3.length;k++){
     var cur=last3[k], prev=last3[k+1], dl='', a=loadParts(cur[1]);
     if(prev){var b=loadParts(prev[1]);
       if(a&&b){var d=a.n-b.n;dl=d>0?'<span class="dl up">+'+fmtNum(d)+'</span>':(d<0?'<span class="dl dn">'+fmtNum(d)+'</span>':'<span class="dl">=</span>');}}
     var pr=(a&&best!==null&&a.n===best)?'<span class="prtag">'+IC.fire+'record</span>':'';
-    out+='<div class="load-hl"><span class="d">'+fmtDK(cur[0])+'</span><span class="v">'+esc(cur[1])+pr+'</span>'+(dl||'<span class="dl">—</span>')+'</div>';
+    out+='<div class="load-hl"><span class="d">'+fmtDK(cur[0])+'</span><span class="v">'+esc(dispLoad(cur[1]))+pr+'</span>'+(dl||'<span class="dl">—</span>')+'</div>';
   }
   return '<div class="load-hist"><div class="k">Tes dernières charges</div>'+out+'</div>';
 }
@@ -2618,10 +2615,12 @@ function openLoadEditor(sk,i,after){
   lNm.textContent=e.name;
   var c=chargeOf(sk,i);
   lIn.value=(c&&c.v)?c.v:(loadParts(e.load)?e.load:'');
-  lIn.placeholder=loadParts(e.load)?e.load:'ex : 60 kg';
-  lHint.innerHTML='Programme : <b>'+esc(e.load)+'</b>'+((c&&c.v)?' · dernière : <span class="lastv">'+esc(c.v)+'</span> ('+fmtDK(c.d)+')':'');
+  lIn.placeholder=loadParts(e.load)?e.load:'ex : 40';
+  lHint.innerHTML='Programme : <b>'+esc(e.s)+'</b>'+((c&&c.v)?' · ta charge : <span class="lastv">'+esc(dispLoad(c.v))+'</span> ('+fmtDK(c.d)+')':' · tape ton poids en kg');
   lHist.innerHTML=histHTML(sk,i);
-  document.getElementById('load-reset').style.display=(c&&c.v)?'':'none';
+  var rb=document.getElementById('load-reset');
+  rb.style.display=(c&&c.v)?'':'none';
+  rb.textContent=loadParts(e.load)?'Revenir à la charge du programme':'Effacer ma charge';
   loadStepsState();
   LOV.classList.add('show');LOV.setAttribute('aria-hidden','false');trapOn(LOV);
   if(navigator.vibrate)navigator.vibrate(6);
@@ -2701,10 +2700,8 @@ function tmrPaint(){
 }
 function tmrSessHTML(){
   var st=computeState(today()), dk=dateKeyOf(st.date);
-  var sk=null;
-  if(st.phase==='kickoff')sk=(st.kday===0)?'UPPER_A':(st.kday===2?'LOWER_A':null);
-  else if(st.phase==='active'){var m={1:'UPPER_A',3:'LOWER_A',5:'UPPER_B',0:'LOWER_B'};sk=m[st.dow]||null;}
-  if(!sk)return '<div class="tmr-sess"><div class="tmr-empty">Pas de séance de fonte aujourd’hui.<br>Le minuteur reste dispo pour tes sprints ou ta mobilité.</div></div>';
+  var sk=st.sk;
+  if(!sk)return '<div class="tmr-sess"><div class="tmr-empty">Pas de séance de fonte aujourd’hui.<br>Le minuteur reste dispo pour ta mobilité.</div></div>';
   var sess=SESSIONS[sk], done=loadDone(dk), n=done.filter(Boolean).length, tot=sess.exos.length;
   /* le compteur est dans un <b> à part : avant, on incrémentait "3/6" comme un
      nombre — +"3/6" vaut NaN, et le panneau affichait NaN en 2 taps */
@@ -2714,7 +2711,7 @@ function tmrSessHTML(){
     h+='<div class="tex'+(done[i]?' done':'')+'" data-ti="'+i+'" data-sk="'+sk+'">'+
       '<span class="bx"><svg viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></svg></span>'+
       '<span class="nm">'+esc(e.name)+'</span>'+
-      '<span class="rs">'+esc(workLoad(sk,i,e,st.deload))+'</span>'+
+      '<span class="rs">'+esc(dispLoad(effLoad(sk,i,e)))+'</span>'+
       '<span class="go" data-rest="'+restSecOf(e)+'">'+esc(e.rest)+'</span></div>';
   });
   return h+'<button class="btn-volt" id="tmr-run" style="width:100%;justify-content:center;margin-top:14px"><span class="ic">'+IC.play+'</span> Séance guidée</button></div>';
@@ -2728,6 +2725,7 @@ function tmrBindSess(){
       if(g){startRest(+g.getAttribute('data-rest'),SESSIONS[sk].exos[i].rest);return;} /* le repos de CET exo */
       var dk=dateKeyOf(today()), arr=loadDone(dk);
       arr[i]=!arr[i];saveDone(dk,arr);row.classList.toggle('done',arr[i]);
+      if(arr[i])stampCharge(sk,i,dk); else unstampCharge(sk,i,dk);
       if(navigator.vibrate)navigator.vibrate(8);
       var k=host.querySelector('#tmr-n');if(k)k.textContent=arr.filter(Boolean).length;
       renderToday();renderProgress();
@@ -2735,10 +2733,9 @@ function tmrBindSess(){
   });
   var rb=document.getElementById('tmr-run');
   if(rb)rb.addEventListener('click',function(){
-    var st=computeState(today());
     var sk=host.querySelector('.tex')?host.querySelector('.tex').getAttribute('data-sk'):null;
     if(!sk)return;
-    closeTimer();openRun(sk,!!st.deload);
+    closeTimer();openRun(sk);
   });
 }
 function openTimer(){
@@ -2809,12 +2806,12 @@ function wakeOn(){try{if(navigator.wakeLock&&!runWakeLock)navigator.wakeLock.req
 function wakeOff(){try{if(runWakeLock){runWakeLock.release();runWakeLock=null;}}catch(e){}}
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'&&RUN)wakeOn();else if(document.visibilityState!=='visible')runWakeLock=null;});
 
-function openRun(sk,deload){
+function openRun(sk){
   var sess=SESSIONS[sk];if(!sess)return;
   var dk=dateKeyOf(today()), n=sess.exos.length, saved=loadJSON(runKey(dk),null), done=loadDone(dk);
   var sets=(saved&&saved.sets&&saved.sets.length===n)?saved.sets.slice():[];
   if(!sets.length){for(var z=0;z<n;z++)sets.push(0);}
-  RUN={sk:sk,dk:dk,sess:sess,deload:!!deload,short:isShortDay(dk),sets:sets,i:0,t0:(saved&&saved.t0)||Date.now(),
+  RUN={sk:sk,dk:dk,sess:sess,deload:false,short:isShortDay(dk),sets:sets,i:0,t0:(saved&&saved.t0)||Date.now(),
     phase:'exo',pr:(saved&&saved.pr)||0,lastFrom:(saved&&saved.lastFrom!=null)?saved.lastFrom:null};
   for(var j=0;j<n;j++){var t=runTot(j);if(done[j]&&sets[j]<t)sets[j]=t;if(sets[j]>t)sets[j]=t;}
   RUN.i=(saved&&typeof saved.i==='number'&&saved.i<n&&RUN.sets[saved.i]<runTot(saved.i))?saved.i:runFirstUndone();
@@ -2862,7 +2859,7 @@ function runRender(){
   var e=RUN.sess.exos[RUN.i], tot=runTot(RUN.i), fait=RUN.sets[RUN.i], cur=Math.min(fait+1,tot);
   var dots='';for(var s=0;s<tot;s++)dots+='<i class="'+(s<fait?'done':(s===fait?'now':''))+'"></i>';
   var extra=repsExtra(e), main=repsMain(e), noLoad=(e.load==='—'||!e.load);
-  var lv=workLoad(RUN.sk,RUN.i,e,RUN.deload), custom=isCustomLoad(RUN.sk,RUN.i);
+  var lv=dispLoad(effLoad(RUN.sk,RUN.i,e)), custom=isCustomLoad(RUN.sk,RUN.i);
   rWm.innerHTML=muscleSVG(e.mg,e.sec);rWm.classList.add('dim');
   rIn.innerHTML='<div class="run-eyebrow">SÉRIE <b>'+cur+'</b> / '+tot+'</div>'+
     '<h2 class="run-nm">'+esc(e.name)+'</h2>'+
@@ -2878,9 +2875,8 @@ function runRender(){
         :(RUN.deload
           ? '<span class="run-loadb static"><span class="lb">Charge</span><span class="m ice">'+esc(lv)+'</span></span><span class="sep"></span>'
           : '<button class="run-loadb" id="run-loadb" aria-label="Modifier la charge"><span class="lb">Charge</span>'+
-            '<span class="m'+(custom||!/calibrer|actuelle|PDC/.test(lv)?' volt':'')+'">'+esc(lv)+'</span><span class="pen">'+IC.pen+'</span></button><span class="sep"></span>'))+
+            '<span class="m'+(custom||!/calibrer|actuelle|noter|PDC/.test(lv)?' volt':'')+'">'+esc(lv)+'</span><span class="pen">'+IC.pen+'</span></button><span class="sep"></span>'))+
       '<span class="lb">Repos</span><span class="m">'+esc(e.rest)+'</span></div>'+
-    (RUN.deload?'<div class="run-extra dl">semaine deload · charges -10 % · séries réduites</div>':'')+
     (RUN.short?'<div class="run-extra dl">nuit courte · −1 série par exo · vise RIR +1 · zéro forcing</div>':'')+
     '<p class="run-cue">'+esc(e.note)+'</p>'+
     (noteOf(RUN.sk,RUN.i)?'<div class="run-note"><span class="k">ta note</span>'+esc(noteOf(RUN.sk,RUN.i))+'</div>':'');
@@ -2898,6 +2894,7 @@ function runRender(){
 function runSetDone(){
   var tot=runTot(RUN.i), e=RUN.sess.exos[RUN.i], from=RUN.i;
   if(RUN.sets[RUN.i]<tot)RUN.sets[RUN.i]++;
+  stampCharge(RUN.sk,RUN.i,RUN.dk); /* 1re série = la charge du jour est datée */
   pushSet(RUN.dk,RUN.sk,RUN.i,repsTarget(e),null); /* la cible par défaut : 1 tap suffit, on ajuste au repos si besoin */
   if(navigator.vibrate)navigator.vibrate(10);
   runSyncDone();saveRun();
@@ -3038,7 +3035,7 @@ function runEnd(){
     '<div class="facts" style="margin-top:'+(pr?'16px':'22px')+'"><div class="fact"><div class="k">Séries</div><div class="v">'+sets+'</div></div>'+
     '<div class="fact"><div class="k">Soulevé</div><div class="v">'+(ton>=1000?fmtNum(Math.round(ton/100)/10):ton)+'<span style="font-size:12px;color:var(--muted)"> '+(ton>=1000?'t':'kg')+'</span></div></div>'+
     '<div class="fact"><div class="k">Durée</div><div class="v">'+mins+'<span style="font-size:12px;color:var(--muted)"> min</span></div></div></div>'+
-    '<p class="run-endnote">Récup, protéines, on remet ça. Tes '+nex+' exos sont cochés dans la semaine.</p></div>';
+    '<p class="run-endnote">Récup, protéines, on remet ça. Tes '+nex+' exos sont cochés, tes charges notées.</p></div>';
   rCta.className='run-cta';rCta.textContent='Terminer';rCta.onclick=closeRun;
   rSub.innerHTML='<button id="run-again">Revoir les exos</button>';
   document.getElementById('run-again').onclick=function(){RUN.i=0;RUN.phase='exo';runRender();};
@@ -3145,125 +3142,56 @@ document.addEventListener('keydown',function(ev){
 
 /* ===== HERO STATUS ===== */
 function renderStatus(){
-  var st=computeState(today());var t=document.getElementById('status-txt');
-  if(st.phase==='pre')t.textContent='J-'+st.jMinus;
-  else if(st.phase==='kickoff')t.textContent='KICKOFF';
-  else if(st.phase==='done')t.textContent='TERMINÉ';
-  else t.textContent='SEMAINE '+st.week;
+  var st=computeState(today());
+  document.getElementById('status-txt').textContent=planLabel(st.plan);
 }
 
-/* ===== PROGRESS RING ===== */
-/* ===== OÙ TU EN ES — contextuel : préparation avant le kickoff, progression réelle ensuite ===== */
-var LS_PREP='protocole_prep_v1';
-var PREP=[
-  ['photos','Photos face · profil · dos','Même mur, même lumière, même heure. Ce sont elles qui parleront en novembre.'],
-  ['balance','Pèse-personne + mètre ruban','Pesée vendredi au réveil, à jeun. Tour de taille au nombril.'],
-  ['straps','Straps','Tirages et soulevé de terre : la prise ne doit jamais être ce qui lâche en premier.'],
-  ['heure','Heure de séance calée','Vendredi 17/07. Décide-la maintenant, pas vendredi midi.'],
-  /* l'heure DÉRIVE de sleepTarget(1) : en dur, la checklist exigeait 1h alors que
-     le plan ne demande 1h30 qu'en S1-S2 — plus strict avant de commencer que pendant */
-  ['coucher','Coucher avant '+sleepTarget(1).c+' dès ce soir','Le chantier n°1. Deux nuits d’avance, ça change ton kickoff.']
-];
-function dateOfWeekDow(week,dow){
-  var w1=parseD(WEEK1_MONDAY), d=new Date(w1);
-  d.setDate(w1.getDate()+(week-1)*7+(dow===0?6:dow-1)); /* lundi = 1er jour, dimanche = 7e */
-  return atMid(d);
+/* ===== TA PROGRESSION — la carte sous la séance =====
+   Elle remplace la barre des 16 semaines. Plus de « semaine 9 / 16 » : ce qui
+   compte maintenant, c'est ce qui monte. */
+/* une séance compte quand au moins 3 exos sont cochés (les séances du protocole
+   avaient 5 à 7 exos, celles d'aujourd'hui 5 à 7 aussi) */
+function sessionsDone(){
+  var n=0;
+  for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i)||'';
+    if(k.indexOf('protocole_seance_')===0){var a=loadJSON(k,[]);if(Array.isArray(a)&&a.filter(Boolean).length>=3)n++;}}
+  return n;
 }
-/* les créneaux réels de la semaine : 4 séances + les sprints quand ils ont lieu */
-function weekSlots(week){
-  var dl=isDeload(week);
-  var s=[{dow:1,lab:'LUN',nm:'Up A',t:'m'},{dow:3,lab:'MER',nm:'Lo A',t:'m'}];
-  if(!dl)s.push({dow:4,lab:'JEU',nm:'Spr 1',t:'s',sp:'S1'});
-  s.push({dow:5,lab:'VEN',nm:'Up B',t:'m'});
-  if(!dl&&week>=5)s.push({dow:6,lab:'SAM',nm:'Spr 2',t:'s',sp:'S2'});
-  s.push({dow:0,lab:'DIM',nm:'Lo B',t:'m'});
-  return s;
+function weightEntries(){
+  return loadJSON(LS_ENTRIES,[]).filter(function(x){return x&&x.d&&x.weight!=null;})
+    .sort(function(a,b){return dkNum(a.d)-dkNum(b.d);});
 }
-function slotStatus(week,slot){
-  var d=dateOfWeekDow(week,slot.dow), dk=dateKeyOf(d), t=today();
-  var n,tot;
-  if(slot.t==='s'){var sp=SPRINTS[slot.sp];tot=sp.steps.length;n=loadSprint(dk,tot).filter(Boolean).length;}
-  else {tot=6;n=loadDone(dk).filter(Boolean).length;}
-  if(n>=tot)return {c:'done',n:n};
-  if(atMid(d).getTime()===t.getTime())return {c:'now',n:n};
-  if(d<t)return {c:n>0?'part':'miss',n:n};
-  return {c:'todo',n:n};
-}
-function lastWeight(){
-  var e=loadJSON(LS_ENTRIES,[]).filter(function(x){return x.weight!=null;}).sort(function(a,b){return a.w-b.w;});
-  return e.length?e[e.length-1]:null;
-}
-function prepHTML(){
-  var d=loadJSON(LS_PREP,{}), n=PREP.filter(function(p){return d[p[0]];}).length;
-  var h='<div class="prep-top"><div><div class="prep-t">Prêt pour vendredi ?</div>'+
-    '<div class="prep-s">Cinq choses à régler avant le kickoff. Rien de sportif — que de la logistique.</div></div>'+
-    '<div class="prep-cnt"><b id="prep-n">'+n+'</b>/'+PREP.length+'</div></div><div id="prep-list">';
-  PREP.forEach(function(p){var on=!!d[p[0]];
-    h+='<div class="chk prep'+(on?' done':'')+'" data-prep="'+p[0]+'" role="checkbox" tabindex="0" aria-checked="'+on+'">'+
-      '<span class="chk-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
-      '<span class="lab"><span class="n">'+esc(p[1])+'</span><span class="d">'+esc(p[2])+'</span></span></div>';
-  });
-  return h+'</div>';
-}
-function weekBarHTML(cur){
-  var h='<div class="wk16 dim" aria-hidden="true">';
-  for(var w=1;w<=16;w++){
-    var cls=(w<cur?'past':(w===cur?'now':''))+(isDeload(w)?' dl':'');
-    h+='<i class="'+cls.trim()+'"></i>';
-  }
-  return h+'</div>';
-}
-function sessRowHTML(week){
-  var slots=weekSlots(week), h='<div class="wk-sess" style="grid-template-columns:repeat('+slots.length+',1fr)">';
-  var mDone=0,mTot=0,sDone=0,sTot=0;
-  slots.forEach(function(s){
-    var st=slotStatus(week,s);
-    if(s.t==='s'){sTot++;if(st.c==='done')sDone++;} else {mTot++;if(st.c==='done')mDone++;}
-    var mark=st.c==='done'?'✓':(st.c==='part'?st.n:(st.c==='miss'?'—':'·'));
-    h+='<div class="ws '+st.c+(s.t==='s'?' spr':'')+'"><span class="d">'+s.lab+'</span><span class="mk">'+mark+'</span><span class="nm">'+s.nm+'</span></div>';
-  });
-  var lab='<b>'+mDone+'/'+mTot+' séances</b>'+(sTot?' <span class="sep2">·</span> <b class="ice">'+sDone+'/'+sTot+' sprints</b>':'');
-  return {h:h+'</div>',lab:lab};
-}
+function lastWeight(){var e=weightEntries();return e.length?e[e.length-1]:null;}
 function weightLineHTML(){
-  var lw=lastWeight();
-  if(!lw)return '<div class="prog-line"><span class="k">Poids</span><span class="v mut">ajoute ta 1re pesée dans Suivi</span></div>';
-  var d=lw.weight-77, sign=d<=0?'':'+';
+  var e=weightEntries();
+  if(!e.length)return '<div class="prog-line"><span class="k">Poids</span><span class="v mut">note ta pesée dans Suivi</span></div>';
+  var last=e[e.length-1], d=Math.round((last.weight-e[0].weight)*10)/10;
   return '<div class="prog-line"><span class="k">Poids</span>'+
-    '<span class="v"><b>'+fmtNum(lw.weight)+'</b> kg <span class="arw">→</span> <span class="ice">70</span></span>'+
-    '<span class="chip'+(d<0?' on':'')+'">'+sign+fmtNum(d)+' kg depuis S0</span></div>';
+    '<span class="v"><b>'+fmtNum(last.weight)+'</b> kg</span>'+
+    (e.length>1?'<span class="chip'+(d!==0?' on':'')+'">'+(d>0?'+':'')+fmtNum(d)+' kg depuis le '+esc(fmtDayMonth(e[0].d))+'</span>':'')+'</div>';
+}
+function fmtDayMonth(dk){var p=String(dk).split('-');return p.length<3?'':(+p[2])+' '+MONTHS[+p[1]-1];}
+/* les exos qui ont le plus monté, puis ceux qui ont au moins une charge */
+function topLifts(n){
+  var all=uniqueExos().map(function(x){var P=progressOf(x.sk,x.i);return P?{x:x,P:P}:null;}).filter(Boolean);
+  all.sort(function(a,b){return (b.P.delta-a.P.delta)||(b.P.pts.length-a.P.pts.length);});
+  return all.slice(0,n);
 }
 function renderProgress(){
-  var st=computeState(today()), card=document.getElementById('prog-card'), cap=document.getElementById('prog-cap');
-  if(st.phase==='pre'){
-    cap.textContent='AVANT LE KICKOFF';card.innerHTML=prepHTML();bindPrep();return;
-  }
-  if(st.phase==='done'){
-    cap.textContent='CE QUE TU AS FAIT';
-    card.innerHTML='<div class="prog-head"><div class="prog-wk">16<span>/ 16</span></div><div class="prog-bl">TERMINÉ<br><span>16 semaines tenues</span></div></div>'+
-      weekBarHTML(17)+weightLineHTML()+
-      '<div class="prog-jalon"><span class="ic">'+IC.flag+'</span><div>Tests finaux : photos avant/après, 5RM développé couché, tirage 6RM, chrono 30 m.</div></div>';
-    return;
-  }
-  var week=(st.phase==='kickoff')?1:st.week, block=blockOfWeek(week), sr=sessRowHTML(week);
-  cap.textContent='OÙ TU EN ES';
-  card.innerHTML='<div class="prog-head"><div class="prog-wk">'+(st.phase==='kickoff'?'S0':week)+'<span>'+(st.phase==='kickoff'?'kickoff':'/ 16')+'</span></div>'+
-      '<div class="prog-bl">BLOC '+block.n+' · '+esc(block.name)+'<br><span>'+esc(block.focus)+'</span></div></div>'+
-    weekBarHTML(st.phase==='kickoff'?0:week)+
-    '<div class="prog-sub"><span>'+(st.phase==='kickoff'?'Ta semaine 1':'Ta semaine')+(st.deload?' · deload':'')+'</span><span class="pl">'+sr.lab+'</span></div>'+sr.h+
-    weightLineHTML()+
-    '<div class="prog-jalon"><span class="ic">'+IC.flag+'</span><div><b>Où tu dois en être</b> — '+esc(block.jalon)+'</div></div>';
-}
-function bindPrep(){
-  var host=document.getElementById('prep-list');if(!host)return;
-  host.querySelectorAll('.chk[data-prep]').forEach(function(row){
-    function tg(){var id=row.getAttribute('data-prep'),d=loadJSON(LS_PREP,{});d[id]=!d[id];saveJSON(LS_PREP,d);
-      row.classList.toggle('done',d[id]);row.setAttribute('aria-checked',d[id]?'true':'false');
-      var n=PREP.filter(function(p){return d[p[0]];}).length, el=document.getElementById('prep-n');if(el)el.textContent=n;
-      if(navigator.vibrate)navigator.vibrate(8);}
-    row.addEventListener('click',tg);
-    row.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();tg();}});
+  var card=document.getElementById('prog-card'), cap=document.getElementById('prog-cap'); if(!card)return;
+  cap.textContent='TA PROGRESSION';
+  var n=sessionsDone(), tl=topLifts(3), rows='';
+  tl.forEach(function(t){
+    var P=t.P, from=P.first&&P.delta!==0?fmtNum(P.first.n)+' → ':'';
+    rows+='<div class="pg-l"><span class="n">'+esc(t.x.e.name)+'</span><span class="v">'+from+fmtNum(P.cur)+' kg</span>'+
+      '<span class="d'+(P.delta>0?' up':'')+'">'+(deltaTxt(P.delta)||'=')+'</span></div>';
   });
+  card.innerHTML='<div class="prog-head"><div class="prog-wk" data-count="'+n+'">'+n+'</div><div class="prog-bl">SÉANCE'+(n>1?'S':'')+' FAITE'+(n>1?'S':'')+'<br><span>Tes poids, exo par exo. Ce qui monte, c’est ce qui progresse.</span></div></div>'+
+    (rows?'<div class="pg-lifts">'+rows+'</div>':'<div class="prog-jalon"><span class="ic">'+IC.pen+'</span><div>Note ton poids sur chaque exo pendant ta séance (bouton vert) : ta progression s’affichera ici.</div></div>')+
+    weightLineHTML()+
+    '<button class="s0-cta" id="pg-go" type="button"><span class="ic">'+IC.chart+'</span><span class="t">Toutes mes charges<span class="s">la courbe de chaque exo · ta pesée · tes photos</span></span><span class="ar">→</span></button>';
+  var go=document.getElementById('pg-go');
+  if(go)go.addEventListener('click',function(){showView('suivi');});
 }
 
 /* ===== NAV ===== */
@@ -3286,7 +3214,6 @@ function triggerInner(el){
         setTimeout(function(){[].forEach.call(wb.children,function(s){s.style.transitionDelay='';});},900);});}
   }
   var mm=el.querySelector&&el.querySelector('.muscle-map');if(mm&&window.__lightMuscles)window.__lightMuscles(el);
-  if(el.querySelector&&el.querySelector('#sleep-line-a')&&window.__drawSleep)window.__drawSleep();
   if(el.querySelector&&el.querySelector('#wchart')&&window.__drawWeight)window.__drawWeight();
   if(el.querySelector&&el.querySelector('#fchart')&&window.__drawForce)window.__drawForce();
   if(el.querySelector&&el.querySelector('[data-count]'))el.querySelectorAll('[data-count]').forEach(function(n){countUp(n,+n.getAttribute('data-count'),1000);});
@@ -3330,69 +3257,37 @@ function showView(tab){
   document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v===target);});
   document.querySelectorAll('#nav button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-go')===tab);});
   window.scrollTo(0,0);
-  if(tab==='suivi'&&window.__trackerReady){renderTracker();dataStat();} /* les charges de la séance du jour doivent y être */
-  if(tab==='today'&&typeof s0CtaRefresh==='function')s0CtaRefresh();
+  if(tab==='suivi'&&window.__trackerReady){renderTracker();renderChargesList();dataStat();} /* les charges de la séance du jour doivent y être */
   if(target)setupReveal(target);
   try{history.replaceState(null,'','#'+tab);}catch(e){}
 }
 
 /* ===== PROGRAMME view builders ===== */
-function buildBlocks(){
-  var st=computeState(today());var cur=(st.phase==='active')?st.week:(st.phase==='done'?16:0);
-  var rail=document.getElementById('blocks-rail');var h='';
-  BLOCKS.forEach(function(b){var isCur=cur>=b.weeks[0]&&cur<=b.weeks[1];
-    var tag=(b.deload==='TESTS')?'<span class="deload-tag" style="color:var(--volt);border-color:rgba(200,240,49,.4)">TESTS S16</span>':'<span class="deload-tag">DELOAD '+b.deload+'</span>';
-    h+='<div class="block'+(isCur?' cur':'')+'">'+tag+'<div class="block-n">'+b.n+'</div><div class="block-wk">'+b.wk+'</div><div class="block-name">'+esc(b.name)+'</div>'+
-      '<div class="block-focus">'+esc(b.focus)+'</div><div class="block-kv"><span>DÉFICIT<b>'+b.def+'</b></span><span>SPRINTS<b>'+b.spr+'</b></span><span>RIR<b>'+b.rir+'</b></span></div>'+
-      '<div class="block-jalon"><span class="j">JALON ATTENDU</span><br>'+esc(b.jalon)+'</div></div>';
+/* le planning de Rayan, tel qu'il l'a écrit — aujourd'hui en surbrillance */
+function buildPlanning(){
+  var host=document.getElementById('weektype-days'); if(!host)return;
+  var td=today().getDay(), h='';
+  PLAN_ROWS.forEach(function(r){
+    var p=PLAN[r[0]], cls=p.t==='m'?'train':'off', ic=p.t==='m'?'dumbbell':(p.t==='n'?'swim':'bed');
+    var s=p.t==='m'?esc(SESSIONS[p.sk].name)+' <span class="ex">'+esc(SESSIONS[p.sk].tag.toLowerCase())+'</span>'
+      :(p.t==='n'?'Natation 30 min'+(p.opt?' <span class="ex">optionnel</span>':''):'Repos');
+    h+='<div class="wk-day '+cls+(r[0]===td?' now':'')+'"><span class="d">'+r[1]+'</span><span class="pic ic">'+IC[ic]+'</span><span class="s">'+s+'</span></div>';
   });
-  rail.innerHTML=h;
-  if(cur>0){var idx=Math.max(0,Math.ceil(cur/4)-1);var cards=rail.querySelectorAll('.block');if(cards[idx])setTimeout(function(){rail.scrollLeft=cards[idx].offsetLeft-18;},250);}
-}
-var WEEK_PLAN=[['LUN','dumbbell','train','UPPER A','+ marche'],['MAR','bed','off','OFF total','marché · sieste'],['MER','dumbbell','train','LOWER A','+ marche'],['JEU','bolt','sprint','SPRINT 1','marché · sieste'],['VEN','dumbbell','train','UPPER B','+ marche · soirée'],['SAM','bolt','sprint','SPRINT 2','dès Bloc 2 · sortie'],['DIM','dumbbell','train','LOWER B','+ marche · prépa']];
-function buildWeekType(){var host=document.getElementById('weektype-days');var h='';
-  WEEK_PLAN.forEach(function(d){h+='<div class="wk-day '+d[2]+'"><span class="d">'+d[0]+'</span><span class="pic ic">'+IC[d[1]]+'</span><span class="s">'+d[3]+' <span class="ex">'+d[4]+'</span></span></div>';});
   host.innerHTML=h;
 }
-function buildWkStrip(){
-  var st=computeState(today());var cur=(st.phase==='active')?st.week:(st.phase==='done'?16:1);
-  var strip=document.getElementById('wk-strip');var h='';
-  for(var w=1;w<=TOTAL_WEEKS;w++){var dl=isDeload(w),tst=(w===TEST_WEEK);var b=blockOfWeek(w);
-    h+='<button class="wk-pill'+(w===cur?' sel':'')+(dl?' dl':'')+(tst?' tst':'')+'" data-wk="'+w+'">'+((dl||tst)?'<span class="dot"></span>':'')+'<span class="w">'+w+'</span><span class="b">B'+b.n+'</span></button>';}
-  strip.innerHTML=h;
-  strip.querySelectorAll('.wk-pill').forEach(function(p){p.addEventListener('click',function(){strip.querySelectorAll('.wk-pill').forEach(function(x){x.classList.remove('sel');});p.classList.add('sel');renderWkSummary(+p.getAttribute('data-wk'));});});
-  renderWkSummary(cur);
-  var selEl=strip.querySelector('.wk-pill.sel');if(selEl)setTimeout(function(){strip.scrollLeft=selEl.offsetLeft-100;},200);
-}
-function renderWkSummary(w){
-  var b=blockOfWeek(w),sl=sleepTarget(w),dl=isDeload(w),tst=(w===TEST_WEEK);
-  var badge=dl?'<span class="chip ice">DELOAD</span>':(tst?'<span class="chip on">TESTS FINAUX</span>':'<span class="chip on">SEMAINE PLEINE</span>');
-  var s2=(w>=5);
-  var days=[['LUN','dumbbell','train','UPPER A'],['MAR','bed','off','OFF · marché'],['MER','dumbbell','train','LOWER A'],['JEU',dl?'walk':'bolt',dl?'off':'sprint',dl?'Marche (deload)':'SPRINT 1'],['VEN','dumbbell','train','UPPER B'],['SAM',(dl||!s2)?'walk':'bolt',(dl||!s2)?'off':'sprint',dl?'Marche (deload)':(s2?'SPRINT 2':'Marché · sortie')],['DIM','dumbbell','train','LOWER B']];
-  var dh='';days.forEach(function(d){dh+='<div class="wk-day '+d[2]+'"><span class="d">'+d[0]+'</span><span class="pic ic">'+IC[d[1]]+'</span><span class="s">'+d[3]+'</span></div>';});
-  var host=document.getElementById('wk-summary');
-  if(!reduceMotion){host.classList.remove('flash');void host.offsetWidth;host.classList.add('flash');}
-  host.innerHTML='<div class="wk-hd"><span class="big">SEMAINE '+w+'</span>'+badge+'</div>'+
-    '<div class="view-sub" style="margin:6px 0 0">Bloc '+b.n+' · '+esc(b.name)+' — '+esc(b.focus)+'</div>'+
-    '<div class="facts"><div class="fact"><div class="k">Déficit</div><div class="v sm">'+b.def+' kcal</div></div><div class="fact"><div class="k">RIR cible</div><div class="v">'+b.rir+'</div></div><div class="fact"><div class="k">Coucher</div><div class="v sm ice">'+sl.c+'</div></div></div>'+
-    '<div class="wk-days">'+dh+'</div>'+
-    (tst?'<div class="why" style="margin-top:12px"><span class="ic">'+IC.flag+'</span><div class="tx"><b>Dernière semaine.</b> Tests finaux + photos avant/après. Objectif 69-71 kg à 10-12 % de masse grasse.</div></div>':'');
-}
 function buildAccordions(){
-  var order=[['dumbbell','UPPER_A'],['dumbbell','LOWER_A'],['dumbbell','UPPER_B'],['dumbbell','LOWER_B']];
-  var list=document.getElementById('acc-list');var h='';
-  order.forEach(function(o,i){var s=SESSIONS[o[1]];
-    h+='<details class="acc"><summary class="acc-sum"><span class="acc-ic">'+IC.dumbbell+'</span><span class="acc-ttl"><span class="n">'+s.name+'</span><span class="t">'+s.day+' · '+s.tag+'</span></span><span class="acc-cta">'+IC.chevron+'</span></summary><div class="acc-body">'+muscleBlock(s)+exoRows(s.exos,{sessionKey:o[1]})+'</div></details>';
-  });
-  [SPRINTS.S1,SPRINTS.S2].forEach(function(sp){
-    h+='<details class="acc"><summary class="acc-sum"><span class="acc-ic">'+IC.bolt+'</span><span class="acc-ttl"><span class="n">'+sp.name+'</span><span class="t">'+sp.tag+'</span></span><span class="acc-cta">'+IC.chevron+'</span></summary><div class="acc-body">'+muscleBlock(sp)+sprintSteps(sp)+'</div></details>';
+  var list=document.getElementById('acc-list'); if(!list)return; var h='';
+  Object.keys(SESSIONS).forEach(function(sk){var s=SESSIONS[sk];
+    h+='<details class="acc"><summary class="acc-sum"><span class="acc-ic">'+IC.dumbbell+'</span><span class="acc-ttl"><span class="n">'+s.name+'</span><span class="t">'+s.day+' · '+esc(s.tag)+' · '+s.exos.length+' exos</span></span><span class="acc-cta">'+IC.chevron+'</span></summary><div class="acc-body">'+muscleBlock(s)+exoRows(s.exos,{sessionKey:sk})+'</div></details>';
   });
   list.innerHTML=h;
   bindExoRows(list);
 }
-function fillVolumeBars(){var host=document.getElementById('vol-bars');if(!host.innerHTML){var h='';VOLUME.forEach(function(v){h+='<div class="volrow"><span class="lab">'+esc(v[0])+'</span><span class="bar"><i data-s="'+(v[1]/16).toFixed(3)+'"></i></span><span class="n">'+v[1]+'</span></div>';});host.innerHTML=h;}
+function fillVolumeBars(){var host=document.getElementById('vol-bars');if(!host)return;
+  if(!host.innerHTML){var V=volumeOf(),mx=Math.max.apply(null,V.map(function(v){return v[1];}).concat([1])),h='';
+    V.forEach(function(v){h+='<div class="volrow"><span class="lab">'+esc(v[0])+'</span><span class="bar"><i data-s="'+(v[1]/mx).toFixed(3)+'"></i></span><span class="n">'+v[1]+'</span></div>';});host.innerHTML=h;}
   host.querySelectorAll('.bar i').forEach(function(b,i){if(reduceMotion){b.style.transform='scaleX('+b.getAttribute('data-s')+')';return;}b.style.transitionDelay=(i*0.05)+'s';requestAnimationFrame(function(){b.style.transform='scaleX('+b.getAttribute('data-s')+')';});});}
-function buildAdapt(){var host=document.getElementById('adapt-list');var h='';
+function buildAdapt(){var host=document.getElementById('adapt-list');if(!host)return;var h='';
   ADAPT.forEach(function(a){h+='<div class="acard"><div class="sit"><span class="ic">'+IC[a[0]]+'</span><span class="t">'+a[1]+'</span></div><div class="dec">'+a[2]+'</div></div>';});
   host.innerHTML=h;}
 
@@ -3457,25 +3352,16 @@ var WARMUP=[
    v:['yqAtZkiAWsI','Échauffement poignets','Ostéo Entreprise'],up:true},
   {t:'Face pull léger · 2×15',d:'À la poulie haute avec la corde, très léger. Tu tires vers le front, coudes hauts. C’est de l’activation, pas une série.',
    v:['67PKTDSKWWM','Face-pull à la poulie à la corde','GuillaumeSimonCoach'],up:true},
-  {t:'Position 90/90 · 5 par côté',d:'Assis au sol, une jambe devant pliée à 90°, l’autre sur le côté à 90°. Tu pivotes doucement d’un côté à l’autre. Ça ouvre les hanches.',
-   v:['axHM6figGWY','Mobilité 90-90 hanches','Coach Gab'],low:true},
-  {t:'Balancements de jambes · 10',d:'Appuyé à un mur, tu balances une jambe d’avant en arrière, sans forcer, de plus en plus ample. Puis l’autre.',
-   v:['_JWHy86izcw','Balancements de jambes avant-arrière','Fit’distance'],low:true},
-  {t:'Cercles de chevilles · 10',d:'10 cercles par cheville, dans les deux sens. La presse demande des chevilles souples.',
-   v:['1gh0zLVLMa8','Échauffement et mobilité des chevilles','Monsieur Fonte'],low:true},
-  {t:'Pont fessier · 2×15',d:'Allongé sur le dos, genoux pliés, tu montes le bassin en serrant les fesses 1 s en haut. Sans charge.',
-   v:['Oft7szFPK3w','Le pont fessier expliqué simplement','Alexcare - Sport Santé'],low:true},
   {t:'Montée en gamme sur le 1er exo',d:'Avant ta 1re vraie série : 8 reps à la moitié de ta charge, 4 reps aux trois quarts, 2 reps presque à ta charge. Puis tu attaques. C’est ça qui évite la blessure.',all:true}
 ];
 function warmupHTML(){
   var row=function(w){
-    var tag=w.all?'<span class="wu-tag">toutes séances</span>':(w.up?'<span class="wu-tag up">upper</span>':'<span class="wu-tag low">lower</span>');
-    return '<li class="wu"><div class="wu-h"><b>'+esc(w.t)+'</b>'+tag+'</div>'+
+    return '<li class="wu"><div class="wu-h"><b>'+esc(w.t)+'</b></div>'+
       '<p>'+esc(w.d)+'</p>'+
       (w.v?vidHTML(w.v):'')+
       '</li>';
   };
-  return '<div class="view-sub" style="margin:12px 0 10px">Tu n’as jamais fait ces mouvements — normal. Chacun est expliqué, et « voir en vidéo » t’ouvre une démo. <b>Upper</b> = lundi et vendredi, <b>Lower</b> = mercredi et dimanche.</div>'+
+  return '<div class="view-sub" style="margin:12px 0 10px">Avant chacune de tes 4 séances. Chaque mouvement est expliqué, et « voir en vidéo » t’ouvre une démo.</div>'+
     '<ol class="wu-list">'+WARMUP.map(row).join('')+'</ol>';
 }
 function buildWarmup(){var h=document.getElementById('warmup-render');if(h)h.innerHTML=warmupHTML();}
@@ -3488,24 +3374,6 @@ function buildRoutine(hostId,items,lsKey){
   host.innerHTML=h;
   host.querySelectorAll('.habit').forEach(function(row){function tg(){var i=row.getAttribute('data-i');var d=loadJSON(lsKey,{});d[i]=!d[i];saveJSON(lsKey,d);row.classList.toggle('done',d[i]);row.setAttribute('aria-checked',d[i]);if(navigator.vibrate)navigator.vibrate(6);}row.addEventListener('click',tg);row.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();tg();}});});
 }
-window.__drawSleep=function(){var a=document.getElementById('sleep-line-a');if(!a||a.dataset.drawn)return;a.dataset.drawn='1';
-  var svg=a.parentNode;var b=svg.querySelector('polyline:not(#sleep-line-a)');
-  /* point « tu es ici » sur la ligne cible */
-  var st=computeState(today());var w=(st.phase==='active')?st.week:(st.phase==='done'?16:0);
-  var P=[[30,20],[66.25,63.3],[102.5,77.8],[138.75,92.2],[156.9,106.7],[320,106.7]];
-  var xx=30+(w/16)*290,yy=20;
-  for(var i=1;i<P.length;i++){if(xx<=P[i][0]){var t=(xx-P[i-1][0])/((P[i][0]-P[i-1][0])||1);yy=P[i-1][1]+t*(P[i][1]-P[i-1][1]);break;}yy=P[i][1];}
-  var ns='http://www.w3.org/2000/svg';
-  var ring=document.createElementNS(ns,'circle');ring.setAttribute('cx',xx.toFixed(1));ring.setAttribute('cy',yy.toFixed(1));ring.setAttribute('r','3.2');ring.setAttribute('class','sleep-you-ring');ring.style.opacity='0';
-  var dot=document.createElementNS(ns,'circle');dot.setAttribute('cx',xx.toFixed(1));dot.setAttribute('cy',yy.toFixed(1));dot.setAttribute('r','3.4');dot.setAttribute('class','sleep-you');dot.style.opacity='0';dot.style.transition='opacity .5s var(--e-out)';
-  var lbl=document.createElementNS(ns,'text');lbl.setAttribute('x',xx.toFixed(1));lbl.setAttribute('y',(yy-9).toFixed(1));lbl.setAttribute('text-anchor',xx>272?'end':'middle');lbl.setAttribute('fill','#7DD6FF');lbl.setAttribute('font-family','JetBrains Mono');lbl.setAttribute('font-size','8.5');lbl.setAttribute('font-weight','700');lbl.textContent=(w>0?'TU ES ICI · S'+w:'DÉPART');lbl.style.opacity='0';lbl.style.transition='opacity .5s var(--e-out)';
-  svg.appendChild(ring);svg.appendChild(dot);svg.appendChild(lbl);
-  function showYou(){dot.style.opacity='1';lbl.style.opacity='1';if(!reduceMotion){ring.style.opacity='1';ring.style.animation='youpulse 2.6s ease-out infinite';}}
-  if(reduceMotion){a.style.strokeDashoffset='0';if(b)b.style.opacity='1';showYou();return;}
-  if(b){b.style.opacity='0';b.style.transition='opacity .8s var(--e-out)';}
-  a.style.transition='stroke-dashoffset 1.6s var(--e-out)';
-  requestAnimationFrame(function(){a.style.strokeDashoffset='0';if(b)setTimeout(function(){b.style.opacity='1';},900);setTimeout(showYou,1100);});};
-
 /* ===== PHOTOS =====
    Le programme les réclame 6 fois et promet "des photos avant/après qui parlent
    toutes seules" — elles n'existaient nulle part. localStorage est hors-jeu
@@ -3589,11 +3457,29 @@ function shrinkImage(file,maxPx,q){
   });
 }
 
-/* ===== VUE PHOTOS — une par jalon, face/profil/dos ===== */
-var PHOTO_SLOTS=[{k:'S0',lab:'S0'},{k:'S4',lab:'S4'},{k:'S8',lab:'S8'},{k:'S12',lab:'S12'},{k:'S16',lab:'S16'}];
+/* ===== VUE PHOTOS — des séries datées, face/profil/dos =====
+   Avant : 5 cases fixes S0…S16. Plus de semaines : une série porte la date de
+   ses photos. Les séries du protocole (S0, S4…) gardent leur id et s'affichent
+   à leur date — l'avant/après de juillet n'est pas perdu. Une ligne « aujourd'hui »
+   est toujours là pour commencer une nouvelle série. */
 var PHOTO_ANGLES=[{k:'face',lab:'Face'},{k:'profil',lab:'Profil'},{k:'dos',lab:'Dos'}];
 var PHOTO_CTX=null, _photoURLs=[];
 function photoId(slot,angle){return slot+'-'+angle;}
+function photoSlots(list){
+  var by={};
+  list.forEach(function(p){
+    if(!p||!p.slot)return;
+    var s=by[p.slot]||(by[p.slot]={k:p.slot,at:'',ph:{}});
+    s.ph[p.angle]=p;
+    if(p.at&&(!s.at||p.at<s.at))s.at=p.at;
+  });
+  var out=Object.keys(by).map(function(k){return by[k];});
+  out.sort(function(a,b){return (a.at||a.k).localeCompare(b.at||b.k);});
+  var tk='D'+dateKeyOf(today());
+  if(!by[tk])out.push({k:tk,at:'',ph:{},fresh:true});
+  return out;
+}
+function slotLabel(s){return s.fresh?'Nouvelle':(s.at?fmtDayMonth(s.at):s.k);}
 function renderPhotos(){
   var host=document.getElementById('photo-grid'); if(!host)return;
   photoAll().then(function(list){
@@ -3601,19 +3487,18 @@ function renderPhotos(){
        quelques centaines de Ko de blobs jusqu'au reload */
     _photoURLs.forEach(function(u){URL.revokeObjectURL(u);});
     _photoURLs=[];
-    var by={};list.forEach(function(p){by[p.id]=p;});
-    var h='';
-    PHOTO_SLOTS.forEach(function(s){
-      var n=PHOTO_ANGLES.filter(function(a){return by[photoId(s.k,a.k)];}).length;
-      h+='<div class="ph-row"><div class="ph-k">'+s.lab+'<span>'+n+'/3</span></div><div class="ph-cells">';
+    var slots=photoSlots(list), h='';
+    slots.forEach(function(s){
+      var n=PHOTO_ANGLES.filter(function(a){return s.ph[a.k];}).length, lab=slotLabel(s);
+      h+='<div class="ph-row"><div class="ph-k">'+esc(lab)+'<span>'+(s.fresh?'série du jour':n+'/3')+'</span></div><div class="ph-cells">';
       PHOTO_ANGLES.forEach(function(a){
-        var id=photoId(s.k,a.k), p=by[id];
+        var id=photoId(s.k,a.k), p=s.ph[a.k];
         if(p){
           var u=URL.createObjectURL(p.blob);_photoURLs.push(u);
-          h+='<button class="ph-c has" data-slot="'+s.k+'" data-angle="'+a.k+'" aria-label="'+a.lab+' '+s.lab+' — remplacer">'+
-             '<img src="'+u+'" alt="'+a.lab+' '+s.lab+'" loading="lazy"><span class="ph-x" data-del="'+id+'" role="button" tabindex="0" aria-label="Supprimer '+a.lab+' '+s.lab+'">✕</span></button>';
+          h+='<button class="ph-c has" data-slot="'+s.k+'" data-angle="'+a.k+'" aria-label="'+a.lab+' '+esc(lab)+' — remplacer">'+
+             '<img src="'+u+'" alt="'+a.lab+' '+esc(lab)+'" loading="lazy"><span class="ph-x" data-del="'+id+'" role="button" tabindex="0" aria-label="Supprimer '+a.lab+' '+esc(lab)+'">✕</span></button>';
         } else {
-          h+='<button class="ph-c" data-slot="'+s.k+'" data-angle="'+a.k+'" aria-label="Ajouter '+a.lab+' '+s.lab+'"><span class="ph-p">+</span><span class="ph-l">'+a.lab+'</span></button>';
+          h+='<button class="ph-c" data-slot="'+s.k+'" data-angle="'+a.k+'" aria-label="Ajouter '+a.lab+' '+esc(lab)+'"><span class="ph-p">+</span><span class="ph-l">'+a.lab+'</span></button>';
         }
       });
       h+='</div></div>';
@@ -3629,26 +3514,21 @@ function renderPhotos(){
         document.getElementById('photo-file').click();
       });
     });
-    renderCompare(by);
+    renderCompare(slots);
   });
 }
-/* l'avant/après : le seul écran qui compte vraiment en novembre */
-function renderCompare(by){
+/* l'avant/après : la toute première série face contre la dernière */
+function renderCompare(slots){
   var host=document.getElementById('photo-compare'); if(!host)return;
-  var first=null,last=null;
-  PHOTO_SLOTS.forEach(function(s){
-    var p=by[photoId(s.k,'face')];
-    if(!p)return;
-    if(!first)first={s:s,p:p};
-    if(!first||s.k!==first.s.k)last={s:s,p:p};
-  });
-  if(!first||!last){host.innerHTML='';return;}
-  var u1=URL.createObjectURL(first.p.blob), u2=URL.createObjectURL(last.p.blob);
+  var withFace=slots.filter(function(s){return s.ph.face;});
+  if(withFace.length<2){host.innerHTML='';return;}
+  var first=withFace[0], last=withFace[withFace.length-1];
+  var u1=URL.createObjectURL(first.ph.face.blob), u2=URL.createObjectURL(last.ph.face.blob);
   _photoURLs.push(u1,u2);
   host.innerHTML='<div class="ph-cmp-k">Avant / après · face</div>'+
     '<div class="ph-cmp-row">'+
-      '<figure><img src="'+u1+'" alt="Face '+first.s.lab+'"><figcaption>'+first.s.lab+'</figcaption></figure>'+
-      '<figure><img src="'+u2+'" alt="Face '+last.s.lab+'"><figcaption>'+last.s.lab+'</figcaption></figure>'+
+      '<figure><img src="'+u1+'" alt="Face '+esc(slotLabel(first))+'"><figcaption>'+esc(slotLabel(first))+'</figcaption></figure>'+
+      '<figure><img src="'+u2+'" alt="Face '+esc(slotLabel(last))+'"><figcaption>'+esc(slotLabel(last))+'</figcaption></figure>'+
     '</div>';
 }
 function initPhotos(){
@@ -3670,73 +3550,86 @@ function initPhotos(){
 
 /* ===== TRACKER ===== */
 var LS_ENTRIES='protocole_entries_v1',LS_TESTS='protocole_tests_v1';
-function initWeekSelect(){var sel=document.getElementById('f-week');var st=computeState(today());var cur=(st.phase==='active')?st.week:(st.phase==='done'?16:1);var h='';for(var w=1;w<=16;w++)h+='<option value="'+w+'"'+(w===cur?' selected':'')+'>Semaine '+w+'</option>';sel.innerHTML=h;}
+/* ===== L'AXE DU TEMPS =====
+   Les courbes allaient de S0 à S16. Plus de semaines : elles vont de la première
+   donnée à aujourd'hui, graduées en mois (ou en jours si la période est courte). */
+function dkTime(dk){var p=String(dk).split('-');return p.length<3?0:new Date(+p[0],+p[1]-1,+p[2]).getTime();}
+function timeScale(times,xL,xR){
+  var DAY=86400000, t0=Math.min.apply(null,times), t1=Math.max.apply(null,times.concat([today().getTime()]));
+  if(t1-t0<6*DAY){var mid=(t0+t1)/2;t0=mid-3*DAY;t1=mid+3*DAY;}
+  var X=function(t){return xL+((t-t0)/(t1-t0))*(xR-xL);};
+  var ticks=[], d0=new Date(t0);
+  if(t1-t0>50*DAY){
+    var m=new Date(d0.getFullYear(),d0.getMonth()+1,1);
+    while(m.getTime()<=t1){ticks.push({t:m.getTime(),lab:MONTHS[m.getMonth()]});m=new Date(m.getFullYear(),m.getMonth()+1,1);}
+    /* trop de mois pour 280 px : un sur deux */
+    if(ticks.length>6)ticks=ticks.filter(function(_,k){return k%2===0;});
+  } else {
+    for(var k=0;k<4;k++){var t=t0+(t1-t0)*k/3,d=new Date(t);ticks.push({t:t,lab:d.getDate()+'.'+(d.getMonth()+1<10?'0':'')+(d.getMonth()+1)});}
+  }
+  return {X:X,ticks:ticks};
+}
+function initPeseeDate(){
+  var f=document.getElementById('f-date'); if(!f)return;
+  var t=dateKeyOf(today()); f.max=t; if(!f.value||f.value>t)f.value=t;
+}
 function trkForm(){document.getElementById('trk-form').addEventListener('submit',function(ev){ev.preventDefault();
   var num=function(id){var v=parseFloat(String(document.getElementById(id).value).replace(',','.'));return isFinite(v)?v:null;};
-  var w=+document.getElementById('f-week').value;
-  var weight=num('f-weight'), waist=num('f-waist'), sleep=num('f-sleep'), comp=num('f-comp');
-  var arr=loadJSON(LS_ENTRIES,[]);
-  var old=arr.filter(function(e){return e.w===w;})[0]||{};
-  arr=arr.filter(function(e){return e.w!==w;});
-  /* un champ laissé vide ne doit pas effacer ce qui était déjà noté cette semaine */
-  arr.push({w:w,
+  var dIn=document.getElementById('f-date'), d=(dIn&&parseD(dIn.value))?dIn.value:dateKeyOf(today());
+  var weight=num('f-weight'), waist=num('f-waist'), sleep=num('f-sleep');
+  if(weight==null&&waist==null&&sleep==null){toast('Rien à enregistrer — mets au moins ton poids');return;}
+  var arr=loadJSON(LS_ENTRIES,[]).filter(function(e){return e&&e.d;});
+  var old=arr.filter(function(e){return e.d===d;})[0]||{};
+  arr=arr.filter(function(e){return e.d!==d;});
+  /* un champ laissé vide ne doit pas effacer ce qui était déjà noté ce jour-là */
+  arr.push({d:d,
     weight:weight!=null?weight:(old.weight!=null?old.weight:null),
     waist:waist!=null?waist:(old.waist!=null?old.waist:null),
-    sleep:sleep!=null?sleep:(old.sleep!=null?old.sleep:null),
-    comp:comp!=null?comp:(old.comp!=null?old.comp:null),ts:Date.now()});
-  arr.sort(function(a,b){return a.w-b.w;});saveJSON(LS_ENTRIES,arr);
-  ['f-weight','f-waist','f-sleep','f-comp'].forEach(function(id){document.getElementById(id).value='';});
+    sleep:sleep!=null?sleep:(old.sleep!=null?old.sleep:null),ts:Date.now()});
+  arr.sort(function(a,b){return dkNum(a.d)-dkNum(b.d);});saveJSON(LS_ENTRIES,arr);
+  ['f-weight','f-waist','f-sleep'].forEach(function(id){document.getElementById(id).value='';});
   if(navigator.vibrate)navigator.vibrate(10);
+  toast('Pesée enregistrée');
   renderTracker();renderProgress();syncPush();});}
 function renderWeightChart(){
   var svg=document.getElementById('wchart');if(!svg)return;
-  var entries=loadJSON(LS_ENTRIES,[]).filter(function(e){return e.weight!=null;}).sort(function(a,b){return a.w-b.w;});
-  var W=320,H=156,padL=26,padR=16,padT=14,padB=24;
-  var xL=padL,xR=W-padR,yT=padT,yB=H-padB;
-  function X(w){return xL+(w/16)*(xR-xL);}
-  var vals=entries.map(function(e){return e.weight;}).concat([77,70]);
-  var mn=Math.floor(Math.min.apply(null,vals));if(mn%2)mn--;
-  var mx=Math.ceil(Math.max.apply(null,vals));if(mx%2)mx++;
-  if((mx-mn)<8){mx=mn+8;}
-  function Y(v){return yB-((v-mn)/(mx-mn))*(yB-yT);}
+  var entries=weightEntries();
+  var W=320,H=156,xL=26,xR=W-16,yT=14,yB=H-24;
   var g='';
-  for(var kg=mn;kg<=mx;kg+=2){var yy=Y(kg);g+='<line x1="'+xL+'" y1="'+yy.toFixed(1)+'" x2="'+xR+'" y2="'+yy.toFixed(1)+'" stroke="#1A1D24"/><text x="'+(xL-5)+'" y="'+(yy+3).toFixed(1)+'" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="8">'+kg+'</text>';}
-  [0,4,8,12,16].forEach(function(w){g+='<text x="'+X(w).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="8">S'+w+'</text>';});
-  var st=computeState(today());var cw=(st.phase==='active')?st.week:(st.phase==='done'?16:0);
-  if(cw>0)g+='<line x1="'+X(cw).toFixed(1)+'" y1="'+yT+'" x2="'+X(cw).toFixed(1)+'" y2="'+yB+'" stroke="#2A2E37" stroke-dasharray="2 3"/>';
-  g+='<line x1="'+X(0).toFixed(1)+'" y1="'+Y(77).toFixed(1)+'" x2="'+X(16).toFixed(1)+'" y2="'+Y(70).toFixed(1)+'" stroke="#7DD6FF" stroke-width="1.8" stroke-dasharray="4 4" opacity=".75"/>';
-  g+='<circle cx="'+X(16).toFixed(1)+'" cy="'+Y(70).toFixed(1)+'" r="2.4" fill="#7DD6FF"/>';
   if(entries.length){
-    var pts=entries.map(function(e){return[X(e.w),Y(e.weight)];});
+    var vals=entries.map(function(e){return e.weight;});
+    var mn=Math.floor(Math.min.apply(null,vals));if(mn%2)mn--;
+    var mx=Math.ceil(Math.max.apply(null,vals));if(mx%2)mx++;
+    if((mx-mn)<8){var mid=Math.round((mn+mx)/2);if(mid%2)mid++;mn=mid-4;mx=mid+4;}
+    var Y=function(v){return yB-((v-mn)/(mx-mn))*(yB-yT);};
+    var T=timeScale(entries.map(function(e){return dkTime(e.d);}),xL,xR);
+    for(var kg=mn;kg<=mx;kg+=2){var yy=Y(kg);g+='<line x1="'+xL+'" y1="'+yy.toFixed(1)+'" x2="'+xR+'" y2="'+yy.toFixed(1)+'" stroke="#1A1D24"/><text x="'+(xL-5)+'" y="'+(yy+3).toFixed(1)+'" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="8">'+kg+'</text>';}
+    T.ticks.forEach(function(t){g+='<text x="'+T.X(t.t).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="8">'+t.lab+'</text>';});
+    var pts=entries.map(function(e){return[T.X(dkTime(e.d)),Y(e.weight)];});
     var d=pts.map(function(p,i){return(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
-    g+='<path id="wreal" d="'+d+'" fill="none" stroke="#C8F031" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
+    if(pts.length>1)g+='<path id="wreal" d="'+d+'" fill="none" stroke="#C8F031" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>';
     pts.forEach(function(p,i){g+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(i===pts.length-1?3.6:2.6)+'" fill="#C8F031" stroke="#0A0B0E" stroke-width="1.4"/>';});
   } else {
-    g+='<text x="'+((xL+xR)/2).toFixed(0)+'" y="'+((yT+yB)/2).toFixed(0)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="9">Enregistre ton 1er point ↓</text>';
+    g+='<text x="'+((xL+xR)/2).toFixed(0)+'" y="'+((yT+yB)/2).toFixed(0)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="9">Enregistre ta 1re pesée ↑</text>';
   }
   svg.innerHTML=g;svg.dataset.drawn='';
   var nowEl=document.getElementById('wchart-now');
-  if(nowEl)nowEl.innerHTML=(entries.length?String(entries[entries.length-1].weight).replace('.',','):'—')+'<span class="u"> kg</span>';
+  if(nowEl)nowEl.innerHTML=(entries.length?fmtNum(entries[entries.length-1].weight):'—')+'<span class="u"> kg</span>';
+  var dEl=document.getElementById('wchart-d');
+  if(dEl){
+    if(entries.length>1){var dd=Math.round((entries[entries.length-1].weight-entries[0].weight)*10)/10;
+      dEl.innerHTML='<b>'+(dd>0?'+':'')+fmtNum(dd)+' kg</b> depuis le '+esc(fmtDayMonth(entries[0].d));}
+    else dEl.textContent='';
+  }
 }
-/* ===== COURBE DE FORCE — construite depuis les charges saisies en séance ===== */
-/* ===== LA COURBE DE FORCE, SUR N'IMPORTE QUEL EXO =====
-   C'était 2 mouvements codés en dur sur 24 : les 22 autres n'avaient aucune
-   courbe, alors que toutes leurs données étaient déjà en base. Rayan choisit
-   ce qu'il veut regarder — deux exos comparés, comme dans les apps de force. */
+/* ===== LA COURBE DE FORCE, SUR N'IMPORTE QUEL EXO ===== */
 var LIFT_COLS=['#C8F031','#7DD6FF'];
 var LIFT_DEFAULT=['dc-barre','tirage-vert-pron'];
 var LS_LIFTS='protocole_lifts_v1';
-/* tout exo à charge chiffrée et à reps est traçable */
+/* tout exo à charge chiffrée et à reps est traçable — une seule fois chacun */
 function liftableExos(){
-  var out=[];
-  Object.keys(SESSIONS).forEach(function(sk){
-    SESSIONS[sk].exos.forEach(function(e,i){
-      var p=mainPart(e);
-      if(p.mode==='none'||(p.unit&&p.unit!=='reps'))return;
-      out.push({id:e.id,sk:sk,i:i,lab:e.name,sess:SESSIONS[sk].name});
-    });
-  });
-  return out;
+  return uniqueExos().filter(function(x){var p=mainPart(x.e);return p.mode!=='none'&&p.mode!=='bw'&&(!p.unit||p.unit==='reps');})
+    .map(function(x){return {id:x.id,sk:x.sk,i:x.i,lab:x.e.name,sess:SESSIONS[x.sk].name};});
 }
 function liftSel(){
   var v=loadJSON(LS_LIFTS,null);
@@ -3753,10 +3646,10 @@ function liftsFromSel(){
 var LIFTS=liftsFromSel();
 function initLiftSelect(){
   var sel=document.getElementById('flift'); if(!sel)return;
-  var cur=liftSel()[0], groups={};
-  liftableExos().forEach(function(x){(groups[x.sess]=groups[x.sess]||[]).push(x);});
+  var cur=liftSel()[0], groups={}, order=[];
+  liftableExos().forEach(function(x){if(!groups[x.sess]){groups[x.sess]=[];order.push(x.sess);}groups[x.sess].push(x);});
   var h='';
-  Object.keys(groups).forEach(function(g){
+  order.forEach(function(g){
     h+='<optgroup label="'+esc(g)+'">';
     groups[g].forEach(function(x){
       h+='<option value="'+x.id+'"'+(x.id===cur?' selected':'')+'>'+esc(x.lab)+'</option>';
@@ -3772,24 +3665,11 @@ function initLiftSelect(){
     renderForceChart();
   });
 }
-function weekOfDK(dk){
-  var p=String(dk).split('-');if(p.length<3)return null;
-  var d=atMid(new Date(+p[0],+p[1]-1,+p[2])), w1=parseD(WEEK1_MONDAY);
-  var w=Math.floor(daysBetween(w1,d)/7)+1;
-  if(w<0)return 0; /* kickoff = S0 */
-  return Math.min(16,Math.max(0,w));
-}
+/* une valeur par jour : la dernière charge notée ce jour-là */
 function liftSeries(l){
-  var h=histOf(l.sk,l.i), out=[], seen={};
-  h.forEach(function(e){
-    var p=loadParts(e[1]);if(!p)return;
-    var w=weekOfDK(e[0]);if(w===null)return;
-    var v=p.pre?p.n:p.n; /* 2×20 kg → on suit la charge par haltère */
-    seen[w]=v; /* une valeur par semaine : la dernière saisie fait foi */
-  });
-  Object.keys(seen).forEach(function(w){out.push({w:+w,v:seen[w]});});
-  out.sort(function(a,b){return a.w-b.w;});
-  return out;
+  var seen={};
+  histOf(l.sk,l.i).forEach(function(e){var p=loadParts(e[1]);if(p&&dkTime(e[0]))seen[e[0]]=p.n;});
+  return Object.keys(seen).map(function(dk){return {t:dkTime(dk),v:seen[dk]};}).sort(function(a,b){return a.t-b.t;});
 }
 function dkNum(dk){var p=String(dk).split('-');return p.length<3?0:(+p[0])*10000+(+p[1])*100+(+p[2]);}
 /* la charge en vigueur à une date : sa dernière saisie à cette date ou avant, sinon le programme */
@@ -3809,22 +3689,18 @@ function chargeStrAtDate(sk,i,dk){
   h.forEach(function(e){var et=dkNum(e[0]);if(et>t||et<bt)return;best=e[1];bt=et;});
   return best||(SESSIONS[sk]&&SESSIONS[sk].exos[i]?SESSIONS[sk].exos[i].load:'');
 }
-/* e1RM par semaine : la meilleure série de chaque séance réellement loguée */
+/* e1RM par séance réellement loguée : la meilleure série du jour. La charge gravée
+   dans la série (k) fait foi ; sinon celle en vigueur ce jour-là. */
 function liftSeriesE1(l){
-  var seen={},out=[],days=logDays(),ck=chargeKey(l.sk,l.i);
+  var out=[],days=logDays(),ck=chargeKey(l.sk,l.i);
   for(var k=0;k<days.length;k++){
     var dk=days[k];
     var sets=(loadJSON(logKey(dk),{})[ck])||[];
     if(!sets.length)continue;
-    var kg=chargeAtDate(l.sk,l.i,dk);if(kg===null)continue;
-    var best=0;
-    sets.forEach(function(s){if(s.r>0)best=Math.max(best,e1rm(kg,s.r));});
-    if(best<=0)continue;
-    var w=weekOfDK(dk);if(w===null)continue;
-    if(!seen[w]||best>seen[w])seen[w]=Math.round(best*10)/10;
+    var dflt=chargeAtDate(l.sk,l.i,dk), best=0;
+    sets.forEach(function(s){var kg=s.k!=null?s.k:dflt;if(kg!=null&&s.r>0)best=Math.max(best,e1rm(kg,s.r));});
+    if(best>0)out.push({t:dkTime(dk),v:Math.round(best*10)/10});
   }
-  Object.keys(seen).forEach(function(w){out.push({w:+w,v:seen[w]});});
-  out.sort(function(a,b){return a.w-b.w;});
   return out;
 }
 var fMode='load';
@@ -3838,13 +3714,13 @@ function renderForceChart(){
   if(kEl)kEl.textContent=e1?'Force · max estimé (Epley)':'Force · tes charges réelles';
   leg.innerHTML=series.map(function(s){return '<span><i class="'+s.l.cls+'"></i>'+esc(s.l.lab)+'</span>';}).join('');
   var W=320,H=156,xL=30,xR=306,yT=14,yB=H-22;
-  function X(w){return xL+(w/16)*(xR-xL);}
   if(!any){
     svg.innerHTML='<text x="'+(W/2)+'" y="'+(H/2)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="9">'+(e1?'Ta force max estimée s’affichera ici':'Tes charges s’afficheront ici')+'</text>'+
-      '<text x="'+(W/2)+'" y="'+(H/2+16)+'" text-anchor="middle" fill="#6E7480" font-family="JetBrains Mono" font-size="8">'+(e1?'dès ta 1re séance guidée (charge × reps)':'dès que tu en enregistres une en séance')+'</text>';
+      '<text x="'+(W/2)+'" y="'+(H/2+16)+'" text-anchor="middle" fill="#6E7480" font-family="JetBrains Mono" font-size="8">'+(e1?'dès ta 1re séance guidée (charge × reps)':'dès que tu coches cet exo avec un poids')+'</text>';
     now.textContent='—';foot.innerHTML='';svg.dataset.drawn='';return;
   }
-  var all=[];series.forEach(function(s){s.pts.forEach(function(p){all.push(p.v);});});
+  var all=[],times=[];series.forEach(function(s){s.pts.forEach(function(p){all.push(p.v);times.push(p.t);});});
+  var T=timeScale(times,xL,xR);
   var lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
   var span=hi-lo, stepK=span<=10?2.5:(span<=25?5:10); /* graduations rondes : 2,5 / 5 / 10 kg */
   var mn=Math.floor((lo-stepK/2)/stepK)*stepK, mx=Math.ceil((hi+stepK/2)/stepK)*stepK;
@@ -3854,12 +3730,10 @@ function renderForceChart(){
   for(var kg=mn;kg<=mx+0.001;kg+=stepK){var yy=Y(kg);
     g+='<line x1="'+xL+'" y1="'+yy.toFixed(1)+'" x2="'+xR+'" y2="'+yy.toFixed(1)+'" stroke="#1A1D24"/>'+
        '<text x="'+(xL-5)+'" y="'+(yy+3).toFixed(1)+'" text-anchor="end" fill="#767C88" font-family="JetBrains Mono" font-size="8">'+fmtNum(kg)+'</text>';}
-  [0,4,8,12,16].forEach(function(w){g+='<text x="'+X(w).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="8">S'+w+'</text>';});
-  var st=computeState(today()), cw=(st.phase==='active')?st.week:(st.phase==='done'?16:0);
-  if(cw>0)g+='<line x1="'+X(cw).toFixed(1)+'" y1="'+yT+'" x2="'+X(cw).toFixed(1)+'" y2="'+yB+'" stroke="#2A2E37" stroke-dasharray="2 3"/>';
+  T.ticks.forEach(function(t){g+='<text x="'+T.X(t.t).toFixed(1)+'" y="'+(H-8)+'" text-anchor="middle" fill="#767C88" font-family="JetBrains Mono" font-size="8">'+t.lab+'</text>';});
   series.forEach(function(s,si){
     if(!s.pts.length)return;
-    var pts=s.pts.map(function(p){return [X(p.w),Y(p.v)];});
+    var pts=s.pts.map(function(p){return [T.X(p.t),Y(p.v)];});
     if(pts.length>1){
       var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
       g+='<path class="fline" id="fline-'+si+'" d="'+d+'" fill="none" stroke="'+s.l.col+'" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>';
@@ -3869,12 +3743,12 @@ function renderForceChart(){
     g+='<text x="'+Math.min(lp[0]+7,xR).toFixed(1)+'" y="'+(lp[1]-6).toFixed(1)+'" text-anchor="'+(lp[0]>xR-40?'end':'start')+'" fill="'+s.l.col+'" font-family="Barlow Condensed" font-weight="700" font-size="11">'+fmtNum(lastp.v)+'</text>';
   });
   svg.innerHTML=g;svg.dataset.drawn='';
-  var dc=series[0].pts;
-  now.innerHTML=dc.length?(fmtNum(dc[dc.length-1].v)+'<span class="u"> kg'+(e1?' de max estimé':' au DC')+'</span>'):'—';
+  var s0=series[0].pts;
+  now.innerHTML=s0.length?(fmtNum(s0[s0.length-1].v)+'<span class="u"> kg'+(e1?' de max estimé':'')+'</span>'):'—';
   foot.innerHTML=series.map(function(s){
     if(s.pts.length<2)return '';
-    var d=s.pts[s.pts.length-1].v-s.pts[0].v;
-    return '<span class="fd"><i style="background:'+s.l.col+'"></i>'+esc(s.l.short)+' <b class="'+(d>0?'up':(d<0?'dn':''))+'">'+(d>0?'+':'')+fmtNum(d)+' kg</b> depuis le départ</span>';
+    var d=Math.round((s.pts[s.pts.length-1].v-s.pts[0].v)*10)/10;
+    return '<span class="fd"><i style="background:'+s.l.col+'"></i>'+esc(s.l.short)+' <b class="'+(d>0?'up':(d<0?'dn':''))+'">'+(d>0?'+':'')+fmtNum(d)+' kg</b> depuis le '+esc(fmtDayMonth(dateKeyOf(new Date(s.pts[0].t))))+'</span>';
   }).join('');
 }
 window.__drawForce=function(){
@@ -3892,94 +3766,52 @@ function initForceSeg(){
   seg.querySelectorAll('button').forEach(function(b){
     b.addEventListener('click',function(){
       fMode=b.getAttribute('data-m');
-      seg.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+      seg.querySelectorAll('button').forEach(function(x){var on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-selected',on?'true':'false');});
       renderForceChart();
       var svg=document.getElementById('fchart');if(svg){svg.dataset.drawn='';if(window.__drawForce)window.__drawForce();}
     });
   });
 }
-function renderTracker(){var arr=loadJSON(LS_ENTRIES,[]);
-  renderWeightChart();renderForceChart();initForceSeg();
-  var log=document.getElementById('trk-log');
-  if(!arr.length){log.innerHTML='<div class="trk-empty">Aucun point encore. Enregistre ton dimanche.</div>';return;}
-  var srt=arr.slice().sort(function(a,b){return a.w-b.w;});
-  var h='';for(var i=srt.length-1;i>=0;i--){var e=srt[i];h+='<div class="logrow"><span class="wk">S'+e.w+'</span><span></span><span class="val">'+(e.weight!=null?String(e.weight).replace('.',',')+' kg':'—')+'</span><span class="val">'+(e.sleep!=null?e.sleep+'/10':'—')+'</span><span class="val">'+(e.comp!=null?e.comp+'/6':'—')+'</span></div>';}
+function renderTracker(){
+  renderWeightChart();renderForceChart();initForceSeg();initPeseeDate();
+  var log=document.getElementById('trk-log'); if(!log)return;
+  var arr=loadJSON(LS_ENTRIES,[]).filter(function(e){return e&&e.d;});
+  if(!arr.length){log.innerHTML='<div class="trk-empty">Aucune pesée encore.</div>';return;}
+  var srt=arr.slice().sort(function(a,b){return dkNum(a.d)-dkNum(b.d);});
+  var h='';for(var i=srt.length-1;i>=0&&i>=srt.length-12;i--){var e=srt[i];h+='<div class="logrow"><span class="wk">'+esc(fmtDK(e.d))+'</span><span></span><span class="val">'+(e.weight!=null?fmtNum(e.weight)+' kg':'—')+'</span><span class="val">'+(e.waist!=null?fmtNum(e.waist)+' cm':'—')+'</span><span class="val">'+(e.sleep!=null?e.sleep+'/10':'—')+'</span></div>';}
   log.innerHTML=h;
 }
 window.__drawWeight=function(){var svg=document.getElementById('wchart');if(!svg||svg.dataset.drawn==='1')return;svg.dataset.drawn='1';if(reduceMotion)return;var line=svg.querySelector('#wreal');if(!line||!line.getTotalLength)return;var len=line.getTotalLength();line.style.strokeDasharray=len;line.style.strokeDashoffset=len;line.style.transition='stroke-dashoffset 1.1s var(--e-out)';requestAnimationFrame(function(){line.style.strokeDashoffset='0';});};
-/* ===== LES TESTS, AVEC LEURS VALEURS =====
-   C'étaient des cases "fait / pas fait". Le programme réclame pourtant un chrono
-   30 m et un tour de taille à chaque contrôle, et promet "S8 : taille -3/-4 cm" —
-   un jalon que l'app était incapable de vérifier. Maintenant on mesure. */
-var LS_TVAL='protocole_testvals_v1';
-function testVals(){return loadJSON(LS_TVAL,{});}
-function setTestVal(id,field,v){
-  var all=testVals(); if(!all[id])all[id]={};
-  if(v==null||v==='')delete all[id][field]; else all[id][field]=v;
-  saveJSON(LS_TVAL,all);
+
+/* ===== TES CHARGES — la réponse à « est-ce que je progresse ? » =====
+   Chaque exo du programme, une ligne : sa charge actuelle, sa petite courbe,
+   ce qu'il a pris depuis la première charge notée. Touche = noter le poids. */
+function sparkSVG(pts){
+  if(!pts||pts.length<2)return '<svg class="ch-spark" viewBox="0 0 64 24" aria-hidden="true"></svg>';
+  var v=pts.map(function(p){return p.n;}), lo=Math.min.apply(null,v), hi=Math.max.apply(null,v);
+  if(hi===lo){lo-=1;hi+=1;}
+  var n=pts.length, P=v.map(function(x,k){return [(k/(n-1))*60+2,22-((x-lo)/(hi-lo))*20];});
+  var last=P[P.length-1];
+  return '<svg class="ch-spark" viewBox="0 0 64 24" aria-hidden="true"><polyline points="'+P.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' ')+'"/>'+
+    '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="2.2"/></svg>';
 }
-/* Les 4 mesures d'un jalon. `lab` est court parce que la grille fait 2 colonnes sur
-   390px ; `aria` porte le nom entier + le jalon, sinon un lecteur d'écran annonce
-   « Taille » cinq fois de suite sans dire de quel test il s'agit. */
-var TEST_FIELDS=[
-  {f:'waist', lab:'Taille',     aria:'Tour de taille',        step:'0.5',  min:50, max:130, ph:'cm'},
-  {f:'sprint',lab:'30 m',       aria:'Chrono 30 m',           step:'0.01', min:2,  max:15,  ph:'s'},
-  {f:'dc',    lab:'DC max',     aria:'Développé couché max',  step:'2.5',  min:20, max:150, ph:'kg'},
-  {f:'pull',  lab:'Tirage 6RM', aria:'Tirage 6 RM',           step:'2.5',  min:20, max:150, ph:'kg'}
-];
-function renderTests(){var done=loadJSON(LS_TESTS,{});var host=document.getElementById('tests-checks');
-  if(!host)return;
-  var vals=testVals(), h='';
-  TESTS.forEach(function(t){
-    var d=!!done[t.id], v=vals[t.id]||{};
-    h+='<div class="test-blk'+(d?' done':'')+'">'+
-      '<div class="chk'+(d?' done':'')+'" data-id="'+t.id+'" role="checkbox" tabindex="0" aria-checked="'+d+'">'+
-        '<span class="chk-box"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6"/></svg></span>'+
-        '<span class="lab"><span class="n">'+t.name+'</span><span class="d">'+esc(t.d)+'</span></span>'+
-        '<span class="wk">'+t.wk+'</span></div>'+
-      '<div class="test-vals">'+TEST_FIELDS.map(function(F){
-        var fid='tv-'+t.id+'-'+F.f;
-        return '<label for="'+fid+'"><span>'+F.lab+'</span>'+
-          '<input id="'+fid+'" name="'+fid+'" type="number" inputmode="decimal" step="'+F.step+'" min="'+F.min+'" max="'+F.max+'"'+
-          ' data-t="'+t.id+'" data-f="'+F.f+'" value="'+(v[F.f]!=null?v[F.f]:'')+'" placeholder="'+F.ph+'"'+
-          ' aria-label="'+esc(F.aria)+' — tests '+t.id+'"></label>';
-      }).join('')+'</div></div>';
+function renderChargesList(){
+  var host=document.getElementById('ch-list'); if(!host)return;
+  var h='', curSk=null;
+  uniqueExos().forEach(function(x){
+    var p=mainPart(x.e); if(p.mode==='none')return;
+    if(x.sk!==curSk){curSk=x.sk;h+='<div class="ch-grp">'+esc(SESSIONS[x.sk].name)+' · '+esc(SESSIONS[x.sk].tag)+'</div>';}
+    var lv=effLoad(x.sk,x.i,x.e), num=!!loadParts(lv), P=num?progressOf(x.sk,x.i):null;
+    var also=x.in.length>1?' · aussi '+x.in.slice(1).join(', '):'';
+    var val=num?'<b>'+esc(dispLoad(lv))+'</b>':(p.mode==='bw'?'<b>'+esc(isCustomLoad(x.sk,x.i)?lv:'PDC')+'</b>':'<span class="add">+ noter</span>');
+    var d=P?deltaTxt(P.delta):'', rec=P&&P.pts.length>1&&P.cur>=P.best&&P.delta>0;
+    var sub=d?d+(rec?' · record':''):(P&&P.pts.length?P.pts.length+' séance'+(P.pts.length>1?'s':''):'');
+    h+='<button class="ch-row" type="button" data-sk="'+x.sk+'" data-i="'+x.i+'" aria-label="'+esc(x.e.name)+' : '+esc(num?dispLoad(lv):'pas de poids noté')+'. Modifier">'+
+      '<span class="ch-nm">'+esc(x.e.name)+'<span class="ch-s">'+esc(x.e.s)+esc(also)+'</span></span>'+
+      sparkSVG(P&&P.pts)+
+      '<span class="ch-v">'+val+(sub?'<span class="ch-d'+(P&&P.delta>0?' up':(P&&P.delta<0?' dn':''))+'">'+esc(sub)+'</span>':'')+'</span></button>';
   });
   host.innerHTML=h;
-  host.querySelectorAll('.chk').forEach(function(row){
-    function tg(){var id=row.getAttribute('data-id');var d=loadJSON(LS_TESTS,{});d[id]=!d[id];saveJSON(LS_TESTS,d);
-      row.classList.toggle('done',d[id]);row.closest('.test-blk').classList.toggle('done',d[id]);
-      row.setAttribute('aria-checked',d[id]);if(navigator.vibrate)navigator.vibrate(8);}
-    row.addEventListener('click',tg);
-    row.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Enter'){e.preventDefault();tg();}});
-  });
-  host.querySelectorAll('.test-vals input').forEach(function(inp){
-    inp.addEventListener('change',function(){
-      var v=inp.value===''?null:parseFloat(String(inp.value).replace(',','.'));
-      setTestVal(inp.getAttribute('data-t'),inp.getAttribute('data-f'),(v!=null&&isFinite(v))?v:null);
-      renderTestDelta();
-    });
-  });
-  renderTestDelta();
-}
-/* le delta depuis les tests de départ : la preuve, chiffrée */
-function renderTestDelta(){
-  var host=document.getElementById('tests-delta'); if(!host)return;
-  var v=testVals(), s0=v.S0||{};
-  var last=null,lastId='';
-  ['S16','S12','S8','S4'].forEach(function(id){if(!last&&v[id]&&(v[id].waist!=null||v[id].sprint!=null||v[id].dc!=null||v[id].pull!=null)){last=v[id];lastId=id;}});
-  if(!last||!Object.keys(s0).length){host.innerHTML='';return;}
-  var row=function(lab,a,b,unit,lowerIsBetter){
-    if(a==null||b==null)return '';
-    var d=b-a, good=lowerIsBetter?d<0:d>0;
-    var sign=d>0?'+':'';
-    return '<div class="td"><span class="k">'+lab+'</span><b class="'+(d===0?'':(good?'up':'dn'))+'">'+sign+fmtNum(d)+' '+unit+'</b></div>';
-  };
-  var h=row('Tour de taille',s0.waist,last.waist,'cm',true)+
-        row('30 m',s0.sprint,last.sprint,'s',true)+
-        row('Développé couché',s0.dc,last.dc,'kg',false)+
-        row('Tirage 6RM',s0.pull,last.pull,'kg',false);
-  host.innerHTML=h?('<div class="test-delta"><div class="k">S0 → '+lastId+'</div>'+h+'</div>'):'';
 }
 
 /* ===== RAPPELS CALENDRIER (.ics) =====
@@ -4000,7 +3832,7 @@ function icsFold(l){ /* RFC 5545 : 75 octets/ligne — 60 caractères pour reste
   while(l.length>60){out.push(l.slice(0,60));l=' '+l.slice(60);}
   out.push(l);return out.join('\r\n');
 }
-/* ===== LES CIBLES DE COUCHER, DÉRIVÉES DE sleepTarget() =====
+/* ===== LES CIBLES DE COUCHER, DÉRIVÉES DE SLEEP =====
    Une seule vérité pour l'app ET le calendrier. Avant, une table recopiée à la main
    programmait la colonne "veille de marché" tous les jours : le téléphone sonnait
    23h30 quand l'app affichait 1h30. Le seul truc qui sonne pour de vrai avait tort.
@@ -4026,19 +3858,15 @@ function shiftDays(days,by){
   if(!by)return days;
   return days.map(function(d){var i=ICS_DAYS.indexOf(d);return ICS_DAYS[(i+by+7)%7];});
 }
-function sleepPlanBlocks(){
-  return [{w1:1,w2:2},{w1:3,w2:4},{w1:5,w2:6},{w1:7,w2:16}].map(function(b){
-    var t=sleepTarget(b.w1);
-    return {w1:b.w1,w2:b.w2,cible:hhmm(t.c),marche:hhmm(t.m)};
-  });
-}
 function buildICS(){
   var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Le Protocole//Rayan//FR','CALSCALE:GREGORIAN','METHOD:PUBLISH',
     'X-WR-CALNAME:Le Protocole — Rayan','X-WR-TIMEZONE:Europe/Paris'];
   var uid=0, stamp=icsDT(new Date(),12,0)+'Z';
+  /* nouveau préfixe d'UID : le calendrier du protocole 16 semaines s'arrête seul
+     le 08/11, celui-ci ne doit pas se confondre avec lui */
   function ev(o){
     L.push('BEGIN:VEVENT');
-    L.push('UID:protocole-'+(++uid)+'-rayan@local');
+    L.push('UID:haut-'+(++uid)+'-rayan@local');
     L.push('DTSTAMP:'+stamp);
     L.push('DTSTART:'+o.start);
     L.push('DTEND:'+o.end);
@@ -4049,94 +3877,44 @@ function buildICS(){
     L.push('END:VEVENT');
   }
   function dPlus(base,days){var d=new Date(base);d.setDate(d.getDate()+days);return d;}
-  var w1=parseD(WEEK1_MONDAY), end=parseD(PROTOCOLE_END);
-  function untilOf(d){function p(n){return (n<10?'0':'')+n;}return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'T235959Z';}
-
-  /* 1. sommeil — le chantier n°1. Deux régimes par bloc : les nuits normales et
-        les veilles de marché. Chacun avec son alarme inversée 45 min avant. */
-  var DESC_PRE='Douche chaude. Écrans en mode nuit. Téléphone en charge HORS de portée du lit. Chambre 18-19 °C, noir complet. Coucher dans 45 min.';
-  function hLab(t){return t.h+'h'+(t.m<10?'0':'')+t.m;}
   /* le 1er jour à partir de `from` qui tombe sur l'un des `days` demandés */
   function firstOn(from,days){
     var d=new Date(from);
     for(var i=0;i<7;i++){if(days.indexOf(ICS_DAYS[d.getDay()])>=0)return d;d=dPlus(d,1);}
     return from;
   }
-  function sleepPair(blockStart,stop,t,days,title,desc){
+  function weekly(days,hh,mm,dur,title,desc){
+    var d=firstOn(start,days);
+    ev({start:icsDT(d,hh,mm),end:icsAdd(d,hh,mm,dur),rrule:'FREQ=WEEKLY;BYDAY='+days.join(','),title:title,desc:desc});
+  }
+  var start=atMid(today());
+  /* 1. sommeil : les horaires atteints en fin de protocole, sans date de fin */
+  var DESC_PRE='Douche chaude. Écrans en mode nuit. Téléphone en charge HORS de portée du lit. Chambre 18-19 °C, noir complet. Coucher dans 45 min.';
+  function hLab(t){return t.h+'h'+(t.m<10?'0':'')+t.m;}
+  function sleepPair(t,days,title,desc){
     var pre=minusMin(t,45), preDays=shiftDays(days,pre.shift);
-    var dP=firstOn(blockStart,preDays), dC=firstOn(blockStart,days);
-    /* fenêtre trop courte pour contenir un seul des jours demandés : sans ça on
-       produirait un DTSTART postérieur à son propre UNTIL (occurrence fantôme) */
-    if(dC>stop)return;
-    ev({start:icsDT(dP,pre.h,pre.m),end:icsAdd(dP,pre.h,pre.m,15),
-      rrule:'FREQ=WEEKLY;BYDAY='+preDays.join(',')+';UNTIL='+untilOf(stop),
-      title:'Alarme inversée — début de descente',desc:DESC_PRE});
-    ev({start:icsDT(dC,t.h,t.m),end:icsAdd(dC,t.h,t.m,10),
-      rrule:'FREQ=WEEKLY;BYDAY='+days.join(',')+';UNTIL='+untilOf(stop),
-      title:title+' — '+hLab(t),desc:desc});
+    weekly(preDays,pre.h,pre.m,15,'Alarme inversée — début de descente',DESC_PRE);
+    weekly(days,t.h,t.m,10,title+' — '+hLab(t),desc);
   }
-  /* AVANT S1 — le chantier sommeil commence le soir où Rayan installe l'app, pas au
-     coup d'envoi du programme : la checklist lui dit « coucher dès ce soir » alors que
-     le calendrier ne sonnait qu'à partir du lundi de S1. Quatre nuits pendant lesquelles
-     le seul canal qui sonne pour de vrai démentait l'app. Cible = celle de S1 (même
-     source), fenêtre bornée au dimanche : le bloc S1 prend le relais le lendemain. */
-  var preStop=dPlus(w1,-1), preStart=atMid(today());
-  if(preStart<preStop){
-    var s1=sleepPlanBlocks()[0];
-    sleepPair(preStart,preStop,s1.cible,['MO','WE','FR'],'Coucher',
-      'Avant même le kickoff. Prendre deux nuits d’avance, c’est déjà commencer.');
-    sleepPair(preStart,preStop,s1.marche,['MO','WE'],'Coucher (veille de marché)',
-      'Lever 5h demain. Le marché ne se négocie pas.');
-  }
-  sleepPlanBlocks().forEach(function(s){
-    var start=dPlus(w1,(s.w1-1)*7), stop=dPlus(w1,(s.w2-1)*7+6);
-    if(stop>end)stop=end;
-    if(start>end)return;
-    /* nuits dim→lun, mar→mer, jeu→ven : le coucher cible tombe après minuit,
-       donc l'événement est daté au lendemain matin */
-    sleepPair(start,stop,s.cible,['MO','WE','FR'],'Coucher',
-      'La cible de ton bloc. 80 % de ta récup se joue ici, pas à la salle.');
-    /* nuits lun→mar, mer→jeu : marché à 6h, lever 5h — on coupe court */
-    sleepPair(start,stop,s.marche,['MO','WE'],'Coucher (veille de marché)',
-      'Lever 5h demain. C’est la nuit qui décide de ta journée au marché ET de ta séance du soir.');
+  /* nuits dim→lun, mar→mer, jeu→ven : le coucher tombe à minuit, daté au lendemain */
+  sleepPair(hhmm(SLEEP.c),['MO','WE','FR'],'Coucher','80 % de ta récup se joue ici, pas à la salle.');
+  /* nuits lun→mar, mer→jeu : marché à 6h, lever 5h */
+  sleepPair(hhmm(SLEEP.m),['MO','WE'],'Coucher (veille de marché)','Lever 5h demain. C’est la nuit qui décide de ta journée ET de ta séance du soir.');
+  weekly(['SA'],1,0,10,'Rentrer — marché dans 5h','Ta sortie du vendredi reste. Mais c’est LA nuit qui te détruit : 1h max, lever 6h.');
+  /* 2. séances + natation */
+  [['MO','HAUT_A'],['TU','HAUT_B'],['TH','HAUT_C'],['FR','HAUT_D']].forEach(function(x){
+    var s=SESSIONS[x[1]];
+    weekly([x[0]],17,30,90,'Séance — '+s.name.replace('HAUT','Haut')+' · '+s.tag.toLowerCase(),
+      s.exos.length+' exos. Ouvre l’app : ta séance guidée t’attend. Note tes poids.');
   });
-  /* ven→sam : la sortie reste, mais le marché de samedi 6h ne se négocie pas */
-  var sam1=firstOn(w1,['SA']);
-  ev({start:icsDT(sam1,1,0),end:icsAdd(sam1,1,0,10),
-    rrule:'FREQ=WEEKLY;BYDAY=SA;UNTIL='+untilOf(end),
-    title:'Rentrer — marché dans 5h',
-    desc:'Ta sortie du vendredi reste. Mais c’est LA nuit qui te détruit : 1h max, lever 6h.'});
-  /* 2. séances + sprints */
-  [[0,'Upper A','Poussée · force'],[2,'Lower A','Chaîne complète'],[4,'Upper B','Tirage · hypertrophie'],[6,'Lower B','Quadris + posterior']].forEach(function(s){
-    ev({start:icsDT(dPlus(w1,s[0]),17,30),end:icsDT(dPlus(w1,s[0]),19,0),rrule:'FREQ=WEEKLY;UNTIL='+untilOf(end),
-      title:'Séance — '+s[1],desc:s[2]+'. Ouvre l’app : ta séance guidée t’attend.'});
-  });
-  ev({start:icsDT(dPlus(w1,3),17,30),end:icsDT(dPlus(w1,3),18,15),rrule:'FREQ=WEEKLY;UNTIL='+untilOf(end),
-    title:'Sprint 1 — explosivité',desc:'Après le marché + sieste. Échauffement 12 min, puis 6× 30 m à 95 %.'});
-  var s2=dPlus(w1,4*7+5); /* Sprint 2 : à partir du bloc 2 (S5) */
-  ev({start:icsDT(s2,17,30),end:icsDT(s2,18,15),rrule:'FREQ=WEEKLY;UNTIL='+untilOf(end),
-    title:'Sprint 2 — capacité',desc:'6× 150 m à 75-80 %, récup 90 s marchée.'});
-  /* 3. pesée + photos */
-  ev({start:icsDT(dPlus(w1,6),9,0),end:icsDT(dPlus(w1,6),9,15),rrule:'FREQ=WEEKLY;UNTIL='+untilOf(end),
-    title:'Point hebdo — pesée + photos',desc:'À jeun, après être passé aux toilettes. Reporte le point dans l’app (onglet Suivi).'});
-  /* 4. jalons — S0 compris : S4 à S16 étaient au calendrier, pas la mesure de départ.
-        C'est pourtant la seule qui ne se rattrape jamais (en novembre, il n'y aura
-        plus de « avant » à photographier). */
-  var kd=parseD(KICKOFF);
-  ev({start:icsDT(kd,9,0),end:icsDT(kd,9,30),title:'Tests S0 — photos, poids, tour de taille',
-    desc:'Ta mesure de départ. Photos face/profil/dos : même mur, même lumière, short uni. Ce sont elles qui parleront en novembre.'});
-  [[4,'S4'],[8,'S8'],[12,'S12'],[16,'S16']].forEach(function(t){
-    var d=dPlus(w1,(t[0]-1)*7+6);if(d>end)d=end;
-    ev({start:icsDT(d,9,0),end:icsDT(d,9,30),title:'Tests '+t[1]+' — photos, poids, taille, force, chrono 30 m',
-      desc:'Le point de contrôle du bloc. Mêmes conditions que la fois précédente.'});
-  });
-  /* 5. sauvegarde — le calendrier est le seul canal qui sonne pour de vrai,
-        et une sauvegarde qu'on ne rappelle jamais n'est jamais faite */
-  [4,8,12,16].forEach(function(w){
-    var d=dPlus(w1,(w-1)*7+6);if(d>end)d=end;
-    ev({start:icsDT(d,9,35),end:icsDT(d,9,45),title:'Sauvegarde du protocole — 10 secondes',
-      desc:'App → Suivi → Tes données → Sauvegarder. Envoie-toi le fichier (Fichiers, WhatsApp, Notes). C’est ton filet si tu changes de téléphone.'});
-  });
+  weekly(['WE'],17,30,30,'Natation — 30 min','Coche-la dans l’app une fois faite.');
+  weekly(['SA'],17,30,30,'Natation — 30 min (optionnel)','Si tu en as envie. Coche-la dans l’app une fois faite.');
+  /* 3. pesée */
+  weekly(['SU'],9,0,15,'Pesée','À jeun, après être passé aux toilettes. Note-la dans l’app (onglet Suivi).');
+  /* 4. sauvegarde fichier, le 1er dimanche du mois — la synchro auto couvre le reste */
+  var d1=firstOn(start,['SU']);
+  ev({start:icsDT(d1,9,20),end:icsAdd(d1,9,20,10),rrule:'FREQ=MONTHLY;BYDAY=1SU',title:'Sauvegarde du protocole — 10 secondes',
+    desc:'App → Suivi → Tes données → Sauvegarder. Envoie-toi le fichier (Fichiers, WhatsApp, Notes). C’est ton filet si tu changes de téléphone.'});
   L.push('END:VCALENDAR');
   return L.join('\r\n');
 }
@@ -4148,21 +3926,19 @@ function exportICS(){
   setTimeout(function(){URL.revokeObjectURL(url);},1000);
   toast('Rappels prêts — ouvre le fichier');
 }
-/* La carte des rappels annonce ce que le calendrier programme VRAIMENT,
-   à la semaine où Rayan se trouve — plus aucune heure écrite en dur. */
+/* La carte des rappels annonce ce que le calendrier programme VRAIMENT. */
 function renderReminders(){
-  var st=computeState(today()), w=st.week||1, t=sleepTarget(w);
-  var c=hhmm(t.c), pre=minusMin(c,45);
-  var h=document.getElementById('rem-h'); if(h)h.textContent=t.c;
+  var c=hhmm(SLEEP.c), pre=minusMin(c,45);
+  var h=document.getElementById('rem-h'); if(h)h.textContent=SLEEP.c;
   var host=document.getElementById('rem-list'); if(!host)return;
   var row=function(time,desc){return '<div class="rl"><span class="t">'+esc(time)+'</span><span class="d">'+esc(desc)+'</span></div>';};
   host.innerHTML=
     row(pre.h+'h'+(pre.m<10?'0':'')+pre.m,'Alarme inversée — 45 min avant, début de descente')+
-    row(t.c,'Coucher — dim, mar et jeu soir')+
-    row(t.m,'Coucher — lun et mer soir (marché le lendemain 6h)')+
+    row(SLEEP.c,'Coucher — dim, mar et jeu soir')+
+    row(SLEEP.m,'Coucher — lun et mer soir (marché le lendemain 6h)')+
     row('1h00','Rentrer — vendredi soir, marché samedi 6h')+
-    row('17h30','Tes 4 séances + tes 2 sprints')+
-    row('DIM 9h','Pesée + photos, et les tests S4/S8/S12/S16');
+    row('17h30','Tes 4 séances + ta natation')+
+    row('DIM 9h','Pesée');
 }
 function initReminders(){
   renderReminders();
@@ -4228,13 +4004,10 @@ function collectDataFull(){
 }
 function dataStat(){
   var el=document.getElementById('dc-stat');if(!el)return;
-  var seances=0,charges=0,sprints=0;
-  for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i)||'';
-    if(k.indexOf('protocole_seance_')===0){var a=loadJSON(k,[]);if(a.filter(Boolean).length>=6)seances++;}
-    if(k.indexOf('protocole_sprint_')===0){var s=loadJSON(k,[]);if(s.length&&s.filter(Boolean).length===s.length)sprints++;}}
-  var c=loadCharges();charges=Object.keys(c).filter(function(k){return c[k]&&c[k].v;}).length;
+  var seances=sessionsDone(), c=loadCharges(), charges=0;
+  Object.keys(c).forEach(function(k){charges+=(c[k]&&c[k].h)?c[k].h.length:0;});
   var pts=loadJSON(LS_ENTRIES,[]).length;
-  el.textContent=seances+' séance'+(seances>1?'s':'')+' · '+sprints+' sprint'+(sprints>1?'s':'')+' · '+charges+' charge'+(charges>1?'s':'')+' · '+pts+' pesée'+(pts>1?'s':'');
+  el.textContent=seances+' séance'+(seances>1?'s':'')+' · '+charges+' charge'+(charges>1?'s':'')+' notée'+(charges>1?'s':'')+' · '+pts+' pesée'+(pts>1?'s':'');
 }
 /* ===== SAUVEGARDE DISTANTE =====
    L'app reste local-first : ce miroir ne conditionne RIEN. Pas de réseau, worker
@@ -4275,9 +4048,24 @@ function syncPush(delay){
    Vécu en test : 2 photos ajoutées pendant un envoi en vol → la 2e n'arrivait
    jamais sur le serveur. Le dernier état local doit toujours finir en ligne. */
 var _syncAgain=false;
+/* ===== LA SYNCHRO QUI PART POUR DE VRAI (03/11/2026) =====
+   Constat sur le serveur : dernière sauvegarde de Rayan le 26/07. La synchro ne
+   partait qu'en fin de séance GUIDÉE, à une pesée ou une photo — or Rayan coche
+   ses exos à la main. Trois mois de séances n'existaient que sur son téléphone.
+   Maintenant : tout changement marque « à envoyer », envoi groupé au plus une
+   fois toutes les 10 min, plus à l'ouverture et quand l'app passe en arrière-plan.
+   Le marqueur vit HORS du préfixe protocole_ : il ne voyage pas dans la sauvegarde. */
+var LS_SYNC_DIRTY='rk_sync_dirty', SYNC_GAP=10*60*1000, _lastPushAt=0, _soonT=null;
+function syncDirty(){try{return localStorage.getItem(LS_SYNC_DIRTY)==='1';}catch(e){return false;}}
+function syncSoon(){
+  try{localStorage.setItem(LS_SYNC_DIRTY,'1');}catch(e){}
+  if(!syncOn()||_soonT)return;
+  var wait=Math.max(30000,_lastPushAt+SYNC_GAP-Date.now());
+  _soonT=setTimeout(function(){_soonT=null;_syncNow();},wait);
+}
 function _syncNow(){
   if(_syncing){_syncAgain=true;return;}
-  _syncing=true;
+  _syncing=true;_lastPushAt=Date.now();
   collectDataFull().then(function(full){
     /* PAS de keepalive : fetch le refuse au-delà de 64 Ko de corps — la sync
        aurait cessé de marcher en silence vers la S8, photos ou pas. Le push
@@ -4287,7 +4075,7 @@ function _syncNow(){
     });
   }).then(function(r){
     if(!r.ok)throw new Error('http '+r.status);
-    try{localStorage.setItem(LS_SYNC_AT,new Date().toISOString());}catch(e){}
+    try{localStorage.setItem(LS_SYNC_AT,new Date().toISOString());if(!_soonT&&!_syncAgain)localStorage.removeItem(LS_SYNC_DIRTY);}catch(e){}
     renderSync();
   }).catch(function(){/* silencieux : jamais sur le chemin de Rayan */})
    .then(function(){
@@ -4309,6 +4097,10 @@ function renderSync(){
   var codeEl=document.getElementById('sync-code');
   if(codeEl)codeEl.textContent=syncCode()||'—';
   if(!SYNC_URL){box.className='dc-last';box.textContent='Sauvegarde auto non configurée.';return;}
+  if(syncCode()&&syncDirty()&&localStorage.getItem(LS_SYNC_AT)){
+    var a0=new Date(localStorage.getItem(LS_SYNC_AT)), j0=daysBetween(atMid(a0),atMid(new Date()));
+    if(j0>2){box.className='dc-last warn';box.textContent='Pas sauvegardé depuis '+j0+' jours — ouvre l’app avec du réseau, ça part tout seul.';return;}
+  }
   if(!syncCode()){box.className='dc-last warn';box.textContent='Pas encore activée — crée ton code, et tu ne perds plus rien.';return;}
   var at=localStorage.getItem(LS_SYNC_AT);
   if(!at){box.className='dc-last';box.textContent='Activée. Première sauvegarde à ta prochaine séance.';return;}
@@ -4393,14 +4185,22 @@ function exportCSV(){
   var rows=[['date','seance','exercice','serie','charge','reps','ressenti']];
   var RPE={easy:'facile',ok:'correct',hard:'dur'};
   logDays().forEach(function(dk){
-    var log=loadLog(dk);
-    Object.keys(SESSIONS).forEach(function(sk){
+    var log=loadLog(dk), seen={}, skDay=sessionKeyOn(parseD(dk)), order=skDay?[skDay]:[];
+    Object.keys(SESSIONS).forEach(function(k){if(order.indexOf(k)<0)order.push(k);});
+    order.forEach(function(sk){
       SESSIONS[sk].exos.forEach(function(e,i){
-        var sets=log[e.id]; if(!sets||!sets.length)return;
-        var charge=chargeStrAtDate(sk,i,dk);
+        var sets=log[e.id]; if(seen[e.id]||!sets||!sets.length)return; seen[e.id]=1;
+        var charge=dispLoad(chargeStrAtDate(sk,i,dk));
         sets.forEach(function(s,n){
-          rows.push([dk,SESSIONS[sk].name,e.name,n+1,charge,s.r==null?'':s.r,RPE[s.e]||'']);
+          rows.push([dk,SESSIONS[sk].name,e.name,n+1,s.k!=null?fmtNum(s.k)+' kg':charge,s.r==null?'':s.r,RPE[s.e]||'']);
         });
+      });
+    });
+    /* les exos du protocole 16 semaines (Upper/Lower) : leur id sert de nom */
+    Object.keys(log).forEach(function(id){
+      if(seen[id])return;
+      (log[id]||[]).forEach(function(s,n){
+        rows.push([dk,'ancien programme',id,n+1,s.k!=null?fmtNum(s.k)+' kg':'',s.r==null?'':s.r,RPE[s.e]||'']);
       });
     });
   });
@@ -4540,7 +4340,8 @@ function initExoSheet(){
 }
 
 /* ===== REMISE ===== */
-function initRemise(){var LS='protocole_remise_seen_v2';var ov=document.getElementById('remise');var seen=false;try{seen=localStorage.getItem(LS)==='1';}catch(e){}
+/* v3 : l'écran d'accueil revient UNE fois pour annoncer le nouveau programme */
+function initRemise(){var LS='protocole_remise_seen_v3';var ov=document.getElementById('remise');var seen=false;try{seen=localStorage.getItem(LS)==='1';}catch(e){}
   var force=(INTRO_MODE==='force'),skip=(INTRO_MODE==='skip');
   var app=document.getElementById('app'), nav=document.getElementById('nav');
   /* écran masqué = inerte, pas juste transparent : son bouton restait tabulable */
@@ -4576,7 +4377,7 @@ function wireIcons(){
   setIc('ic-chart','chart');setIc('ic-chev2','chevron');setIc('ic-flash','flash');setIc('ic-alert','alert');
   setIc('ic-moon2','moon');setIc('ic-bulb2','bulb');setIc('ic-sun','sun');setIc('ic-fork','fork');setIc('ic-bulb3','bulb');setIc('ic-bulb4','bulb');
   setIc('ic-stretch','stretch');setIc('ic-pen','pen');setIc('ic-camera','camera');setIc('ic-flag','flag');setIc('ic-save','save');
-  setIc('ic-bell','bell');setIc('ic-bell2','bell');setIc('ic-cal2','cal');setIc('ic-bulb5','bulb');setIc('ic-camera2','camera');setIc('ic-cloud','save');setIc('ic-bulb6','bulb');
+  setIc('ic-kg','dumbbell');setIc('ic-save2','save');setIc('ic-bell','bell');setIc('ic-bell2','bell');setIc('ic-cal2','cal');setIc('ic-bulb5','bulb');setIc('ic-camera2','camera');setIc('ic-cloud','save');setIc('ic-bulb6','bulb');
 }
 
 /* ===== FRAÎCHEUR DU JOUR =====
@@ -4585,8 +4386,8 @@ function wireIcons(){
    dans la clé du mauvais jour. */
 function refreshDay(){
   step('r:status',renderStatus); step('r:today',renderToday); step('r:progress',renderProgress);
-  step('r:reminders',renderReminders);
-  if(window.__trackerReady){step('r:tracker',renderTracker); step('r:tests',renderTests);}
+  step('r:reminders',renderReminders); step('r:planning',buildPlanning);
+  if(window.__trackerReady){step('r:tracker',renderTracker); step('r:charges',renderChargesList); step('r:photos',renderPhotos);}
 }
 function initDayWatch(){
   var cur=dateKeyOf(today());
@@ -4597,6 +4398,16 @@ function initDayWatch(){
   document.addEventListener('visibilitychange',function(){if(!document.hidden)check();});
   window.addEventListener('focus',check);
   setInterval(check,60000);
+}
+
+/* la sauvegarde part à l'ouverture si quelque chose attend, et quand l'app
+   passe en arrière-plan (iOS laisse quelques secondes : au mieux elle passe,
+   au pire la suivante rattrape) */
+function initSyncWatch(){
+  setTimeout(function(){if(syncOn()&&syncDirty()){clearTimeout(_soonT);_soonT=null;_syncNow();}},4000);
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='hidden'&&syncOn()&&syncDirty()&&!_syncing){clearTimeout(_soonT);_soonT=null;_syncNow();}
+  });
 }
 
 /* ===== INIT =====
@@ -4615,7 +4426,7 @@ function step(label,fn){try{fn();}catch(e){if(window.console)console.error('[ini
 var _restBuilt=false;
 function buildRest(){
   if(_restBuilt)return; _restBuilt=true;
-  step('blocks',buildBlocks); step('weekType',buildWeekType); step('wkStrip',buildWkStrip);
+  step('planning',buildPlanning);
   step('accordions',buildAccordions); step('adapt',buildAdapt); step('warmup',buildWarmup);
   step('routines',function(){
     buildRoutine('routine-soir',ROUTINE_SOIR,'protocole_soir_v1');
@@ -4624,8 +4435,8 @@ function buildRest(){
   step('accToggle',function(){
     document.querySelectorAll('details.acc').forEach(function(d){d.addEventListener('toggle',function(){if(!d.open)return;if(window.__lightMuscles)window.__lightMuscles(d);if(d.querySelector('#vol-bars'))fillVolumeBars();});});
   });
-  step('weekSelect',initWeekSelect); step('liftSelect',initLiftSelect);
-  step('trkForm',trkForm); step('tracker',renderTracker); step('tests',renderTests);
+  step('liftSelect',initLiftSelect);
+  step('trkForm',trkForm); step('tracker',renderTracker); step('charges',renderChargesList);
   step('data',initData); step('sync',initSync); step('photos',initPhotos);
   step('reminders',initReminders);
   window.__trackerReady=true;
@@ -4640,7 +4451,7 @@ document.addEventListener('DOMContentLoaded',function(){
   step('status',renderStatus); step('today',renderToday); step('progress',renderProgress);
   step('coach',initCoach); step('exoSheet',initExoSheet);
   step('pwa',initPWA); step('timerPanel',initTimerPanel);
-  step('dayWatch',initDayWatch); step('persist',askPersist);
+  step('dayWatch',initDayWatch); step('persist',askPersist); step('syncWatch',initSyncWatch);
   var TABS=['today','programme','sommeil','suivi'];
   var startTab=(START_TAB&&TABS.indexOf(START_TAB)>=0)?START_TAB:'today';
   /* un lien partagé ou un onglet rouvert doit retomber sur la bonne vue */
