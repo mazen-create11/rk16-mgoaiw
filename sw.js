@@ -1,6 +1,6 @@
 /* CRAN — service worker
    Objectif : l'app s'ouvre à la salle même sans réseau (sous-sol), tout en restant à jour dès qu'il y en a. */
-var CACHE = 'protocole-v12';
+var CACHE = 'protocole-v13';
 var CORE = ['./', './index.html', './manifest.json'];
 var FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 

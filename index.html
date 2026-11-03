@@ -115,6 +115,28 @@ h1.view-title,h2.view-title{font-family:var(--display); font-weight:900; text-tr
 .btn-volt{font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-size:18px; background:var(--volt); color:#0A0B0E; border-radius:12px; padding:16px 30px; min-height:54px; display:inline-flex; align-items:center; gap:10px}
 .btn-volt:active{transform:scale(.97)}
 .rm-skip{position:absolute; bottom:calc(22px + var(--safe-b)); left:0; right:0; font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#767C88}
+/* ===================== CRAN : le nouveau nom, expliqué une fois ===================== */
+#cran-ov{position:fixed; inset:0; z-index:999; background:#000; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:calc(var(--safe-t) + 34px) 20px calc(var(--safe-b) + 28px)}
+#cran-ov.gone{display:none}
+.cr-in{max-width:420px; margin:0 auto; display:flex; flex-direction:column; align-items:center; text-align:center}
+.wordmark.cr-wm .b{font-size:clamp(64px,22vw,96px)}
+.cr-h:focus{outline:none}
+.cr-h{font-family:var(--display); font-weight:900; text-transform:uppercase; font-size:clamp(26px,8vw,34px); line-height:.95; margin-top:18px; letter-spacing:-.01em}
+.cr-p{font-family:var(--body); font-size:16px; line-height:1.45; color:var(--muted); margin-top:12px; max-width:30ch}
+.cr-p b{color:var(--text); font-weight:600}
+.cr-box{width:100%; margin-top:22px; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:16px 16px 4px}
+.cr-k{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--volt)}
+.cr-steps{list-style:none; margin:8px 0 0; padding:0}
+.cr-steps li{display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--line); font-family:var(--body); font-size:15px; line-height:1.4; color:var(--muted)}
+.cr-steps li:first-child{border-top:0}
+.cr-steps li b{color:var(--text); font-weight:600}
+.cr-steps .n{flex:0 0 26px; height:26px; border-radius:8px; border:1.5px solid var(--line-2); display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:900; font-size:15px; color:var(--text)}
+.cr-steps li.done .n{background:var(--volt); border-color:var(--volt); color:#0A0B0E}
+.cr-steps .warn{color:var(--volt)}
+.cr-act{margin-top:10px}
+.cr-act .btn-volt{font-size:16px; padding:12px 18px; min-height:46px}
+.cr-g{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--volt); border:1px solid rgba(200,240,49,.45); border-radius:100px; padding:9px 14px; background:transparent; min-height:38px}
+.cr-ok{margin-top:18px; font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-size:17px; color:var(--text); border:1px solid var(--line-2); border-radius:12px; padding:14px 26px; min-height:50px; background:transparent}
 
 /* ===================== APP HEADER (Today) ===================== */
 .appbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
@@ -1167,6 +1189,25 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
   <div class="rm-skip">Touchez pour passer</div>
 </div>
 
+<!-- ===================== CRAN : le nouveau nom (une seule fois) ===================== -->
+<div id="cran-ov" class="gone" inert role="dialog" aria-modal="true" aria-label="Ton app s’appelle maintenant CRAN">
+  <div class="cr-in">
+    <div class="wordmark cr-wm" aria-hidden="true"><div class="b">CR<span class="cv"><svg viewBox="0 0 86 116"><polygon points="0,116 30,0 56,0 86,116 60,116 43,48 26,116"/></svg></span>N</div></div>
+    <h2 class="cr-h" id="cr-h" tabindex="-1">Ton app s’appelle maintenant CRAN.</h2>
+    <p class="cr-p">Le A, c’est un cran : chaque fois que tu montes de 2,5 kg. <b>Tes séances, tes poids et tes photos ne bougent pas.</b></p>
+    <div class="cr-box">
+      <div class="cr-k">Pour avoir la nouvelle icône</div>
+      <ol class="cr-steps">
+        <li id="cr-s1"><span class="n">1</span><div><b>Sauvegarde d’abord.</b> Garde le fichier dans Fichiers.<div class="cr-act"><button class="btn-volt" id="cr-save" type="button">Sauvegarder maintenant</button></div></div></li>
+        <li><span class="n">2</span><div><b>Supprime l’ancienne icône.</b> <span class="warn">Jamais avant l’étape 1 : iOS efface tout avec elle.</span></div></li>
+        <li><span class="n">3</span><div><b>Ouvre le lien dans Safari</b>, puis Partager › Sur l’écran d’accueil.<div class="cr-act"><button class="cr-g" id="cr-link" type="button">Copier le lien</button></div></div></li>
+        <li><span class="n">4</span><div><b>Ouvre CRAN</b>, puis Suivi › Tes données › Restaurer › ton fichier.</div></li>
+      </ol>
+    </div>
+    <button class="cr-ok" id="cr-ok" type="button">C’est noté</button>
+  </div>
+</div>
+
 <div id="app">
   <!-- ============ VUE : AUJOURD'HUI ============ -->
   <section class="view" id="v-today" data-tab="today">
@@ -1363,7 +1404,7 @@ details.sup[open] .sup-chev{transform:rotate(180deg)}
     <div class="blockcap"><span class="ic" id="ic-save2"></span> TES DONNÉES</div>
     <div class="card data-card" style="margin-top:0">
       <div class="dc-top"><div><div class="dc-t">Tes données</div><div class="dc-s" id="dc-stat">—</div></div><span class="ic" id="ic-save"></span></div>
-      <p class="dc-p">Tout est sur ton téléphone. Tant que l’app est sur ton écran d’accueil, iOS ne l’efface pas. Si tu retires l’icône ou que tu changes de téléphone, ta sauvegarde automatique te rend tout.</p>
+      <p class="dc-p">Tout est sur ton téléphone. Tant que l’app est sur ton écran d’accueil, iOS ne l’efface pas. Avant de retirer l’icône ou de changer de téléphone, appuie sur « Sauvegarder » : « Restaurer » te rend tout avec ce fichier.</p>
       <div class="dc-last" id="dc-last"></div>
       <div class="dc-btns">
         <button class="dc-b" id="dc-export">Sauvegarder</button>
@@ -2602,11 +2643,15 @@ function loadStepsState(){var ok=!!loadParts(lIn.value);lMinus.disabled=!ok;lPlu
 function histHTML(sk,i){
   var h=histOf(sk,i);if(!h.length)return '';
   var best=maxOf(sk,i), last3=h.slice(-5).reverse(), out='';
+  /* le record se marque UNE fois : à la première séance où cette charge a été
+     atteinte. Une charge tenue 5 semaines affichait 5 fois « record ». */
+  var firstBest=null;
+  for(var q=0;q<h.length;q++){var pq=loadParts(h[q][1]);if(pq&&pq.n===best){firstBest=h[q][0];break;}}
   for(var k=0;k<last3.length;k++){
     var cur=last3[k], prev=last3[k+1], dl='', a=loadParts(cur[1]);
     if(prev){var b=loadParts(prev[1]);
       if(a&&b){var d=a.n-b.n;dl=d>0?'<span class="dl up">+'+fmtNum(d)+'</span>':(d<0?'<span class="dl dn">'+fmtNum(d)+'</span>':'<span class="dl">=</span>');}}
-    var pr=(a&&best!==null&&a.n===best)?'<span class="prtag">'+IC.fire+'record</span>':'';
+    var pr=(a&&best!==null&&a.n===best&&cur[0]===firstBest)?'<span class="prtag">'+IC.fire+'record</span>':'';
     out+='<div class="load-hl"><span class="d">'+fmtDK(cur[0])+'</span><span class="v">'+esc(dispLoad(cur[1]))+pr+'</span>'+(dl||'<span class="dl">—</span>')+'</div>';
   }
   return '<div class="load-hist"><div class="k">Tes dernières charges</div>'+out+'</div>';
@@ -3071,9 +3116,9 @@ function applyInert(){
   var all=[].slice.call(document.querySelectorAll('.ovl-managed'));
   var rm=function(el){if(el)el.removeAttribute('inert');};
   [app,nav].forEach(rm); all.forEach(rm);
-  var remise=document.getElementById('remise');
-  if(remise&&!remise.classList.contains('gone')){
-    /* l'écran d'accueil est au-dessus de tout */
+  var remise=document.getElementById('remise'), cranOv=document.getElementById('cran-ov');
+  if((remise&&!remise.classList.contains('gone'))||(cranOv&&!cranOv.classList.contains('gone'))){
+    /* l'écran d'accueil (ou l'écran CRAN) est au-dessus de tout */
     [app,nav].forEach(function(el){if(el)el.setAttribute('inert','');});
     all.forEach(function(el){el.setAttribute('inert','');});
     return;
@@ -4163,21 +4208,22 @@ function downloadFallback(blob,name){
 }
 function exportData(){
   var name='cran-sauvegarde-'+dateKeyOf(today())+'.json';
-  backupBlob().then(function(blob){
+  /* renvoie une promesse : true si le fichier est parti, false si Rayan a annulé */
+  return backupBlob().then(function(blob){
     /* ⚠️ navigator.share doit être appelé dans la foulée du geste utilisateur ;
        iOS tolère une promesse courte avant l'appel (la compression photo est
        déjà faite, on ne fait que relire l'IDB) */
     try{
       var file=new File([blob],name,{type:'application/json'});
       if(navigator.canShare&&navigator.canShare({files:[file]})){
-        navigator.share({files:[file]}) /* pas de title/text : ça casse le partage de fichier sur iOS */
-          .then(function(){markBackup();toast('Sauvegarde envoyée');})
-          .catch(function(err){if(err&&err.name==='AbortError')return;downloadFallback(blob,name);markBackup();});
-        return;
+        return navigator.share({files:[file]}) /* pas de title/text : ça casse le partage de fichier sur iOS */
+          .then(function(){markBackup();toast('Sauvegarde envoyée');return true;})
+          .catch(function(err){if(err&&err.name==='AbortError')return false;downloadFallback(blob,name);markBackup();return true;});
       }
     }catch(e){}
     downloadFallback(blob,name);markBackup();
     toast('Sauvegarde exportée');
+    return true;
   });
 }
 /* ===== EXPORT CSV — tes séances, lisibles ailleurs =====
@@ -4355,13 +4401,42 @@ function initRemise(){var LS='protocole_remise_seen_v3';var ov=document.getEleme
     ov.classList.add('gone');ov.setAttribute('inert','');
     [app,nav].forEach(function(el){if(el)el.removeAttribute('inert');});
     var t=document.querySelector('#nav button');if(t)setTimeout(function(){try{t.focus({preventScroll:true});}catch(e){}},80);
-    if(window.__enterApp)window.__enterApp();}
+    if(window.__enterApp)window.__enterApp();
+    if(window.__afterRemise){var f=window.__afterRemise;window.__afterRemise=null;setTimeout(f,350);}}
   function showAll(){l1.classList.add('show');l2.classList.add('show');btn.classList.add('show');}
   if(reduceMotion)showAll();else{setTimeout(function(){l1.classList.add('show');},250);setTimeout(function(){l2.classList.add('show');},1700);setTimeout(function(){btn.classList.add('show');},3400);}
   ov.addEventListener('click',function(e){if(e.target.id==='rm-open'||(e.target.closest&&e.target.closest('#rm-open'))){finish();return;}showAll();});
   document.getElementById('rm-open').addEventListener('click',function(e){e.stopPropagation();finish();});
 }
 
+
+/* ===== CRAN — le nouveau nom, expliqué une seule fois =====
+   L'icône d'un raccourci iOS est figée à l'ajout : pour avoir la nouvelle, il faut
+   supprimer puis rajouter l'app, et supprimer l'icône efface les données. Cet écran
+   met la sauvegarde à un tap AVANT tout le reste. Rien à protéger (installation
+   neuve) = pas d'écran. Le repère vit sous protocole_ : il voyage dans la
+   sauvegarde, donc l'écran ne revient pas après une restauration. */
+function initCran(){
+  var LS='protocole_cran_vu_v1', ov=document.getElementById('cran-ov'); if(!ov)return;
+  var forced=(Q.get('cran')==='force'), seen=false, hasData=false;
+  try{seen=localStorage.getItem(LS)==='1';
+    for(var i=0;i<localStorage.length;i++){if(/^protocole_(charges_v1|log_|seance_|entries_v1)/.test(localStorage.key(i))){hasData=true;break;}}}catch(e){}
+  if(!forced&&(seen||!hasData||INTRO_MODE==='skip'))return;
+  function open(){ov.classList.remove('gone');ov.removeAttribute('inert');applyInert();
+    try{document.getElementById('cr-h').focus({preventScroll:true});}catch(e){}}
+  function close(){try{localStorage.setItem(LS,'1');}catch(e){}
+    ov.classList.add('gone');ov.setAttribute('inert','');applyInert();}
+  document.getElementById('cr-save').addEventListener('click',function(){
+    var b=this, r=exportData();
+    if(r&&r.then)r.then(function(ok){if(ok){document.getElementById('cr-s1').classList.add('done');b.textContent='Sauvegarde faite';}});});
+  document.getElementById('cr-link').addEventListener('click',function(){
+    var url=location.origin+location.pathname.replace(/index\.html$/,'');
+    var p=(navigator.clipboard&&navigator.clipboard.writeText)?navigator.clipboard.writeText(url):Promise.reject();
+    p.then(function(){toast('Lien copié : colle-le dans Safari');}).catch(function(){toast(url);});});
+  document.getElementById('cr-ok').addEventListener('click',close);
+  var rm=document.getElementById('remise');
+  if(rm&&!rm.classList.contains('gone'))window.__afterRemise=open; else open();
+}
 
 /* ===== PWA — installable + utilisable sans réseau (salle en sous-sol) ===== */
 function initPWA(){
@@ -4461,7 +4536,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(TABS.indexOf(h)>=0)startTab=h;
   window.__enterApp=function(){showView(startTab);};
   step('showView',function(){showView(startTab);});
-  step('remise',initRemise);
+  step('remise',initRemise); step('cran',initCran);
   /* on rend la main au navigateur : il peint, PUIS on construit le reste */
   if(startTab!=='today'){buildRest();return;}
   var go=function(){buildRest();};
